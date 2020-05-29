@@ -357,11 +357,11 @@ public class DataSave {
                 ps = databaseManager.conn.prepareStatement(query); //compiling query in the DB
                 ps.setInt(1, game.getGID());
                 ps.setString(2, game.getMain().getUserName());
-                ps.setString(3, "main");
+                ps.setString(3, "MAIN");
 
                 ps.setInt(4, game.getGID());
                 ps.setString(5, game.getMain().getUserName());
-                ps.setString(6, "main");
+                ps.setString(6, "MAIN");
                 //System.out.println(ps.toString());
                 ps.executeUpdate();
                 databaseManager.conn.commit();
@@ -379,11 +379,11 @@ public class DataSave {
                 ps = databaseManager.conn.prepareStatement(query); //compiling query in the DB
                 ps.setInt(1, game.getGID());
                 ps.setString(2, game.getSide1().getUserName());
-                ps.setString(3, "side1");
+                ps.setString(3, "VAR");
 
                 ps.setInt(4, game.getGID());
                 ps.setString(5, game.getSide1().getUserName());
-                ps.setString(6, "side1");
+                ps.setString(6, "VAR");
                 //System.out.println(ps.toString());
                 ps.executeUpdate();
                 databaseManager.conn.commit();
@@ -401,11 +401,11 @@ public class DataSave {
                 ps = databaseManager.conn.prepareStatement(query); //compiling query in the DB
                 ps.setInt(1, game.getGID());
                 ps.setString(2, game.getSide2().getUserName());
-                ps.setString(3, "side2");
+                ps.setString(3, "ASSISTANT");
 
                 ps.setInt(4, game.getGID());
                 ps.setString(5, game.getSide2().getUserName());
-                ps.setString(6, "side2");
+                ps.setString(6, "ASSISTANT");
                 //System.out.println(ps.toString());
                 ps.executeUpdate();
                 databaseManager.conn.commit();
