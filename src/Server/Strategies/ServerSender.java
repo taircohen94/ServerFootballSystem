@@ -57,9 +57,41 @@ public class ServerSender implements IServerStrategy {
                 case "editCoachDetails":
                     editCoachDetails(toClient, array);
                     break;
+                case "editTeamManagerDetails":
+                    editTeamManagerDetails(toClient, array);
+                    break;
+                case "editPlayerDetails":
+                    editPlayerDetails(toClient, array);
+                    break;
+                case "editFieldDetails":
+                    editFieldDetails(toClient, array);
+                    break;
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+    private void editFieldDetails(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            model.editFieldDetails(array[1], array[2], array[3], array[4],
+                    array[5]);
+            toClient.writeObject(new StringBuilder("Ok"));
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+
+    private void editPlayerDetails(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            model.editPlayerDetails(array[1], array[2], array[3], array[4],
+                    array[5], array[6]);
+            toClient.writeObject(new StringBuilder("Ok"));
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
         }
     }
 
@@ -73,9 +105,18 @@ public class ServerSender implements IServerStrategy {
             toClient.writeObject(new StringBuilder(e.getErrorMessage()));
             toClient.flush();
         }
-
     }
-
+    private void editTeamManagerDetails(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            model.editTeamManagerDetails(array[1], array[2], array[3], array[4],
+                    array[5]);
+            toClient.writeObject(new StringBuilder("Ok"));
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
     private void getFieldsForTeamAtSeason(ObjectOutputStream toClient, String[] array) throws IOException {
         try {
             StringBuilder answer = model.getFieldsForTeamAtSeason(array[1], array[2]);
