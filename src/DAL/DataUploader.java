@@ -140,7 +140,9 @@ public class DataUploader {
                 fan.setStatus(status);
 
                 // add to fans map
-                allFans.put(username, fan);
+                if(!allFans.containsKey(username)) {
+                    allFans.put(username, fan);
+                }
 
             }
         } catch (SQLException e) {
