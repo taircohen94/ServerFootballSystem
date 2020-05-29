@@ -1,8 +1,6 @@
 package Users;
 
 import AssociationAssets.*;
-import System.Complains;
-import Users.*;
 import javafx.util.Pair;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
@@ -13,8 +11,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import System.Complains;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FanTest {
     Event e1;

@@ -12,7 +12,7 @@ public class TeamBudgetStub extends TeamBudget {
      * @param team
      * @param season
      */
-    public TeamBudgetStub(Team team, Season season, int selector) {
+    public TeamBudgetStub(Team team, Season season,int selector) {
         super(team, season);
         this.selector = selector;
     }

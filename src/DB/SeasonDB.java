@@ -3,7 +3,6 @@ package DB;
 import AssociationAssets.Season;
 
 import java.util.HashMap;
-
 /**
  * this class is the SeasonDB class.
  * Aouthors: Tair Cohen

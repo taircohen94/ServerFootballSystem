@@ -1,19 +1,14 @@
 package AssociationAssets;
 
-import System.Logger;
-import Users.Fan;
-import Users.Referee;
-
 import java.sql.Time;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import System.*;
+import Users.*;
 
 /**
  * Class Game represents a game in a specific league and season. It is defined by its date, ID, playing teams and referees.

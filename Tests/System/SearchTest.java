@@ -1,19 +1,18 @@
 package System;
 
 import AssociationAssets.*;
+import DB.*;
 import PoliciesAndAlgorithms.GamesAssigningPolicy;
 import PoliciesAndAlgorithms.SimpleGamesAssigningPolicy;
 import Users.*;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertSame;
 
 public class SearchTest {
     //<editor-fold desc="Fields">
@@ -61,10 +60,10 @@ public class SearchTest {
         representative=(RepresentativeFootballAssociation)footballSystem.creatingRepresentativeFootballAssociation("repreUname","repreFname","repreLname",gamePolicy);
        //player
         footballSystem.signIn("playerUName","67267", "playerFname","playerLname");
-        player = (Player)footballSystem.creatingPlayer("playerUName","playerFname","playerLname",null, EPlayerRole.GoalKeeper);
+        player = (Player)footballSystem.creatingPlayer("playerUName","playerFname","playerLname",null,EPlayerRole.GoalKeeper);
         //coach
         footballSystem.signIn("coachTest","94672", "coachFname","coachLname");
-        coach=(Coach) footballSystem.creatingCoach("coachName","coachFname","coachLname", ETraining.CDiploma, ECoachRole.AssistantCoach);
+        coach=(Coach) footballSystem.creatingCoach("coachName","coachFname","coachLname",ETraining.CDiploma,ECoachRole.AssistantCoach);
         //fan
         fan= footballSystem.signIn("testFan","123456","FanFname","FanLname");
         footballSystem.addTeamToDB(team);
@@ -115,7 +114,7 @@ public class SearchTest {
     @Test
     public void getGameByGameID() throws Exception {
         try{
-         Game gameTest = new Game(new Date(), null, field, hostTeam, team, new Referee("ref1Test","ref1FName","ref2LName", EReferee.MAIN), new Referee("ref2Test","ref2FName","ref2LName", EReferee.ASSISTANT), new Referee("re3Test","ref3FName","Ref3LName", EReferee.ASSISTANT), season, league);
+         Game gameTest = new Game(new Date(), null, field, hostTeam, team, new Referee("ref1Test","ref1FName","ref2LName",EReferee.MAIN), new Referee("ref2Test","ref2FName","ref2LName",EReferee.ASSISTANT), new Referee("re3Test","ref3FName","Ref3LName",EReferee.ASSISTANT), season, league);
         footballSystem.getGameDB().addGame(gameTest,gameTest.getGID());
             assertSame(search.getGameByGameID(gameTest.getGID()), gameTest);
         }catch (Exception e){}

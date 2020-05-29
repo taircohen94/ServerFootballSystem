@@ -1,12 +1,11 @@
 package Users;
 
 import AssociationAssets.*;
-import Budget.TeamBudget;
 import System.FootballSystem;
-import Users.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import Budget.TeamBudget;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,8 +30,8 @@ class TeamOwnerTest {
         //field = new Field("blomfield","Tel Aviv",100);
         FootballSystem.getInstance().addFieldToDB(field);
         teamBudget = new TeamBudget(null,null);
-        teamOwner1 = (TeamOwner) FootballSystem.getInstance().creatingTeamOwner("Tair233","Tair","Cohen");
-        teamOwner2 = (TeamOwner) FootballSystem.getInstance().creatingTeamOwner("Tal12","Tal","Cohen");
+        teamOwner1 = (TeamOwner)FootballSystem.getInstance().creatingTeamOwner("Tair233","Tair","Cohen");
+        teamOwner2 = (TeamOwner)FootballSystem.getInstance().creatingTeamOwner("Tal12","Tal","Cohen");
         team1 = new Team(1,"Macabi-Tel-aviv",season,field,teamBudget, teamOwner1);
         team2 = new Team(2,"Beitar",season,field,teamBudget,teamOwner2);
         team1.addSeasonToTeam(season);
@@ -57,7 +56,7 @@ class TeamOwnerTest {
         // adding exits user
         assertEquals(team1.getAdditionalInfoWithSeasons().get(season.getYear()).getPlayers().size(),0);
         this.teamOwner1.addPlayer(team1,season,"yuval","123","yuval",
-                "lala",null, EPlayerRole.Defender);
+                "lala",null,EPlayerRole.Defender);
         AdditionalInfo additionalInfo = team1.getAdditionalInfoWithSeasons().get(season.getYear());
         assertEquals(team1.getAdditionalInfoWithSeasons().get(season.getYear()).getPlayers().size(),1);
 
@@ -73,20 +72,20 @@ class TeamOwnerTest {
 
         // team is null
         assertEquals(this.teamOwner2.addPlayer(null,season,"tairos","12","tair",
-                "cohen",null, EPlayerRole.Defender),false);
+                "cohen",null,EPlayerRole.Defender),false);
 
         // season is null
         assertEquals(this.teamOwner2.addPlayer(team1,null,"tairos","12","tair",
-                "cohen",null, EPlayerRole.Defender),false);
+                "cohen",null,EPlayerRole.Defender),false);
 
         //creating new user with sign in and creation
         assertEquals(this.teamOwner2.addPlayer(team2,season,"tairos","12","tair",
-                "cohen",null, EPlayerRole.Defender),true);
+                "cohen",null,EPlayerRole.Defender),true);
         assertEquals(team2.getAdditionalInfoWithSeasons().get(season.getYear()).getPlayers().size(),1);
 
         //creating new player with a team not that im owning
         assertEquals(this.teamOwner2.addPlayer(team1,season,"tairos","12","tair",
-                "cohen",null, EPlayerRole.Defender),false);
+                "cohen",null,EPlayerRole.Defender),false);
     }
 
     @Test
@@ -94,7 +93,7 @@ class TeamOwnerTest {
         // adding exits user
         assertEquals(team1.getAdditionalInfoWithSeasons().get(season.getYear()).getCoaches().size(),0);
         this.teamOwner1.addCoach(team1,season,"yuval","123","yuval",
-                "lala", ETraining.CDiploma, ECoachRole.AssistantCoach);
+                "lala",ETraining.CDiploma,ECoachRole.AssistantCoach);
         AdditionalInfo additionalInfo = team1.getAdditionalInfoWithSeasons().get(season.getYear());
         assertEquals(team1.getAdditionalInfoWithSeasons().get(season.getYear()).getCoaches().size(),1);
 
@@ -103,26 +102,26 @@ class TeamOwnerTest {
 
         // trying to add a Coach that training another team
         assertEquals(this.teamOwner2.addCoach(team2,season,"yuval","111"
-                ,"yuval","lalala", ETraining.CDiploma, ECoachRole.AssistantCoach),false);
+                ,"yuval","lalala",ETraining.CDiploma,ECoachRole.AssistantCoach),false);
 
         // checking if the username exist an the additional info
         assertTrue(additionalInfo.findCoach("yuval")!= null);
 
         // team is null
         assertEquals(this.teamOwner2.addCoach(null,season,"tairos","12","tair",
-                "cohen", ETraining.CDiploma, ECoachRole.AssistantCoach),false);
+                "cohen",ETraining.CDiploma,ECoachRole.AssistantCoach),false);
 
         // season is null
         assertEquals(this.teamOwner2.addCoach(team1,null,"tairos","12","tair",
-                "cohen", ETraining.CDiploma, ECoachRole.AssistantCoach),false);
+                "cohen",ETraining.CDiploma,ECoachRole.AssistantCoach),false);
 
         //creating new user with sign in and creation
         assertEquals(this.teamOwner2.addCoach(team2,season,"tairos","12","tair",
-                "cohen", ETraining.CDiploma, ECoachRole.AssistantCoach),true);
+                "cohen",ETraining.CDiploma,ECoachRole.AssistantCoach),true);
 
         //creating new Coach with a team not that im owning
         assertEquals(this.teamOwner2.addCoach(team1,season,"tairos","12","tair",
-                "cohen", ETraining.CDiploma, ECoachRole.AssistantCoach),false);
+                "cohen",ETraining.CDiploma,ECoachRole.AssistantCoach),false);
 
         assertEquals(team2.getAdditionalInfoWithSeasons().get(season.getYear()).getCoaches().size(),1);
     }

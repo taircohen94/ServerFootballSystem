@@ -1,17 +1,12 @@
 package Users;
-
 import AssociationAssets.*;
-import Users.EReferee;
-import Users.Referee;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
-
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class RefereeTest {
@@ -46,9 +41,9 @@ class RefereeTest {
         events = new LinkedList<>();
         events.add(e1);
         events.add(e2);
-        main = new Referee("1", "main", "main", EReferee.MAIN);
-        side1 = new Referee("2", "side1", "side1", EReferee.ASSISTANT);
-        side2 = new Referee("3", "side2", "side1", EReferee.ASSISTANT);
+        main = new Referee("1", "main", "main",EReferee.MAIN);
+        side1 = new Referee("2", "side1", "side1",EReferee.ASSISTANT);
+        side2 = new Referee("3", "side2", "side1",EReferee.ASSISTANT);
         game = new Game(date, time, field, host, guest, main, side1, side2, season, league);
     }
 
@@ -86,7 +81,7 @@ class RefereeTest {
     void getTraining() {
         try {
             setUp();
-            assertEquals(main.getTraining(), EReferee.MAIN);
+            assertEquals(main.getTraining(),EReferee.MAIN);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -96,11 +91,11 @@ class RefereeTest {
     void setTraining() {
         try {
             setUp();
-            assertEquals(main.getTraining(), EReferee.MAIN);
+            assertEquals(main.getTraining(),EReferee.MAIN);
             main.setTraining(null);
-            assertEquals(main.getTraining(), EReferee.MAIN);
+            assertEquals(main.getTraining(),EReferee.MAIN);
             main.setTraining(EReferee.ASSISTANT);
-            assertEquals(main.getTraining(), EReferee.ASSISTANT);
+            assertEquals(main.getTraining(),EReferee.ASSISTANT);
             main.setTraining(EReferee.MAIN);
         } catch (Exception e) {
             e.printStackTrace();

@@ -3,12 +3,17 @@ package DAL;
 import AssociationAssets.*;
 import PoliciesAndAlgorithms.RegularScorePolicy;
 import PoliciesAndAlgorithms.SimpleGamesAssigningPolicy;
+import Security.AESEncryption;
 import Security.SecuritySystem;
-import System.FootballSystem;
 import Users.*;
+import System.*;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -289,8 +294,8 @@ public class DataSave {
 
             // change date formatting
             java.util.Date dt = game.getDate();
-            SimpleDateFormat sdf =
-                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            java.text.SimpleDateFormat sdf =
+                    new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String dateStr = sdf.format(dt);
 
             // save game:
@@ -959,8 +964,8 @@ public class DataSave {
 
             // change date formatting
             java.util.Date dt = p.getbDate();
-            SimpleDateFormat sdf =
-                    new SimpleDateFormat("yyyy-MM-dd");
+            java.text.SimpleDateFormat sdf =
+                    new java.text.SimpleDateFormat("yyyy-MM-dd");
             String dateStr = sdf.format(dt);
 
             String query =

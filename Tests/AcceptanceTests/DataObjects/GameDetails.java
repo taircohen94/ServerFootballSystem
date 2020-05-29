@@ -1,5 +1,6 @@
 package AcceptanceTests.DataObjects;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class GameDetails {

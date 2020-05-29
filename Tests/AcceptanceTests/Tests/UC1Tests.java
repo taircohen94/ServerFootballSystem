@@ -1,10 +1,9 @@
 package AcceptanceTests.Tests;
-
 import AcceptanceTests.DataObjects.UserDetails;
 import AcceptanceTests.SystemOperations.ISystemOperationsBridge;
 import AcceptanceTests.SystemOperations.RealSystemOperations;
+import AcceptanceTests.SystemOperations.SystemOperationProxy;
 import org.junit.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UC1Tests {

@@ -1,15 +1,14 @@
 package AssociationAssets;
 
-import AssociationAssets.*;
 import Users.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.HashMap;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class TeamTest {
 
@@ -31,9 +30,9 @@ public class TeamTest {
         field= new Field("Teddy", "Jerusalem", 31000);
         season=new Season("season");
 
-        r1= new Referee("1","a","a", EReferee.MAIN);
-        r2= new Referee("2","a","a", EReferee.VAR);
-        r3= new Referee("3","a","a", EReferee.VAR);
+        r1= new Referee("1","a","a",EReferee.MAIN);
+        r2= new Referee("2","a","a",EReferee.VAR);
+        r3= new Referee("3","a","a",EReferee.VAR);
         team1= new Team(1,"Barcelona", season, null,null,null);
         team2= new Team(2, "Beitar",season, null,null,null);
         team2.addField(field);

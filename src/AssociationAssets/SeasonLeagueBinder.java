@@ -3,7 +3,10 @@ package AssociationAssets;
 import PoliciesAndAlgorithms.GamesAssigningPolicy;
 import PoliciesAndAlgorithms.ScoreTablePolicy;
 import Users.Referee;
+import com.sun.xml.internal.bind.v2.TODO;
+import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,7 +77,7 @@ public class SeasonLeagueBinder {
     }
 
     public boolean hasStarted() {
-        for (Map.Entry<Integer, Game> entry:games.entrySet()) {
+        for (Map.Entry<Integer,Game> entry:games.entrySet()) {
             if(entry.getValue().isFinished())
                 return true;
         }

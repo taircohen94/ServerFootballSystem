@@ -1,13 +1,17 @@
 package System;
 import AssociationAssets.Event;
+import com.sun.xml.internal.bind.v2.TODO;
 import javafx.util.Pair;
 
 import java.io.*;
+import java.sql.Struct;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * All system operations are kept in this class for tracking and error tracking

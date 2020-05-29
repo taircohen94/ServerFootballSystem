@@ -7,11 +7,10 @@ import AssociationAssets.Team;
 import DB.LeagueDB;
 import DB.SeasonDB;
 import DB.TeamDB;
-import System.FootballSystem;
-import System.Search;
-import Users.*;
 import org.junit.Before;
 import org.junit.Test;
+import System.Search;
+import System.*;
 
 import javax.security.auth.login.FailedLoginException;
 import java.util.LinkedList;
@@ -40,11 +39,11 @@ public class GuestTest {
         teamDB = new TeamDB();
         seasonDB = new SeasonDB();
         search= guest.getSearch();
-        coach = new Coach("coachTest", "Dan", "Levi", ETraining.UEFAA, ECoachRole.AssistantCoach);
-        player = new Player("playerTest","Eli","Dan",null, EPlayerRole.GoalKeeper);
+        coach = new Coach("coachTest", "Dan", "Levi", ETraining.UEFAA,ECoachRole.AssistantCoach);
+        player = new Player("playerTest","Eli","Dan",null,EPlayerRole.GoalKeeper);
         league = new League("champions");
         league1 = new League("leagueTest");
-        referee = new Referee("refereeTest","refereeFname","refereeLname", EReferee.ASSISTANT);
+        referee = new Referee("refereeTest","refereeFname","refereeLname",EReferee.ASSISTANT);
         season = new Season("2020");
         field = new Field("fieldTest","city",10);
         team= new Team(1,"Barcelona" ,season, field, null, null);

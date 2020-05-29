@@ -1,10 +1,9 @@
 package Budget;
 
-import Budget.AssociationBudget;
+import Users.Fan;
 import Users.Coach;
 import Users.ECoachRole;
 import Users.ETraining;
-import Users.Fan;
 import org.junit.Before;
 import org.junit.Test;
 

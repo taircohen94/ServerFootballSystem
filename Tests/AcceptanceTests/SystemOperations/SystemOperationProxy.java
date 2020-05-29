@@ -55,7 +55,7 @@ public class SystemOperationProxy implements  ISystemOperationsBridge{
     }
 
     @Override
-    public boolean addEvent(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description) {
+    public boolean addEvent(String userName,String password, int gameID, EEventType eventType, int eventIndex, String description) {
         if (real != null){
             return real.addEvent( userName, password, gameID,  eventType,  eventIndex,  description);
         }
@@ -63,7 +63,7 @@ public class SystemOperationProxy implements  ISystemOperationsBridge{
     }
 
     @Override
-    public boolean updateEvent(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description) {
+    public boolean updateEvent(String userName,String password, int gameID, EEventType eventType, int eventIndex, String description) {
         if (real != null){
             return real.updateEvent( userName, password, gameID,  eventType,  eventIndex,  description);
         }
@@ -71,7 +71,7 @@ public class SystemOperationProxy implements  ISystemOperationsBridge{
     }
 
     @Override
-    public boolean deleteEvent(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description) {
+    public boolean deleteEvent(String userName,String password, int gameID, EEventType eventType, int eventIndex, String description) {
         if (real != null){
             return real.deleteEvent( userName, password, gameID,  eventType,  eventIndex,  description);
         }
@@ -79,7 +79,7 @@ public class SystemOperationProxy implements  ISystemOperationsBridge{
     }
 
     @Override
-    public boolean deleteEventAfterGameOver(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description, int hoursBefore) {
+    public boolean deleteEventAfterGameOver(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description,int hoursBefore) {
         if (real != null){
             return real.deleteEventAfterGameOver( userName, password, gameID,  eventType,  eventIndex,  description, hoursBefore);
         }
@@ -87,7 +87,7 @@ public class SystemOperationProxy implements  ISystemOperationsBridge{
     }
 
     @Override
-    public boolean editEventAfterGameOver(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description, int hoursBefore) {
+    public boolean editEventAfterGameOver(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description,int hoursBefore) {
         if (real != null){
             return real.editEventAfterGameOver( userName, password, gameID,  eventType,  eventIndex,  description, hoursBefore);
         }

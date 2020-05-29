@@ -1,12 +1,15 @@
 package Users;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import AssociationAssets.EEventType;
 import AssociationAssets.EScheduleOrPlaceEvent;
 import AssociationAssets.Game;
-import System.Complains;
-
-import java.io.Serializable;
-import java.util.*;
+import System.*;
 
 /**
  * A fan of a sports club, national team, team or athlete,
@@ -21,7 +24,7 @@ public class Fan extends Guest implements IFan ,Serializable {
     private String lName;
     private EStatus status;
     private HashMap<String,EEventType> pendingGameNotifications;
-    private HashMap<String, APageEditor> pendingPageNotifications;
+    private HashMap<String,APageEditor> pendingPageNotifications;
     private HashMap<String, EScheduleOrPlaceEvent> pendingScheduleNotifications;
     private List<String> searchHistory;
 
@@ -170,7 +173,7 @@ public class Fan extends Guest implements IFan ,Serializable {
         // TODO: 12/04/2020 Ask Alon&Amit about team page
     }
 
-    public void update(APageEditor pageEditor, String feed){}
+    public void update(APageEditor pageEditor,String feed){}
 
     /**
      *A fan can sign up to track games
@@ -224,7 +227,7 @@ public class Fan extends Guest implements IFan ,Serializable {
      *
      * # use case 3.4
      */
-    public void getResponseForComplain(SystemManager systemManager, String Complain, String response){}
+    public void getResponseForComplain(SystemManager systemManager,String Complain,String response){}
 
     /**
      * A fan can view his search history

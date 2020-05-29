@@ -1,12 +1,10 @@
 package Users;
-
-import System.Logger;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import System.Logger;
 
 /**
  * A personal page is a page with official content about the player / coach.

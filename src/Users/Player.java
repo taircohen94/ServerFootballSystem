@@ -1,12 +1,9 @@
 package Users;
-
 import AssociationAssets.AdditionalInfo;
-import System.Logger;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import System.*;
 /**
  * A footballer or a football player is an athlete who plays football, as an amateur or as a professional.
  * This system is about professional football players.
@@ -49,7 +46,7 @@ public class Player extends CanBeOwner {
      * When a player is created, a personal page is created for him.
      * Each player has one personal page.
      */
-    public Player(Fan fan, Date bDate, EPlayerRole role ){
+    public Player(Fan fan,Date bDate, EPlayerRole role ){
         super(fan.getUserName(),fan.getfName(),fan.getlName());
         this.bDate = bDate;
         this.role = role;

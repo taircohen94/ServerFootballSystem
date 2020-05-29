@@ -1,6 +1,5 @@
 package DAL;
 
-import DAL.JDBCConnector;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,7 +1,6 @@
 package AssociationAssets;
 
 import System.FootballSystem;
-import System.Logger;
 import Users.Coach;
 import Users.Player;
 import Users.TeamManager;
@@ -12,7 +11,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-
+import System.*;
 /**
  * This class is association class for Season and Team.
  * Aouthors: Amit Shakarchy, Alon Gutman, Tair Cohen

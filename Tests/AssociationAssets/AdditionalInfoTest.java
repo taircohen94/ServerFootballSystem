@@ -1,9 +1,5 @@
 package AssociationAssets;
 
-import AssociationAssets.AdditionalInfo;
-import AssociationAssets.Field;
-import AssociationAssets.Season;
-import AssociationAssets.Team;
 import System.FootballSystem;
 import Users.Coach;
 import Users.Player;

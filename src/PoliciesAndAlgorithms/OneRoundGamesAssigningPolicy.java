@@ -45,7 +45,7 @@ public class OneRoundGamesAssigningPolicy extends GamesAssigningPolicy {
     public HashMap<Integer, Game> executePolicy(HashMap<String, Team> teams, Map<String, Referee> refs, LocalDate startDate, Season season, League league) throws Exception {
         if(teams == null || refs == null || startDate == null || season == null || league == null) throw new Exception("At least one parameter is wrong");
         if(gamesAssigned) throw new Exception("Games already assigned for this season");
-        HashMap <Integer, Game> games = new HashMap<>();
+        HashMap <Integer,Game> games = new HashMap<>();
         int refereeCount = refs.size();
         int mainRefereeCount = countMainReferees(refs);
         int teamsCount = teams.size();

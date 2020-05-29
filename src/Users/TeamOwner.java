@@ -652,7 +652,7 @@ public class TeamOwner extends Fan {
 
 
     public boolean editTMDetails(Team team, Season season, String userName, String firstName,
-                                 String lastName) throws RecordException {
+                                    String lastName) throws RecordException {
         if (checkInputsOfTeamAndSeason(team, season)) return false;
         AdditionalInfo additionalInfoToSearch = getAdditionalInfo(team, season);
         // if this team owner owns this team
@@ -682,7 +682,7 @@ public class TeamOwner extends Fan {
 
 
     public boolean editPlayerDetails(Team team, Season season, String userName, String firstName,
-                                     String lastName, EPlayerRole role) throws RecordException {
+                                    String lastName, EPlayerRole role) throws RecordException {
         if (checkInputsOfTeamAndSeason(team, season)) return false;
         AdditionalInfo additionalInfoToSearch = getAdditionalInfo(team, season);
         // if this team owner owns this team

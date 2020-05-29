@@ -1,11 +1,8 @@
 package Users;
-
 import AssociationAssets.AdditionalInfo;
-import System.Logger;
-
 import java.util.ArrayList;
 import java.util.List;
-
+import System.*;
 /**
  *A coach is a person who guides an athlete or group of athletes,
  * advises them and manages their actions as they prepare for a sporting

@@ -51,7 +51,7 @@ public interface IModel {
 
     //region Sign In
     public boolean signIn(String userName, String password, String firstName,
-                          String lastName);
+                         String lastName);
     //endregion
 
     //region Team Management
@@ -60,7 +60,7 @@ public interface IModel {
      * Assumes input was already validated for null and empty inputs.
      * Throws exception in any of the following cases: Team's name already exists, No such a season,
      */
-    boolean createTeam(String name, String leagueName, String seasonYear, String fieldName)throws RecordException;
+    boolean createTeam(String name,String leagueName, String seasonYear, String fieldName)throws RecordException;
 
     /**
      * Closes a team.
@@ -213,7 +213,7 @@ public interface IModel {
      * @param seasonYear -
      * @return true for success, false for failure
      */
-    boolean defineGameSchedulingPolicy(String policy, String leagueName, String seasonYear) throws RecordException;
+    boolean defineGameSchedulingPolicy(String policy, String leagueName, String seasonYear) throws RecordException, Exception;
 
     /**
      * Receives a policy by its name for a specific season & league and sets it.
@@ -233,7 +233,7 @@ public interface IModel {
      * @param seasonYear -
      * @return true for success, false for failure
      */
-    boolean runGameSchedulingAlgorithm(String leagueName, String seasonYear);
+    boolean runGameSchedulingAlgorithm(String leagueName, String seasonYear) throws Exception;
     //endregion
 
     /**
@@ -253,7 +253,7 @@ public interface IModel {
      * @param description Freestyle Description
      * @return
      */
-    boolean updateEvent(int gameID, int eventIndex, String eventType, String description) throws RecordException;
+    boolean updateEvent(int gameID,int eventIndex, String eventType, String description) throws RecordException;
 
     /**
      * Removes an event from an existing game item
@@ -261,7 +261,7 @@ public interface IModel {
      * @param eventIndex - should use "getEvents" method first
      * @return
      */
-    boolean removeEvent(int gameID, int eventIndex) throws RecordException;
+    boolean removeEvent(int gameID,int eventIndex) throws RecordException;
 
     /**
      * Updates an event of an existing game item, until 5 hours after game is finished.
@@ -272,7 +272,7 @@ public interface IModel {
      * @param description Freestyle Description
      * @return
      */
-    boolean updateEventAfterGameOver(int gameID, int eventIndex, String eventType, String description) throws RecordException;
+    boolean updateEventAfterGameOver(int gameID, int eventIndex, String eventType, String description ) throws RecordException;
     /**
      * Updates an event of an existing game item, until 5 hours after game is finished.
      * Can be preformed only by main referee.

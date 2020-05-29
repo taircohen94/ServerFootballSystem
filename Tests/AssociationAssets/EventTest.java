@@ -1,7 +1,5 @@
 package AssociationAssets;
 
-import AssociationAssets.EEventType;
-import AssociationAssets.Event;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,7 +7,6 @@ import java.sql.Time;
 import java.util.Date;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class EventTest {
 
@@ -52,13 +49,13 @@ public class EventTest {
 
     @Test
     public void getEventType() {
-        assertEquals(e.getEventType(), EEventType.FOUL);
+        assertEquals(e.getEventType(),EEventType.FOUL);
     }
 
     @Test
     public void setEventType() {
         e.setEventType(EEventType.GOALHOST);
-        assertEquals(e.getEventType(), EEventType.GOALHOST);
+        assertEquals(e.getEventType(),EEventType.GOALHOST);
     }
 
     @Test

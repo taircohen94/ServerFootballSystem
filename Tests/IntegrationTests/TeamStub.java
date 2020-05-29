@@ -12,7 +12,7 @@ public class TeamStub extends Team {
     }
 
     int selector;
-    public TeamStub(int TID, String name, Season currentSeason, Field mainField, TeamBudget budget, TeamOwner teamOwner, int selector) {
+    public TeamStub(int TID, String name, Season currentSeason, Field mainField, TeamBudget budget, TeamOwner teamOwner,int selector) {
         super(TID, name, currentSeason, mainField, budget, teamOwner);
         this.selector = selector;
     }

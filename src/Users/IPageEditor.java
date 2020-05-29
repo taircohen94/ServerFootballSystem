@@ -1,6 +1,5 @@
 package Users;
 import java.util.List;
-
 /**
  * This class is an interface with the APageEditor object
  * @ Written by Yuval Ben Eliezer

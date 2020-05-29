@@ -1,5 +1,9 @@
 package AssociationAssets;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import System.*;
+
 /**
  * Class Field represents a football field in which games take place.
  * It is defined by a name, a city and it's capacity.

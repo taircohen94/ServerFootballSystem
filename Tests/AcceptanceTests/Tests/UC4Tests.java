@@ -1,5 +1,4 @@
 package AcceptanceTests.Tests;
-
 import AcceptanceTests.DataObjects.EventDetails;
 import AcceptanceTests.DataObjects.GameDetails;
 import AcceptanceTests.DataObjects.RefereeDetails;
@@ -7,11 +6,10 @@ import AcceptanceTests.DataObjects.UserDetails;
 import AcceptanceTests.SystemOperations.ISystemOperationsBridge;
 import AcceptanceTests.SystemOperations.RealSystemOperations;
 import AssociationAssets.EEventType;
-import System.FootballSystem;
 import Users.EReferee;
+import System.FootballSystem;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -34,9 +32,9 @@ public class UC4Tests {
     @Before
     public void Setup(){
         systemOperations = new RealSystemOperations();
-        MainReferee = new RefereeDetails("1","1","la","lala", EReferee.MAIN);
-        ASSISTANT1Referee = new RefereeDetails("2","2","la","lala", EReferee.ASSISTANT);
-        ASSISTANT2Referee = new RefereeDetails("3","3","la","lala", EReferee.ASSISTANT);
+        MainReferee = new RefereeDetails("1","1","la","lala",EReferee.MAIN);
+        ASSISTANT1Referee = new RefereeDetails("2","2","la","lala",EReferee.ASSISTANT);
+        ASSISTANT2Referee = new RefereeDetails("3","3","la","lala",EReferee.ASSISTANT);
         Time time =Time.valueOf(LocalTime.of(LocalTime.now().getHour()-1,LocalTime.now().getMinute()));
         //default time zone
         ZoneId defaultZoneId = ZoneId.systemDefault();
@@ -51,7 +49,7 @@ public class UC4Tests {
         registeredUser = systemOperations.getNewRegisteredUserForTest(); //Registered!!!
         FootballSystem.getInstance().signIn("anotherReferee","3","lala","la");
         FootballSystem.getInstance().creatingReferee("anotherReferee","la","laala", EReferee.MAIN);
-        anotherReferee = new RefereeDetails("anotherReferee","3","la","lala", EReferee.MAIN);
+        anotherReferee = new RefereeDetails("anotherReferee","3","la","lala",EReferee.MAIN);
         eventDetails = new EventDetails(gameDetails.getGID(),0, EEventType.GOALHOST,"description");
     }
 

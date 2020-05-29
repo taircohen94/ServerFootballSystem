@@ -4,10 +4,7 @@ import AssociationAssets.Season;
 import AssociationAssets.Team;
 import Users.RepresentativeFootballAssociation;
 import javafx.util.Pair;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Observable;
+import java.util.*;
 
 
 public class TeamBudget extends Observable {
@@ -39,7 +36,7 @@ public class TeamBudget extends Observable {
     public void setNews(RepresentativeFootballAssociation representative) {
         if(representative!=null) {
             this.representative = representative;
-            representative.update(this, this.team.getName());
+            //representative.update(this, this.team.getName());
         }
     }
     /**

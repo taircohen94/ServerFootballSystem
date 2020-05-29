@@ -2,11 +2,10 @@ package Users;
 
 import AssociationAssets.*;
 import Budget.AssociationBudget;
-import Budget.TeamBudget;
 import PoliciesAndAlgorithms.RegularScorePolicy;
 import PoliciesAndAlgorithms.SimpleGamesAssigningPolicy;
-import System.FootballSystem;
-import Users.*;
+import Budget.TeamBudget;
+import System.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,11 +29,11 @@ public class RepresentativeFootballAssociationTest {
     Team team1, team2;
     Field field;
     Referee r1,r2,r3;
-    HashMap <Integer, Game> games;
-    HashMap <String, Team> teams;
+    HashMap <Integer,Game> games;
+    HashMap <String,Team> teams;
     TeamBudget teamBudget;
-    HashMap<String, TeamOwner> owners;
-    HashMap<String, Coach> coaches;
+    HashMap<String,TeamOwner> owners;
+    HashMap<String,Coach> coaches;
     HashMap<String, Player>players;
     @Before
     public void set_up() throws Exception {
@@ -47,9 +46,9 @@ public class RepresentativeFootballAssociationTest {
         scorePolicy =  new RegularScorePolicy();
         associationBudget = new AssociationBudget();
         field= new Field("Teddi", "Beer Sheva", 800);
-        r1= new Referee("1","a","a", EReferee.MAIN);
-        r2= new Referee("2","a","a", EReferee.ASSISTANT);
-        r3= new Referee("3","a","a", EReferee.ASSISTANT);
+        r1= new Referee("1","a","a",EReferee.MAIN);
+        r2= new Referee("2","a","a",EReferee.ASSISTANT);
+        r3= new Referee("3","a","a",EReferee.ASSISTANT);
         team1 = new Team(1,"Barcelona",season,field,null,null);
         team2= new Team(2,"Real Madrid",season ,field, null, null);
         game1= new Game(new Date(10,10,2020),
@@ -84,9 +83,9 @@ public class RepresentativeFootballAssociationTest {
 
     @Test
     public void nominateReferee()  throws FailedLoginException {
-        Referee referee = representative.nominateReferee("Dani","Mizrahi", EReferee.ASSISTANT);
+        Referee referee = representative.nominateReferee("Dani","Mizrahi",EReferee.ASSISTANT);
         assertTrue(FootballSystem.getInstance().existFanByUserName(referee.getUserName()));
-        Referee referee2=  representative.nominateReferee("Dani","Mizrahi", EReferee.ASSISTANT);
+        Referee referee2=  representative.nominateReferee("Dani","Mizrahi",EReferee.ASSISTANT);
         assertTrue(FootballSystem.getInstance().existFanByUserName(referee2.getUserName()));
     }
 
@@ -98,16 +97,16 @@ public class RepresentativeFootballAssociationTest {
 
     @Test
     public void removeReferee() {
-        Referee referee = (Referee) FootballSystem.getInstance().creatingReferee("refTest","Dna","Levi", EReferee.ASSISTANT);
+        Referee referee = (Referee) FootballSystem.getInstance().creatingReferee("refTest","Dna","Levi",EReferee.ASSISTANT);
         representative.removeReferee(referee);
         assertFalse(FootballSystem.getInstance().existFanByUserName("refTest"));
     }
 
     @Test
     public void assignReferees() throws Exception {
-       Referee ref1= new Referee("ref1","ref1","a", EReferee.MAIN);
-       Referee ref2= new Referee("ref2","ref2","a", EReferee.ASSISTANT);
-       Referee ref3= new Referee("ref3","ref3","a", EReferee.ASSISTANT);
+       Referee ref1= new Referee("ref1","ref1","a",EReferee.MAIN);
+       Referee  ref2= new Referee("ref2","ref2","a",EReferee.ASSISTANT);
+       Referee ref3= new Referee("ref3","ref3","a",EReferee.ASSISTANT);
        representative.assignReferees(ref1,ref2,ref3,game1);
        assertEquals(game1.getMain().getfName(),"ref1");
        assertEquals(game1.getSide1().getfName(),"ref2");

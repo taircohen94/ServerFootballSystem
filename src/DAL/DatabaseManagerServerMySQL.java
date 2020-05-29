@@ -15,8 +15,8 @@ public class DatabaseManagerServerMySQL extends DatabaseManager {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             super.startConnection();
-        } catch (Exception ignored) {
-
+        } catch (Exception ignored){
+            ignored.printStackTrace();
         }
     }
 

@@ -1,6 +1,5 @@
 package Users;
 
-import Users.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -12,7 +11,7 @@ class CoachTest {
     @Test
     void addFeedToMyPage() {
         //Creating coach
-        Coach coach = new Coach("newCoach", "yossi","cohen", ETraining.CDiploma, ECoachRole.AssistantCoach);
+        Coach coach = new Coach("newCoach", "yossi","cohen",ETraining.CDiploma, ECoachRole.AssistantCoach);
         String feed =  "this is my first post";
         coach.addFeedToMyPage(feed);
         assertTrue(coach.getMyPage().getMyFeed().size() == 1 && coach.getMyPage().getMyFeed().get(0).equals(feed));
@@ -20,7 +19,7 @@ class CoachTest {
         assertTrue(coach.getMyPage().getMyFeed().size() == 1 && coach.getMyPage().getMyFeed().get(0).equals(feed));
 
         //Creating coach with Fan
-        Coach coachFan = new Coach(new Fan("newCoach", "yossi","cohen"), ETraining.CDiploma, ECoachRole.AssistantCoach);
+        Coach coachFan = new Coach(new Fan("newCoach", "yossi","cohen"),ETraining.CDiploma, ECoachRole.AssistantCoach);
         String feedFan =  "this is my first post";
         coachFan.addFeedToMyPage(feedFan);
         assertTrue(coachFan.getMyPage().getMyFeed().size() == 1 && coachFan.getMyPage().getMyFeed().get(0).equals(feedFan));
@@ -29,7 +28,7 @@ class CoachTest {
 
 
         //Creating coach with CanBeOwner
-        Coach coachCanBeOwner = new Coach(new CanBeOwner("newCoach", "yossi","cohen"), ETraining.CDiploma, ECoachRole.AssistantCoach);
+        Coach coachCanBeOwner = new Coach(new CanBeOwner("newCoach", "yossi","cohen"),ETraining.CDiploma, ECoachRole.AssistantCoach);
         String feedCanBeOwner =  "this is my first post";
         coachCanBeOwner.addFeedToMyPage(feedCanBeOwner);
         assertTrue(coachCanBeOwner.getMyPage().getMyFeed().size() == 1 && coachCanBeOwner.getMyPage().getMyFeed().get(0).equals(feedCanBeOwner));
@@ -37,14 +36,14 @@ class CoachTest {
         assertTrue(coachCanBeOwner.getMyPage().getMyFeed().size() == 1 && coachCanBeOwner.getMyPage().getMyFeed().get(0).equals(feedCanBeOwner));
 
         //Check Observers
-        coach.getMyPage().register(new Player("newPlayer", "yossi","cohen", new Date(), EPlayerRole.GoalKeeper));
+        coach.getMyPage().register(new Player("newPlayer", "yossi","cohen", new Date(),EPlayerRole.GoalKeeper));
         coach.addFeedToMyPage("new Feed");
 
     }
 
     @Test
     void removeFeedFromMyPage() {
-        Coach coach = new Coach("newCoach", "yossi","cohen", ETraining.CDiploma, ECoachRole.AssistantCoach);
+        Coach coach = new Coach("newCoach", "yossi","cohen",ETraining.CDiploma, ECoachRole.AssistantCoach);
         String feed = "this is my first post";
         coach.addFeedToMyPage(feed);
         coach.removeFeedFromMyPage(feed);
@@ -59,7 +58,7 @@ class CoachTest {
 
     @Test
     void setRole() {
-        Coach coach = new Coach("newCoach", "yossi","cohen", ETraining.CDiploma, ECoachRole.AssistantCoach);
+        Coach coach = new Coach("newCoach", "yossi","cohen",ETraining.CDiploma, ECoachRole.AssistantCoach);
         assertEquals(coach.getRole(), ECoachRole.AssistantCoach);
         coach.setRole(ECoachRole.GoalkeeperCoach);
         assertEquals(coach.getRole(), ECoachRole.GoalkeeperCoach);
@@ -72,7 +71,7 @@ class CoachTest {
 
     @Test
     void setTraining() {
-        Coach coach = new Coach("newCoach", "yossi","cohen", ETraining.CDiploma, ECoachRole.AssistantCoach);
+        Coach coach = new Coach("newCoach", "yossi","cohen",ETraining.CDiploma, ECoachRole.AssistantCoach);
         assertEquals(coach.getTraining(), ETraining.CDiploma);
         coach.setTraining(ETraining.UEFAA);
         assertEquals(coach.getTraining(), ETraining.UEFAA);
@@ -86,10 +85,10 @@ class CoachTest {
 
     @Test
     void setMyPage() {
-        Coach coach = new Coach("newCoach", "yossi","cohen", ETraining.CDiploma, ECoachRole.AssistantCoach);
+        Coach coach = new Coach("newCoach", "yossi","cohen",ETraining.CDiploma, ECoachRole.AssistantCoach);
         String feed = "this is my first post";
         coach.addFeedToMyPage(feed);
-        CoachPageEditor newPage = new CoachPageEditor("yossi","cohen", ECoachRole.AssistantCoach, ETraining.CDiploma);
+        CoachPageEditor newPage = new CoachPageEditor("yossi","cohen",ECoachRole.AssistantCoach,ETraining.CDiploma);
         coach.setMyPage(newPage);
         assertEquals(0, coach.getMyPage().getMyFeed().size());
         coach.setMyPage(null);
@@ -99,7 +98,7 @@ class CoachTest {
 
     @Test
     void logout() {
-        Coach coach = new Coach("newCoach", "yossi","cohen", ETraining.CDiploma, ECoachRole.AssistantCoach);
+        Coach coach = new Coach("newCoach", "yossi","cohen",ETraining.CDiploma, ECoachRole.AssistantCoach);
         assertEquals(coach.getStatus(), EStatus.ONLINE);
         coach.logout();
         assertEquals(coach.getStatus(), EStatus.OFFLINE);
@@ -108,7 +107,7 @@ class CoachTest {
 
     @Test
     void setfName() {
-        Coach coach = new Coach("newCoach", "yossi","cohen", ETraining.CDiploma, ECoachRole.AssistantCoach);
+        Coach coach = new Coach("newCoach", "yossi","cohen",ETraining.CDiploma, ECoachRole.AssistantCoach);
         assertEquals(coach.getfName(),"yossi");
         assertEquals(coach.getMyPage().getMyFirstName(),"yossi");
         coach.setfName("yosi");
@@ -123,7 +122,7 @@ class CoachTest {
 
     @Test
     void setlName() {
-        Coach coach = new Coach("newCoach", "yossi","cohen", ETraining.CDiploma, ECoachRole.AssistantCoach);
+        Coach coach = new Coach("newCoach", "yossi","cohen",ETraining.CDiploma, ECoachRole.AssistantCoach);
         assertEquals(coach.getlName(),"cohen");
         assertEquals(coach.getMyPage().getMyLastName(), "cohen");
         coach.setlName("levi");
@@ -137,7 +136,7 @@ class CoachTest {
 
     @Test
     void setStatus() {
-        Coach coach = new Coach("newCoach", "yossi","cohen", ETraining.CDiploma, ECoachRole.AssistantCoach);
+        Coach coach = new Coach("newCoach", "yossi","cohen",ETraining.CDiploma, ECoachRole.AssistantCoach);
         assertEquals(coach.getStatus(), EStatus.ONLINE);
         coach.setStatus(EStatus.OFFLINE);
         assertEquals(coach.getStatus(), EStatus.OFFLINE);

@@ -10,6 +10,8 @@ import Users.Referee;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class SimpleGamesAssigningPolicy extends GamesAssigningPolicy {
@@ -41,7 +43,7 @@ public class SimpleGamesAssigningPolicy extends GamesAssigningPolicy {
     public HashMap<Integer, Game> executePolicy(HashMap<String, Team> teams, Map<String, Referee> refs, LocalDate startDate, Season season, League league) throws Exception {
         if(teams == null || refs == null || startDate == null || season == null || league == null) throw new Exception("At least one parameter is wrong");
         if(gamesAssigned) throw new Exception("Games already assigned for this season");
-        HashMap <Integer, Game> games = new HashMap<>();
+        HashMap <Integer,Game> games = new HashMap<>();
         int refereeCount = refs.size();
         int mainRefereeCount = countMainReferees(refs);
         int teamsCount = teams.size();
@@ -147,7 +149,7 @@ public class SimpleGamesAssigningPolicy extends GamesAssigningPolicy {
     private Referee selectSideRef(Map<String, Referee> otherRefs) {
         Referee referee = null;
         int counter = 0;
-        for (Map.Entry<String, Referee> entry:otherRefs.entrySet()) {
+        for (Map.Entry<String,Referee> entry:otherRefs.entrySet()) {
             if(counter == counterSideRef){
                 counterSideRef++;
                 if(counterSideRef >= otherRefs.size())
@@ -170,7 +172,7 @@ public class SimpleGamesAssigningPolicy extends GamesAssigningPolicy {
     private Referee selectMainRef(Map<String, Referee> mainReferees) {
         int counter = 0;
         Referee referee = null;
-        for (Map.Entry<String, Referee> entry:mainReferees.entrySet()) {
+        for (Map.Entry<String,Referee> entry:mainReferees.entrySet()) {
             if(counter == counterMainRef){
                 counterMainRef++;
                 if(counterMainRef >= mainReferees.size())
@@ -290,7 +292,7 @@ public class SimpleGamesAssigningPolicy extends GamesAssigningPolicy {
      */
     private Map<String, Referee> getOtherReferees(Map<String, Referee> refs) {
         Map<String, Referee> otherRefs = new HashMap<>();
-        for (Map.Entry<String, Referee> entry:refs.entrySet()) {
+        for (Map.Entry<String,Referee> entry:refs.entrySet()) {
             if(entry.getValue().getTraining() != EReferee.MAIN)
                 otherRefs.put(entry.getKey(),entry.getValue());
         }
@@ -305,7 +307,7 @@ public class SimpleGamesAssigningPolicy extends GamesAssigningPolicy {
      */
     private Map<String, Referee> getMainReferees(Map<String, Referee> refs) {
         Map<String, Referee> mainRefs = new HashMap<>();
-        for (Map.Entry<String, Referee> entry:refs.entrySet()) {
+        for (Map.Entry<String,Referee> entry:refs.entrySet()) {
             if(entry.getValue().getTraining() == EReferee.MAIN)
                 mainRefs.put(entry.getKey(),entry.getValue());
         }
@@ -319,7 +321,7 @@ public class SimpleGamesAssigningPolicy extends GamesAssigningPolicy {
      */
     private int countMainReferees(Map<String, Referee> refs) {
         int ans = 0;
-        for (Map.Entry<String , Referee> entry: refs.entrySet()) {
+        for (Map.Entry<String ,Referee> entry: refs.entrySet()) {
             if(entry.getValue().getTraining() == EReferee.MAIN){
                 ans++;
             }

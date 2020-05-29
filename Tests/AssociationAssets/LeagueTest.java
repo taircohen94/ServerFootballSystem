@@ -1,7 +1,5 @@
 package AssociationAssets;
 
-import AssociationAssets.League;
-import AssociationAssets.Season;
 import PoliciesAndAlgorithms.OneRoundGamesAssigningPolicy;
 import PoliciesAndAlgorithms.RegularScorePolicy;
 import org.junit.Before;

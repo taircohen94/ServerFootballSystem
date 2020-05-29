@@ -46,7 +46,7 @@ public class Complains implements Serializable {
      *
      * @param complain - The complaint the system manager want to remove
      */
-    private void removeComplain(Pair<String, Fan> complain) {
+    private void removeComplain(Pair<String,Fan> complain) {
         this.complain.remove(complain);
         LocalDate date = LocalDate.now();
         LocalTime now = LocalTime.now();
@@ -62,7 +62,7 @@ public class Complains implements Serializable {
      * @param complain - The complaint
      * @param response -Answer to complaint
      */
-    public void responseToComplain(SystemManager systemManager, Pair<String, Fan> complain, String response ){
+    public void responseToComplain(SystemManager systemManager,Pair<String,Fan> complain, String response ){
         complain.getValue().getResponseForComplain(systemManager,complain.getKey(),response);
         removeComplain(complain);
         LocalDate date = LocalDate.now();

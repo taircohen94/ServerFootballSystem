@@ -5,6 +5,7 @@ import AssociationAssets.Game;
 import AssociationAssets.League;
 import AssociationAssets.Season;
 import AssociationAssets.Team;
+import Model.RecordException;
 import Users.Referee;
 
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ public abstract class GamesAssigningPolicy {
     int counterMainRef;
     int counterSideRef;
 
-    public abstract HashMap<Integer, Game> executePolicy(HashMap<String, Team> teams, Map<String, Referee> refs, LocalDate date, Season season, League league) throws Exception;
+    public abstract HashMap<Integer, Game> executePolicy(HashMap<String, Team> teams, Map<String, Referee> refs, LocalDate date, Season season, League league) throws RecordException, Exception;
 
 
 

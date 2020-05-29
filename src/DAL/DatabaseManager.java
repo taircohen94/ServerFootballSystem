@@ -1,6 +1,8 @@
 package DAL;
 
 import java.sql.*;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * Database Manager is in charge of setting a connection with the DB.
@@ -71,7 +73,6 @@ public class DatabaseManager {
             System.out.println("started connection successfully");
         } catch (Exception ignored) {
             System.out.println("connection went bad");
-
         }
     }
 

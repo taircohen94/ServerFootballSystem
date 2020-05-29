@@ -4,9 +4,9 @@ import AssociationAssets.*;
 import Budget.TeamBudget;
 import PoliciesAndAlgorithms.RegularScorePolicy;
 import PoliciesAndAlgorithms.SimpleGamesAssigningPolicy;
-import System.FootballSystem;
-import System.Logger;
 import Users.*;
+import System.Logger;
+import System.FootballSystem;
 
 import java.sql.Time;
 import java.util.Date;
@@ -52,8 +52,8 @@ public class Acceptance {
     Game game2;
     Time time;
     Time time2;
-    HashMap<Integer, Game> games;
-    HashMap<String, Team> teams;
+    HashMap<Integer,Game> games;
+    HashMap<String,Team> teams;
 
 
 
@@ -81,23 +81,23 @@ public class Acceptance {
         fan2 = footballSystem.signIn("messi10","12345678","Leo", "Messi");
         fan3 = footballSystem.signIn("vered8","888888","Idan","Vered");
         fan4 = footballSystem.signIn("zangooo","888888","Shimi","Zangi");
-        footballSystem.creatingReferee("moshe37","Moshe","Zak", EReferee.MAIN);
+        footballSystem.creatingReferee("moshe37","Moshe","Zak",EReferee.MAIN);
         guest = new Guest();
         regularScorePolicy = new RegularScorePolicy();
         Date date = new Date(1987,12,4);
         field = footballSystem.createField("Teddy","Jerusalem",29000);
         field2= footballSystem.createField("Terner","Beer Sheva",19000);
-        player = (Player) footballSystem.creatingPlayer("messi10","Leo","Messi",date, EPlayerRole.Forward);
+        player = (Player) footballSystem.creatingPlayer("messi10","Leo","Messi",date,EPlayerRole.Forward);
         season = new Season("2020");
         league1 = new League("Israeli League");
-        coach = (Coach) footballSystem.creatingCoach("bus123","Jose","Morinuo", ETraining.UEFAPro, ECoachRole.HeadCoach);
+        coach = (Coach) footballSystem.creatingCoach("bus123","Jose","Morinuo",ETraining.UEFAPro,ECoachRole.HeadCoach);
         teamOwner = (TeamOwner) footballSystem.creatingTeamOwner("ETgoHome","Eli","Tabib");
         teamOwner2 = (TeamOwner) footballSystem.creatingTeamOwner("hogeg$$","Moshe","Hogeg");
         teamOwner3 = (TeamOwner) footballSystem.creatingTeamOwner("ohana11","Eli","Ohana");
         teamManager = (TeamManager)footballSystem.creatingTeamManager("Menimo","Eli","Gutman");
-        mainRef = (Referee) footballSystem.creatingReferee("yefet77","Alon","Yefet", EReferee.MAIN);
-        sideRef1 = (Referee) footballSystem.creatingReferee("refet77","Mosh","Ben Ari", EReferee.ASSISTANT);
-        sideRef2 = (Referee) footballSystem.creatingReferee("lefet77","Liran","Liani", EReferee.MAIN);
+        mainRef = (Referee) footballSystem.creatingReferee("yefet77","Alon","Yefet",EReferee.MAIN);
+        sideRef1 = (Referee) footballSystem.creatingReferee("refet77","Mosh","Ben Ari",EReferee.ASSISTANT);
+        sideRef2 = (Referee) footballSystem.creatingReferee("lefet77","Liran","Liani",EReferee.MAIN);
         games = new HashMap<>();
         teams = new HashMap<>();
         teamBudget = new TeamBudget(team1,season);
@@ -164,16 +164,16 @@ public class Acceptance {
 
         System.out.println("\n* * * * * * *Use case 6.1 of adding a player by team owner. first add when player already exist* * * * * * *");
         //this should print that user messi10 is already a player
-        teamOwner.addPlayer(team1,season,"messi10","12345678","Leo","Messi",date, EPlayerRole.Forward);
+        teamOwner.addPlayer(team1,season,"messi10","12345678","Leo","Messi",date,EPlayerRole.Forward);
         System.out.println("\n* * * * * * *Use case 6.1 of adding a player by team owner . now player does not exist as a player* * * * * * *");
         //should'nt print nothing
-        teamOwner2.addPlayer(team2,season,"vered8","888888","Idan","Vered",date, EPlayerRole.Forward);
+        teamOwner2.addPlayer(team2,season,"vered8","888888","Idan","Vered",date,EPlayerRole.Forward);
         //print idan vered username if he added
         System.out.println("Player List: " +team2.getAdditionalInfoWithSeasons().get(season.getYear()).getPlayers().toString());
 
         System.out.println("\n* * * * * * *Use case 6.2 of team owner nominating other team owner * * * * * * *");
         teamOwner2.nominateTeamOwner(team2,season,"ohana11");
-        teamOwner3.addPlayer(team2,season,"atar9","9999999","Eliran","Atar",date, EPlayerRole.Forward);
+        teamOwner3.addPlayer(team2,season,"atar9","9999999","Eliran","Atar",date,EPlayerRole.Forward);
         System.out.println("Player List(after new owner's player adding): " +team2.getAdditionalInfoWithSeasons().get(season.getYear()).getPlayers().toString());
         temp = teamOwner3.nominateTeamOwner(team2,season,"ETgoHome");
         if(temp)System.out.println("successful nomination");
@@ -239,7 +239,7 @@ public class Acceptance {
 
         System.out.println("\n* * * * * * *Use case 10.3 Referee updates event in the middle of a game * * * * * * * ");
         //need to create game that is still happening in the time this test is running.
-        mainRef.addEventToAssignedGame(game.getGID(), EEventType.GOALHOST,"own goal by amit lol");
+        mainRef.addEventToAssignedGame(game.getGID(),EEventType.GOALHOST,"own goal by amit lol");
         System.out.println("\n* * * * * * *Use case 10.4 Referee updates til 5 hours after the game ended * * * * * * * ");
         //need to create game that ended less then 5 hours ago.
 

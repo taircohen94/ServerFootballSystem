@@ -1,10 +1,8 @@
 package AcceptanceTests.Tests;
-
 import AcceptanceTests.DataObjects.TeamDetails;
 import AcceptanceTests.SystemOperations.*;
 import org.junit.Before;
 import org.junit.Test;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

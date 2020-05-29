@@ -1,12 +1,11 @@
 package Users;
-
 import AssociationAssets.EEventType;
 import AssociationAssets.EGameStatus;
 import AssociationAssets.Event;
 import AssociationAssets.Game;
 import Model.RecordException;
-import System.FootballSystem;
-import System.Logger;
+import System.*;
+import sun.rmi.runtime.NewThreadAction;
 
 import javax.security.auth.login.FailedLoginException;
 import java.util.ArrayList;

@@ -3,7 +3,6 @@ package Budget;
 import AssociationAssets.Field;
 import AssociationAssets.Season;
 import AssociationAssets.Team;
-import Budget.TeamBudget;
 import PoliciesAndAlgorithms.SimpleGamesAssigningPolicy;
 import Users.RepresentativeFootballAssociation;
 import javafx.util.Pair;

@@ -1,15 +1,13 @@
 package DAL;
 
-import AssociationAssets.Field;
-import AssociationAssets.League;
-import AssociationAssets.Season;
-import DAL.JDBCConnector;
+import AssociationAssets.*;
 import PoliciesAndAlgorithms.SimpleGamesAssigningPolicy;
-import System.FootballSystem;
 import Users.*;
 import org.junit.Test;
+import System.FootballSystem;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import static org.junit.Assert.*;
 
@@ -40,7 +38,7 @@ public class DataSaveTest {
     public void saveTeams() { // CHECKED
         connector= new JDBCConnector();
         connector.connectDBUploadData();
-        Field teddi= FootballSystem.getInstance().getFieldDB().getAllFields().get("Teddi");
+        Field teddi=FootballSystem.getInstance().getFieldDB().getAllFields().get("Teddi");
         FootballSystem.getInstance().getTeamDB().getAllTeams().get("Beitar Jerusalem").setMainField(teddi);
         connector.databaseManager.startConnection();
         connector.dataSave.saveTeams();
@@ -169,7 +167,7 @@ public class DataSaveTest {
     public void saveCoaches() { // CHECKED
         connector= new JDBCConnector();
         connector.connectDBUploadData();
-        Coach coach= new Coach("AmitC","AmitC","AmitC", ETraining.CDiploma, ECoachRole.AssistantCoach);
+        Coach coach= new Coach("AmitC","AmitC","AmitC",ETraining.CDiploma,ECoachRole.AssistantCoach);
         FootballSystem.getInstance().getCoachMap().put("AmitC",coach);
         FootballSystem.getInstance().getFansHashMap().put("AmitC",coach);
         connector.databaseManager.startConnection();
@@ -182,7 +180,7 @@ public class DataSaveTest {
     public void savePlayers() { // CHECKED
         connector= new JDBCConnector();
         connector.connectDBUploadData();
-        Player player= new Player("AmitP","AmitP","AmitP",new Date(17/10/1995), EPlayerRole.Forward);
+        Player player= new Player("AmitP","AmitP","AmitP",new Date(17/10/1995),EPlayerRole.Forward);
         FootballSystem.getInstance().getPlayerMap().put("AmitP",player);
         FootballSystem.getInstance().getFansHashMap().put("AmitP",player);
         connector.databaseManager.startConnection();

@@ -3,16 +3,16 @@ package AcceptanceTests.SystemOperations;
 import AcceptanceTests.DataObjects.TeamDetails;
 import AcceptanceTests.DataObjects.UserDetails;
 import AssociationAssets.*;
-import Model.Model;
-import Model.RecordException;
+import PoliciesAndAlgorithms.GamesAssigningPolicy;
 import PoliciesAndAlgorithms.OneRoundGamesAssigningPolicy;
+import PoliciesAndAlgorithms.RegularScorePolicy;
 import PoliciesAndAlgorithms.ScoreTablePolicy2;
 import System.FootballSystem;
-import Users.EReferee;
-import Users.Referee;
-import Users.TeamOwner;
+import Model.*;
+import Users.*;
 
 import javax.security.auth.login.FailedLoginException;
+import java.nio.file.Path;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -51,8 +51,8 @@ public class RealSystemOperations implements ISystemOperationsBridge{
         FootballSystem.getInstance().signIn("3","3","lala","la");
         FootballSystem.getInstance().creatingReferee("3","la","laala", EReferee.ASSISTANT);
 
-        Team team1 = new Team(45,"team1",season,field,null,(TeamOwner) FootballSystem.getInstance().getFanByUserName("tair123"));
-        Team team2 = new Team(55,"team2",season,field,null,(TeamOwner) FootballSystem.getInstance().getFanByUserName("tair123"));
+        Team team1 = new Team(45,"team1",season,field,null,(TeamOwner)FootballSystem.getInstance().getFanByUserName("tair123"));
+        Team team2 = new Team(55,"team2",season,field,null,(TeamOwner)FootballSystem.getInstance().getFanByUserName("tair123"));
    //     tairTO.addCoach(team1,season,"coach-2020","123","c","c", ETraining.CDiploma, ECoachRole.AssistantCoach);
 //        tairTO.addField(team1,season,"Blomfield","tel-aviv",12222);
   //      tairTO.addTeamManager(team1,season,"TM-2020","123","la","la");
@@ -93,9 +93,9 @@ public class RealSystemOperations implements ISystemOperationsBridge{
         FootballSystem.getInstance().signIn("r","r","r","r");
         FootballSystem.getInstance().creatingRepresentativeFootballAssociation("r","r","r",null);
 
-        HashMap<Integer, Game> games = new HashMap<>();
+        HashMap<Integer,Game> games = new HashMap<>();
         games.put(123,game);
-        HashMap <String, Team> teams = new HashMap<>();
+        HashMap <String,Team> teams = new HashMap<>();
         teams.put(team1.getName(),team1);
         teams.put(team2.getName(),team2);
         league.addSeasonToLeague(season); //creating Binder in league
@@ -185,7 +185,7 @@ public class RealSystemOperations implements ISystemOperationsBridge{
     }
 
     @Override
-    public boolean addEvent(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description) {
+    public boolean addEvent(String userName,String password, int gameID, EEventType eventType, int eventIndex, String description) {
       if(!login(userName,password)){
           return false;
       }
@@ -200,7 +200,7 @@ public class RealSystemOperations implements ISystemOperationsBridge{
     }
 
     @Override
-    public boolean updateEvent(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description) {
+    public boolean updateEvent(String userName,String password, int gameID, EEventType eventType, int eventIndex, String description) {
         if(!login(userName,password)){
             return false;
         }
@@ -225,7 +225,7 @@ public class RealSystemOperations implements ISystemOperationsBridge{
     }
 
     @Override
-    public boolean deleteEvent(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description) {
+    public boolean deleteEvent(String userName,String password, int gameID, EEventType eventType, int eventIndex, String description) {
         if(!login(userName,password)){
             return false;
         }
@@ -238,7 +238,7 @@ public class RealSystemOperations implements ISystemOperationsBridge{
     }
 
     @Override
-    public boolean deleteEventAfterGameOver(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description, int hoursBefore) {
+    public boolean deleteEventAfterGameOver(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description,int hoursBefore) {
         if(!login(userName,password)){
             return false;
         }
@@ -253,7 +253,7 @@ public class RealSystemOperations implements ISystemOperationsBridge{
     }
 
     @Override
-    public boolean editEventAfterGameOver(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description, int hoursBefore) {
+    public boolean editEventAfterGameOver(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description,int hoursBefore) {
         if(!login(userName,password)){
             return false;
         }

@@ -1,8 +1,7 @@
 package Budget;
 
-import Users.Fan;
-
 import java.util.HashMap;
+import Users.Fan;
 
 public class AssociationBudget {
     private static double  registrationFee; //all teams have the same registration Fee
@@ -22,7 +21,7 @@ public class AssociationBudget {
      * @param user
      * @param salary
      */
-    public void addSalary(Fan user, Double salary) {
+    public void addSalary(Fan user,Double salary) {
         if(user == null || salary < 0){
             return;
         }

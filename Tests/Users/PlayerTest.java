@@ -1,18 +1,13 @@
 package Users;
-
-import Users.*;
 import org.junit.jupiter.api.Test;
-
 import java.util.Date;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 class PlayerTest {
     
     @Test
     void addFeedToMyPage() {
         //Creating player
-        Player player = new Player("newPlayer", "yossi","cohen", new Date(), EPlayerRole.GoalKeeper);
+        Player player = new Player("newPlayer", "yossi","cohen", new Date(),EPlayerRole.GoalKeeper);
         String feed = "this is my first post";
         player.addFeedToMyPage(feed);
         assertTrue(player.getMyPage().getMyFeed().size() == 1 && player.getMyPage().getMyFeed().get(0).equals(feed));
@@ -20,7 +15,7 @@ class PlayerTest {
         assertTrue(player.getMyPage().getMyFeed().size() == 1 && player.getMyPage().getMyFeed().get(0).equals(feed));
 
         //Creating player with Fan
-        Player playerFan = new Player(new Fan("newPlayer", "yossi","cohen"), new Date(), EPlayerRole.GoalKeeper);
+        Player playerFan = new Player(new Fan("newPlayer", "yossi","cohen"), new Date(),EPlayerRole.GoalKeeper);
         String feedFan = "this is my first post";
         playerFan.addFeedToMyPage(feedFan);
         assertTrue(playerFan.getMyPage().getMyFeed().size() == 1 && playerFan.getMyPage().getMyFeed().get(0).equals(feedFan));
@@ -28,7 +23,7 @@ class PlayerTest {
         assertTrue(playerFan.getMyPage().getMyFeed().size() == 1 && playerFan.getMyPage().getMyFeed().get(0).equals(feedFan));
 
         //Creating player with CanBeOwner
-        Player playerOwner = new Player(new CanBeOwner("newPlayer", "yossi","cohen"), new Date(), EPlayerRole.GoalKeeper);
+        Player playerOwner = new Player(new CanBeOwner("newPlayer", "yossi","cohen"), new Date(),EPlayerRole.GoalKeeper);
         String feedOwner = "this is my first post";
         playerOwner.addFeedToMyPage(feedOwner);
         assertTrue(playerOwner.getMyPage().getMyFeed().size() == 1 && playerOwner.getMyPage().getMyFeed().get(0).equals(feedOwner));
@@ -43,7 +38,7 @@ class PlayerTest {
 
     @Test
     void removeFeedFromMyPage() {
-        Player player = new Player("newPlayer", "yossi","cohen", new Date(), EPlayerRole.GoalKeeper);
+        Player player = new Player("newPlayer", "yossi","cohen", new Date(),EPlayerRole.GoalKeeper);
         String feed = "this is my first post";
         player.addFeedToMyPage(feed);
         player.removeFeedFromMyPage(feed);
@@ -58,7 +53,7 @@ class PlayerTest {
 
     @Test
     void setRole() {
-        Player player = new Player("newPlayer", "yossi","cohen", new Date(), EPlayerRole.GoalKeeper);
+        Player player = new Player("newPlayer", "yossi","cohen", new Date(),EPlayerRole.GoalKeeper);
         assertEquals(player.getRole(), EPlayerRole.GoalKeeper);
         player.setRole(EPlayerRole.Defender);
         assertEquals(player.getRole(), EPlayerRole.Defender);
@@ -71,10 +66,10 @@ class PlayerTest {
     @Test
     void setMyPage() {
         Date bDay = new Date();
-        Player player = new Player("newPlayer", "yossi","cohen", bDay, EPlayerRole.GoalKeeper);
+        Player player = new Player("newPlayer", "yossi","cohen", bDay,EPlayerRole.GoalKeeper);
         String feed = "this is my first post";
         player.addFeedToMyPage(feed);
-        PlayerPageEditor newPage = new PlayerPageEditor("yossi","cohen", EPlayerRole.GoalKeeper,bDay);
+        PlayerPageEditor newPage = new PlayerPageEditor("yossi","cohen",EPlayerRole.GoalKeeper,bDay);
         player.setMyPage(newPage);
         assertEquals(0, player.getMyPage().getMyFeed().size());
         player.setMyPage(null);
@@ -83,7 +78,7 @@ class PlayerTest {
 
     @Test
     void logout() {
-        Player player = new Player("newPlayer", "yossi","cohen", new Date(), EPlayerRole.GoalKeeper);
+        Player player = new Player("newPlayer", "yossi","cohen", new Date(),EPlayerRole.GoalKeeper);
         assertEquals(player.getStatus(), EStatus.ONLINE);
         player.logout();
         assertEquals(player.getStatus(), EStatus.OFFLINE);
@@ -92,7 +87,7 @@ class PlayerTest {
 
     @Test
     void setfName() {
-        Player player = new Player("newPlayer", "yossi","cohen", new Date(), EPlayerRole.GoalKeeper);
+        Player player = new Player("newPlayer", "yossi","cohen", new Date(),EPlayerRole.GoalKeeper);
         assertEquals(player.getfName(),"yossi");
         player.setfName("yosi");
         assertEquals(player.getfName(), "yosi");
@@ -107,7 +102,7 @@ class PlayerTest {
 
     @Test
     void setlName() {
-        Player player = new Player("newPlayer", "yossi","cohen", new Date(), EPlayerRole.GoalKeeper);
+        Player player = new Player("newPlayer", "yossi","cohen", new Date(),EPlayerRole.GoalKeeper);
         assertEquals(player.getlName(),"cohen");
         player.setlName("levi");
         assertEquals(player.getlName(), "levi");
@@ -121,7 +116,7 @@ class PlayerTest {
 
     @Test
     void setStatus() {
-        Player player = new Player("newPlayer", "yossi","cohen", new Date(), EPlayerRole.GoalKeeper);
+        Player player = new Player("newPlayer", "yossi","cohen", new Date(),EPlayerRole.GoalKeeper);
         assertEquals(player.getStatus(), EStatus.ONLINE);
         player.setStatus(EStatus.OFFLINE);
         assertEquals(player.getStatus(), EStatus.OFFLINE);

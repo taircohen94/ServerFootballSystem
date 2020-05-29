@@ -1,6 +1,5 @@
 package AssociationAssets;
 
-import AssociationAssets.*;
 import Users.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class SeasonLeagueBinderTest {
     Team team1, team2;
@@ -34,9 +34,9 @@ public class SeasonLeagueBinderTest {
             o= new TeamOwner("1", "a", "a");
             field= new Field("Teddi", "Beer Sheva", 800);
             season=new Season("2020");
-            r1= new Referee("1","a","a", EReferee.MAIN);
-            r2= new Referee("2","a","a", EReferee.VAR);
-            r3= new Referee("3","a","a", EReferee.VAR);
+            r1= new Referee("1","a","a",EReferee.MAIN);
+            r2= new Referee("2","a","a",EReferee.VAR);
+            r3= new Referee("3","a","a",EReferee.VAR);
             team1= new Team(1,"Barcelona", season, null,null,null);
             team2= new Team(2,"Real Madrid", season, null,null,null);
             game1= new Game(new Date(10,10,2020),
@@ -47,10 +47,10 @@ public class SeasonLeagueBinderTest {
                 new Time(20,00,0),
                 field,team2,team1,r1,r3,r2,season,
                 league);
-            HashMap <Integer, Game> games = new HashMap<>();
+            HashMap <Integer,Game> games = new HashMap<>();
             games.put(123,game1);
             games.put(113,game2);
-            HashMap <String, Team> teams = new HashMap<>();
+            HashMap <String,Team> teams = new HashMap<>();
             teams.put(team1.getName(),team1);
             teams.put(team2.getName(),team2);
             league.addSeasonToLeague(season); //creating Binder in league

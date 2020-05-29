@@ -1,14 +1,16 @@
 package IntegrationTests;
+import static org.junit.Assert.*;
 
 import AssociationAssets.ETeamStatus;
 import AssociationAssets.Field;
+import AssociationAssets.Season;
 import AssociationAssets.Team;
+import Users.ECoachRole;
 import Users.EPlayerRole;
+import Users.ETraining;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Assertions;
 
 public class IntegrationTeamTest {
     Team team;
@@ -47,7 +49,7 @@ public class IntegrationTeamTest {
     @Test
     public void findPlayer(){
         playerStub = new PlayerStub("usernamep","fname","lname",null, EPlayerRole.GoalKeeper,1);
-        teamOwnerStub.addPlayer(team,seasonStub,"usernamef","11111","fname","lname",null, EPlayerRole.GoalKeeper);
+        teamOwnerStub.addPlayer(team,seasonStub,"usernamef","11111","fname","lname",null,EPlayerRole.GoalKeeper);
 
 
 

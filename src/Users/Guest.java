@@ -3,8 +3,7 @@ package Users;
 import AssociationAssets.League;
 import AssociationAssets.Season;
 import AssociationAssets.Team;
-import System.FootballSystem;
-import System.Search;
+import System.*;
 
 import javax.security.auth.login.FailedLoginException;
 import java.util.LinkedList;

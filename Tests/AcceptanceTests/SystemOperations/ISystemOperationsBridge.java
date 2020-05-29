@@ -35,11 +35,11 @@ public interface ISystemOperationsBridge {
 
     boolean updateEvent(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description);
 
-    boolean deleteEvent(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description);
+    boolean deleteEvent(String userName,String password, int gameID, EEventType eventType, int eventIndex, String description);
 
-    boolean deleteEventAfterGameOver(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description, int hoursBefore);
+    boolean deleteEventAfterGameOver(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description,int hoursBefore);
 
-    boolean editEventAfterGameOver(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description, int hoursBefore);
+    boolean editEventAfterGameOver(String userName, String password, int gameID, EEventType eventType, int eventIndex, String description,int hoursBefore);
 
     boolean exportReport(String userName, String password, int gameID, int hoursBefore, String path);
 

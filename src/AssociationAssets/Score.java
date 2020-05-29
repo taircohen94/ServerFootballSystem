@@ -1,4 +1,7 @@
 package AssociationAssets;
+import System.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  * Class Score represents a game's score, including the total points for each group.

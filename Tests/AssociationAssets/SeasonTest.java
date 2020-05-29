@@ -1,7 +1,5 @@
 package AssociationAssets;
 
-import AssociationAssets.League;
-import AssociationAssets.Season;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
