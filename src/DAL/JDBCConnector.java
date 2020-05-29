@@ -15,11 +15,13 @@ public class JDBCConnector {
     public DatabaseManager databaseManager;
     public DataUploader uploader;
     public DataSave dataSave;
+    public DeleteData deleteData;
 
     public JDBCConnector() {
         databaseManager = new DatabaseManagerServerMySQL();
         uploader = new DataUploader(databaseManager);
         dataSave = new DataSave(databaseManager);
+        deleteData = new DeleteData(databaseManager);
     }
 
     public void connectDBUploadData() {
@@ -31,6 +33,12 @@ public class JDBCConnector {
     public void connectDBSaveData() {
         databaseManager.startConnection();
         dataSave.saveAllData();
+        databaseManager.closeConnection();
+    }
+
+    public void deleteEvent(Event event, int gameID) {
+        databaseManager.startConnection();
+        deleteData.deleteEvent(event, gameID);
         databaseManager.closeConnection();
     }
 
