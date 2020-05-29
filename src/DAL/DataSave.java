@@ -416,6 +416,41 @@ public class DataSave {
                 databaseManager.conn.commit();
                 //endregion
 
+
+                // save events:
+                int eventID=1;
+                for (Event event:game.getEvents()) {
+                    event.getDate().setHours(event.getTime().getHours());
+                    event.getDate().setMinutes(event.getTime().getMinutes());
+                    String eDateStr = sdf.format(event.getDate());
+
+                    query = "INSERT  INTO \n" +
+                            "\tevents(gameID, DateTime, Description, EventType, EventID)\n" +
+                            "\tVALUES(?,?,?,?,?) " +
+                            "ON DUPLICATE KEY UPDATE  " +
+                            "gameID=?," +
+                            "DateTime=?," +
+                            "Description=?," +
+                            "EventType=?," +
+                            "EventID=?;";
+                    ps = databaseManager.conn.prepareStatement(query); //compiling query in the DB
+                    ps.setInt(1, game.getGID());
+                    ps.setString(2, eDateStr);
+                    ps.setString(3, event.getDescription());
+                    ps.setString(4, event.getEventType().name());
+                    ps.setInt(5, eventID);
+
+                    ps.setInt(6, game.getGID());
+                    ps.setString(7, eDateStr);
+                    ps.setString(8, event.getDescription());
+                    ps.setString(9, event.getEventType().name());
+                    ps.setInt(10, eventID);
+                    eventID++;
+                    //System.out.println(ps.toString());
+                    ps.executeUpdate();
+                    databaseManager.conn.commit();
+                }
+
             } catch (SQLException e) {
                 try {
                     databaseManager.conn.rollback();

@@ -494,7 +494,7 @@ public class DataUploader {
      */
     private void uploadTeams() {
         ResultSet resultSet = databaseManager.executeQuerySelect("SELECT * FROM teams;");
-        int tid=1;
+        int tid = 1;
         try {
             while (resultSet.next()) {
 
@@ -517,7 +517,7 @@ public class DataUploader {
                 if (status.equals("0")) status = "INACTIVE";
                 else status = "ACTIVE";
                 Season season = allSeasons.get(seasonYear);
-                League league= allLeagues.get(leagueName);
+                League league = allLeagues.get(leagueName);
 
                 Team team = new Team(tid++, name, season, field, null, owner);
                 team.setIsActive(ETeamStatus.valueOf(status));
@@ -544,7 +544,7 @@ public class DataUploader {
             try {
 
                 while (homeGamesSet.next()) {
-                    int GID= homeGamesSet.getInt("idGames");
+                    int GID = homeGamesSet.getInt("idGames");
                     Game game = allGames.get(GID);
                     homeGames.put(game.getGID(), game);
                 }
@@ -562,7 +562,7 @@ public class DataUploader {
             HashMap<Integer, Game> awayGames = new HashMap<>();
             try {
                 while (awayGamesSet.next()) {
-                    int GID= awayGamesSet.getInt("idGames");
+                    int GID = awayGamesSet.getInt("idGames");
                     Game game = allGames.get(GID);
                     awayGames.put(game.getGID(), game);
                 }
@@ -699,10 +699,9 @@ public class DataUploader {
             while (resultSet.next()) {
                 int gid = resultSet.getInt("idGames");
                 String datestr = resultSet.getString("DateTime");
-                Date date= Date.valueOf(datestr.split(" ")[0]);
-                Time time= Time.valueOf(datestr.split(" ")[1]);
-                SimpleDateFormat dateFormat= new SimpleDateFormat("YYYY-MM-DD HH:MM:SS");
-                java.util.Date cDate= dateFormat.parse(datestr);
+                Time time = Time.valueOf(datestr.split(" ")[1]);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS");
+                java.util.Date cDate = dateFormat.parse(datestr);
                 int goalHost = resultSet.getInt("GoalHost");
                 int goalGuest = resultSet.getInt("GoalGuest");
                 String fields_name = resultSet.getString("Fields_Name");
@@ -722,7 +721,7 @@ public class DataUploader {
                 Referee side1 = null;
                 Referee side2 = null;
                 ResultSet refereesSet = databaseManager.executeQuerySelect(
-                        "SELECT * FROM games_has_referee WHERE Games_idGames= "+gid );
+                        "SELECT * FROM games_has_referee WHERE Games_idGames= " + gid);
                 while (refereesSet.next()) {
                     String username = refereesSet.getString("Referee_Username");
                     String role = refereesSet.getString("Game_Role");
@@ -739,12 +738,30 @@ public class DataUploader {
                     }
                 }
 
-                Game game = new Game(cDate,time, field, host, guest, main, side1, side2, season, league);
+                Game game = new Game(cDate, time, field, host, guest, main, side1, side2, season, league);
                 game.setScore(goalHost, goalGuest);
 
-                // TODO: game.setGID - fix on class game
+                // TODO: game.setGID - consider fix on class game
 
                 allGames.put(game.getGID(), game);
+
+                // attach events:
+                ResultSet eventsSet = databaseManager.executeQuerySelect(
+                        "select * from events where gameID="+ gid);
+                while (eventsSet.next()){
+                    int eventID= eventsSet.getInt("EventID");
+                    String eDateStr = eventsSet.getString("DateTime");
+                    Time eTime = Time.valueOf(eDateStr.split(" ")[1]);
+                    SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    dFormat.setLenient(false);
+                    java.util.Date eDate = dFormat.parse(eDateStr.split(" ")[0]);
+                    String eventType= eventsSet.getString("EventType");
+                    String description= eventsSet.getString("Description");
+
+                    Event e=new Event(eDate, eTime,EEventType.valueOf(eventType),description);
+                    game.getEvents().add(e);
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
