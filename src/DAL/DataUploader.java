@@ -125,16 +125,6 @@ public class DataUploader {
      */
     private void uploadFans() {
         ResultSet resultSet = databaseManager.executeQuerySelect("SELECT * FROM fans");
-
-//        ResultSet resultSet = databaseManager.executeQuerySelect("    " +
-//                "SELECT * FROM fans, teamowner, coach, player, referee, rfa, systemmanager, teammanager\n" +
-//                "    WHERE fans.Username = teamowner.username\n" +
-//                "    AND fans.Username<> coach.Username\n" +
-//                "    AND fans.Username<> player.Username\n" +
-//                "    AND fans.Username<> referee.Username\n" +
-//                "    AND fans.Username<> rfa.Username\n" +
-//                "    AND fans.Username<> systemmanager.Username\n" +
-//                "    AND fans.Username<> teammanager.Username");
         try {
             while (resultSet.next()) {
                 String username = resultSet.getString("Username");
