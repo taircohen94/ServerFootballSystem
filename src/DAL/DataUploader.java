@@ -426,6 +426,10 @@ public class DataUploader {
                     String ownerUsername = ownersSet.getString("TeamOwner_Username");
                     owners.add(ownerUsername);
                     teamOwnersHashSet.add(ownerUsername);
+
+                    // add additional info to team owner's object
+                    TeamOwner teamOwner= allTeamOwners.get(ownerUsername);
+                    teamOwner.addAdditionalInfo(additionalInfo);
                 }
                 // select nominating team owner:
                 String nominatingOwner = owners.get(0);
@@ -447,6 +451,10 @@ public class DataUploader {
                     String username = managersSet.getString("TeamManager_Username");
                     managers.add(username);
                     teamManagersHashSet.add(username);
+
+                    // add additional info to team managers's object
+                    TeamManager teamManager= allTeamManagers.get(username);
+                    teamManager.addAdditionalInfo(additionalInfo);
                 }
                 HashMap<String, ArrayList<String>> managersMap = new HashMap<>();
                 managersMap.put(nominatingOwner, managers);
@@ -463,6 +471,10 @@ public class DataUploader {
                 while (coachesSet.next()) {
                     String username = coachesSet.getString("Coach_Username");
                     coaches.add(username);
+
+                    // add additional info to team coach's object
+                    Coach coach= allCoaches.get(username);
+                    coach.addAdditionalInfo(additionalInfo);
                 }
                 additionalInfo.setCoaches(coaches);
                 //endregion
@@ -476,6 +488,10 @@ public class DataUploader {
                 while (playersSet.next()) {
                     String username = playersSet.getString("Player_Username");
                     players.add(username);
+
+                    // add additional info to team player's object
+                    Player player= allPlayers.get(username);
+                    player.addAdditionalInfo(additionalInfo);
                 }
                 additionalInfo.setPlayers(players);
                 //endregion
@@ -742,6 +758,9 @@ public class DataUploader {
 
                 Game game = new Game(cDate, time, field, host, guest, main, side1, side2, season, league);
                 game.setScore(goalHost, goalGuest);
+                main.addGame(game);
+                side1.addGame(game);
+                side2.addGame(game);
 
                 // TODO: game.setGID - consider fix on class game
 
