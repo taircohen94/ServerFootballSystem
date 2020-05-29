@@ -726,13 +726,13 @@ public class DataUploader {
                     String username = refereesSet.getString("Referee_Username");
                     String role = refereesSet.getString("Game_Role");
                     switch (role) {
-                        case "main":
+                        case "MAIN":
                             main = allReferees.get(username);
                             break;
-                        case "side1":
+                        case "VAR":
                             side1 = allReferees.get(username);
                             break;
-                        case "side2":
+                        case "ASSISTANT":
                             side2 = allReferees.get(username);
                             break;
                     }
