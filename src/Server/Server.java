@@ -25,10 +25,6 @@ public class Server {
 
     public void start() {
         runServer();
-//        new Thread(() -> {
-//            runServer();
-//        }).start();
-        //new Thread(this::runServer).start();
     }
 
     private void runServer() {
@@ -41,9 +37,6 @@ public class Server {
                     counter++;
                     Socket clientSocket = serverSocket.accept(); // blocking call
                     handleClient(clientSocket);
-//                    new Thread(() -> {
-//                        handleClient(clientSocket);
-//                    }).start();
                 } catch (SocketTimeoutException e) {
 
                 }

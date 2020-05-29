@@ -156,7 +156,7 @@ public class DataSave {
                                 "VALUES(?,?) " +
                                 "ON DUPLICATE KEY UPDATE " +
                                 "Teams_name=?," +
-                                "Seasons_Year?;";
+                                "Seasons_Year=?;";
                 try {
                     ps = databaseManager.conn.prepareStatement(query); //compiling query in the DB
                     ps.setString(1, additionalInfo.getTeam().getName());
@@ -164,7 +164,7 @@ public class DataSave {
 
                     ps.setString(3, additionalInfo.getTeam().getName());
                     ps.setInt(4, Integer.parseInt(additionalInfo.getSeason().getYear()));
-                    //System.out.println(ps.toString());
+                    System.out.println(ps.toString());
                     ps.executeUpdate();
                     databaseManager.conn.commit();
 
@@ -172,7 +172,8 @@ public class DataSave {
                     // additionalinfo_has_teamowner table
                     Iterator iter = additionalInfo.getOwners().values().iterator();
                     while (iter.hasNext()) {
-                        String owner = (String) iter.next();
+                        String owner = iter.next().toString();
+                        owner = owner.substring(1,owner.length()-1);
                         query =
                                 "INSERT  INTO \n" +
                                         "\tadditionalinfo_has_teamowner(AdditionalInfo_Teams_name,AdditionalInfo_Seasons_Year,TeamOwner_Username)\n" +
@@ -222,6 +223,7 @@ public class DataSave {
                     iter = additionalInfo.getManagers().values().iterator();
                     while (iter.hasNext()) {
                         String manager = (String) iter.next();
+                        manager= manager.substring(1,manager.length()-1);
                         query =
                                 "INSERT  INTO \n" +
                                         "\tteammanager_has_additionalinfo(TeamManager_Username,AdditionalInfo_Teams_name,AdditionalInfo_Seasons_Year)\n" +
