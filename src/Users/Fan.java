@@ -18,12 +18,12 @@ import System.*;
  * @ Written by Yuval Ben Eliezer
  */
 public class Fan extends Guest implements IFan ,Serializable {
-
+    private static int notificationID = 1;
     private String userName;
     private String fName;
     private String lName;
     private EStatus status;
-    private HashMap<String,EEventType> pendingGameNotifications;
+    private HashMap<Integer,String[]> pendingGameNotifications;
     private HashMap<String,APageEditor> pendingPageNotifications;
     private HashMap<String, EScheduleOrPlaceEvent> pendingScheduleNotifications;
     private List<String> searchHistory;
@@ -110,7 +110,7 @@ public class Fan extends Guest implements IFan ,Serializable {
             //checking if this fan was offline and now became online
             if (status == EStatus.ONLINE && wasOffline) {
                 if (pendingGameNotifications.size() != 0) {
-                    for (Map.Entry<String, EEventType> entry : pendingGameNotifications.entrySet()) {
+                    for (Map.Entry<Integer, String[] > entry : pendingGameNotifications.entrySet()) {
                         // TODO: 29/04/2020 show some pop up message to the user about each notification
                         System.out.println(entry.getKey());
                     }
@@ -205,7 +205,7 @@ public class Fan extends Guest implements IFan ,Serializable {
             // TODO: 29/04/2020 pop up message
         }
         else{
-            pendingGameNotifications.put(description,eventType);
+            pendingGameNotifications.put(notificationID++,new String[]{description,eventType.name()});
         }
     }
 
