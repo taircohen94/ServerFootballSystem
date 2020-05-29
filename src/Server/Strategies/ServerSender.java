@@ -66,11 +66,25 @@ public class ServerSender implements IServerStrategy {
                 case "editFieldDetails":
                     editFieldDetails(toClient, array);
                     break;
+                case "getGameIds":
+                    getGameIds(toClient);
+                    break;
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
+    private void getGameIds(ObjectOutputStream toClient) throws IOException {
+        try {
+            StringBuilder answer = model.getGameIds();
+            toClient.writeObject(answer);
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+
     private void editFieldDetails(ObjectOutputStream toClient, String[] array) throws IOException {
         try {
             model.editFieldDetails(array[1], array[2], array[3], array[4],
@@ -82,7 +96,6 @@ public class ServerSender implements IServerStrategy {
             toClient.flush();
         }
     }
-
     private void editPlayerDetails(ObjectOutputStream toClient, String[] array) throws IOException {
         try {
             model.editPlayerDetails(array[1], array[2], array[3], array[4],
@@ -94,7 +107,6 @@ public class ServerSender implements IServerStrategy {
             toClient.flush();
         }
     }
-
     private void editCoachDetails(ObjectOutputStream toClient, String[] array) throws IOException {
         try {
             model.editCoachDetails(array[1], array[2], array[3], array[4],
@@ -127,7 +139,6 @@ public class ServerSender implements IServerStrategy {
             toClient.flush();
         }
     }
-
     private void getPlayersForTeamAtSeason(ObjectOutputStream toClient, String[] array) throws IOException {
         try {
             StringBuilder answer = model.getPlayersForTeamAtSeason(array[1], array[2]);
@@ -138,7 +149,6 @@ public class ServerSender implements IServerStrategy {
             toClient.flush();
         }
     }
-
     private void getTeamManagersForTeamAtSeason(ObjectOutputStream toClient, String[] array) throws IOException {
         try {
             StringBuilder answer = model.getTeamManagersForTeamAtSeason(array[1], array[2]);
@@ -149,7 +159,6 @@ public class ServerSender implements IServerStrategy {
             toClient.flush();
         }
     }
-
     private void getCoachesForTeamAtSeason(ObjectOutputStream toClient, String[] array) throws IOException {
         try {
             StringBuilder answer = model.getCoachesForTeamAtSeason(array[1], array[2]);
@@ -160,7 +169,6 @@ public class ServerSender implements IServerStrategy {
             toClient.flush();
         }
     }
-
     private void createTeamServer(ObjectOutputStream toClient, String[] array) throws IOException {
         try {
             if (model.createTeam(array[1], array[2], array[3], array[4])) {
@@ -172,7 +180,6 @@ public class ServerSender implements IServerStrategy {
             toClient.flush();
         }
     }
-
     private void getAllFieldsServer(ObjectOutputStream toClient) throws IOException {
         try {
             StringBuilder answer = model.getAllFields();
@@ -183,7 +190,6 @@ public class ServerSender implements IServerStrategy {
             toClient.flush();
         }
     }
-
     private void getAllLeaguesServer(ObjectOutputStream toClient) throws IOException {
         try {
             StringBuilder answer = model.getAllLeagues();
@@ -194,13 +200,11 @@ public class ServerSender implements IServerStrategy {
             toClient.flush();
         }
     }
-
     private void availableSeasonsForTeamServer(ObjectOutputStream toClient, String teamName) throws IOException {
         StringBuilder answer = model.availableSeasonsForTeam(teamName);
         toClient.writeObject(answer);
         toClient.flush();
     }
-
     private void getAllSeasonsServer(ObjectOutputStream toClient) throws IOException {
         try {
             StringBuilder answer = model.getAllSeasons();
@@ -211,18 +215,16 @@ public class ServerSender implements IServerStrategy {
             toClient.flush();
         }
     }
-
     private void getAllTeamsServer(ObjectOutputStream toClient) throws IOException {
         try {
             StringBuilder answer = model.getAllTeams();
             toClient.writeObject(answer);
             toClient.flush();
         } catch (RecordException e) {
-            toClient.writeObject(new StringBuilder(e.getMessage()));
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
             toClient.flush();
         }
     }
-
     private void LoginServer(ObjectOutputStream toClient, String[] array) throws IOException {
         try {
             if (model.login(array[1], array[2])) {
