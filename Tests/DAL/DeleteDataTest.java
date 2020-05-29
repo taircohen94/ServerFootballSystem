@@ -16,12 +16,6 @@ public class DeleteDataTest {
         Game g= FootballSystem.getInstance().getGameDB().getAllGames().get(1);
         Event event= g.getEvents().get(0);
         connector.deleteEvent(event, 1);
-
-
-
-
-
-
     }
 
 
