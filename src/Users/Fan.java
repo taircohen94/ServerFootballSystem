@@ -24,7 +24,7 @@ public class Fan extends Guest implements IFan ,Serializable {
     private String lName;
     private EStatus status;
     private HashMap<Integer,String[]> pendingGameNotifications;
-    private HashMap<String,APageEditor> pendingPageNotifications;
+    //private HashMap<String,APageEditor> pendingPageNotifications;
     private HashMap<String, EScheduleOrPlaceEvent> pendingScheduleNotifications;
     private List<String> searchHistory;
 
@@ -40,7 +40,7 @@ public class Fan extends Guest implements IFan ,Serializable {
         this.lName = lName;
         this.searchHistory = new ArrayList<>();
         this.pendingGameNotifications = new HashMap<>();
-        this.pendingPageNotifications = new HashMap<>();
+//        this.pendingPageNotifications = new HashMap<>();
         this.pendingScheduleNotifications = new HashMap<>();
         this.status = EStatus.ONLINE;
     }
@@ -115,12 +115,12 @@ public class Fan extends Guest implements IFan ,Serializable {
                         System.out.println(entry.getKey());
                     }
                 }
-                if (pendingPageNotifications.size() != 0) {
-                    for (Map.Entry<String, APageEditor> entry : pendingPageNotifications.entrySet()) {
-                        // TODO: 29/04/2020 same for page updates
-                        System.out.println(entry.getKey());
-                    }
-                }
+//                if (pendingPageNotifications.size() != 0) {
+//                    for (Map.Entry<String, APageEditor> entry : pendingPageNotifications.entrySet()) {
+//                        // TODO: 29/04/2020 same for page updates
+//                        System.out.println(entry.getKey());
+//                    }
+//                }
                 //clear notifications after the user got them
                 pendingGameNotifications.clear();
                 pendingGameNotifications.clear();
