@@ -81,17 +81,11 @@ public class DataUploader {
     public void uploadSystemAssets() {
         //System.out.println("start upload system assets");
         uploadFields();
-        //System.out.println("uploaded Fields");
         uploadLeagues();
-        //System.out.println("uploaded Leagues");
         uploadSeasons();
-        //System.out.println("uploaded Seasons");
         uploadTeams();
-        //System.out.println("uploaded Teams");
         uploadGames();
-        //System.out.println("uploaded Games");
         attachTeamsGames();
-        //System.out.println("uploaded TeamsGames");
 
         uploadAdditionalInfo();
         uploadSeasonLeagueBinders();
