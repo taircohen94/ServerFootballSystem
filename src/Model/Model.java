@@ -178,6 +178,8 @@ public class Model extends Observable implements IModel {
         try {
             Team newTeam = new Team(TEAM_ID++, name, season, field, null, teamOwnerUser);
             FootballSystem.getInstance().addTeamToDB(newTeam);
+            newTeam.setCurrentLeague(FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(leagueName));
+            newTeam.addSeasonToTeam(season);
         } catch (Exception e) {
             String cause = e.getMessage();
             throw new RecordException(cause);
@@ -227,7 +229,7 @@ public class Model extends Observable implements IModel {
                 teamOwner.editCoachDetails(team, season, userName, firstName,
                         lastName, ETraining.valueOf(training), ECoachRole.valueOf(role));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
@@ -248,7 +250,7 @@ public class Model extends Observable implements IModel {
                 teamOwner.editPlayerDetails(team, season, userName, firstName,
                         lastName, EPlayerRole.valueOf(role));
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
@@ -262,7 +264,7 @@ public class Model extends Observable implements IModel {
         Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
         Season season = FootballSystem.getInstance().getSeasonDB().getAllSeasons().get(seasonYear);
         try {
-            if(!capacity.isEmpty()) {
+            if (!capacity.isEmpty()) {
                 int capa = Integer.parseInt(capacity);
                 if (capa < 0) {
                     throw new RecordException("please insert valid capacity. only integer greater then 0");
@@ -274,7 +276,7 @@ public class Model extends Observable implements IModel {
         try {
             teamOwner.editFieldDetails(team, season, fieldName, city,
                     capacity);
-        }catch (Exception e) {
+        } catch (Exception e) {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
@@ -510,7 +512,7 @@ public class Model extends Observable implements IModel {
      * @return true for success, false for failure
      */
     @Override
-    public boolean defineGameSchedulingPolicy(String policy, String leagueName, String seasonYear) throws RecordException, Exception {
+    public boolean defineGameSchedulingPolicy(String policy, String leagueName, String seasonYear) throws RecordException {
 
         // Only Representative is allowed to define a policy.
         if (!(user instanceof RepresentativeFootballAssociation))
@@ -524,31 +526,14 @@ public class Model extends Observable implements IModel {
         // Set requested policy
         switch (policy) {
             case "Regular Schedule Policy":
-                try {
-                    repUser.SetGamesAssigningPolicy(new SimpleGamesAssigningPolicy(), league, season);
-                    runGameSchedulingAlgorithm(leagueName, seasonYear);
-
-                } catch (OperationNotSupportedException e) {
-                    // TODO: 5/26/2020 handle exc
-                    e.printStackTrace();
-                }
-
-
+                repUser.SetGamesAssigningPolicy(new SimpleGamesAssigningPolicy(), league, season);
+                runGameSchedulingAlgorithm(leagueName, seasonYear);
                 break;
-
             case "One Round Schedule Policy":
-                try {
-                    repUser.SetGamesAssigningPolicy(new OneRoundGamesAssigningPolicy(), league, season);
-                } catch (OperationNotSupportedException e) {
-                    // TODO: 5/26/2020 handle exc
-                    throw new RecordException(e.getMessage());
-
-                }
+                repUser.SetGamesAssigningPolicy(new OneRoundGamesAssigningPolicy(), league, season);
                 break;
-
             default:
                 throw new RecordException("You have to choose policy");
-
         }
         return true;
     }
@@ -598,7 +583,7 @@ public class Model extends Observable implements IModel {
      * @return true for success, false for failure
      */
     @Override
-    public boolean runGameSchedulingAlgorithm(String leagueName, String seasonYear) throws Exception {
+    public boolean runGameSchedulingAlgorithm(String leagueName, String seasonYear) throws RecordException {
 
         // Only Representative is allowed to define a policy.
         if (!(user instanceof RepresentativeFootballAssociation))
@@ -815,7 +800,7 @@ public class Model extends Observable implements IModel {
                     additionalInfos) {
                 teamsByOwner.add(a.getTeam().getName());
             }
-            if(teamsByOwner.size() == 0){
+            if (teamsByOwner.size() == 0) {
                 throw new RecordException("You are not owing any team!");
             }
             fillAnswer(answer, teamsByOwner);
@@ -959,7 +944,7 @@ public class Model extends Observable implements IModel {
                     games) {
                 gameSet.add(String.valueOf(g.getGID()));
             }
-            if(gameSet.size() == 0){
+            if (gameSet.size() == 0) {
                 throw new RecordException("You are not judging any game!");
             }
             fillAnswer(answer, gameSet);
