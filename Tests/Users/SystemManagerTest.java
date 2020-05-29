@@ -67,8 +67,8 @@ class SystemManagerTest {
         List<Pair<String, Fan>> complains = systemManager.getComplains();
         systemManager.responseOnComplain("take care" , complains.get(0));
         assertEquals(Complains.getInstance().getComplain().size() , 1 );
-        Complains.getInstance().WriteObjectToFile(new File("C:\\Users\\יובל בן אליעזר\\Desktop\\complain.txt"));
-        Logger.getInstance().WriteActionLoggerToFile(new File("C:\\Users\\יובל בן אליעזר\\Desktop\\logger.txt"));
+       // Complains.getInstance().WriteObjectToFile(new File("C:\\Users\\יובל בן אליעזר\\Desktop\\complain.txt"));
+      //  Logger.getInstance().WriteActionLoggerToFile(new File("C:\\Users\\יובל בן אליעזר\\Desktop\\logger.txt"));
 
     }
 
