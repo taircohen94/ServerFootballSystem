@@ -81,17 +81,11 @@ public class DataUploader {
     public void uploadSystemAssets() {
         //System.out.println("start upload system assets");
         uploadFields();
-        //System.out.println("uploaded Fields");
         uploadLeagues();
-        //System.out.println("uploaded Leagues");
         uploadSeasons();
-        //System.out.println("uploaded Seasons");
         uploadTeams();
-        //System.out.println("uploaded Teams");
         uploadGames();
-        //System.out.println("uploaded Games");
         attachTeamsGames();
-        //System.out.println("uploaded TeamsGames");
 
         uploadAdditionalInfo();
         uploadSeasonLeagueBinders();
@@ -427,15 +421,16 @@ public class DataUploader {
                 AdditionalInfo additionalInfo = new AdditionalInfo(allTeams.get(teamName), allSeasons.get(seasonYear));
 
                 // attach owners
-
                 ResultSet ownersSet = databaseManager.executeQuerySelect("" +
                         "SELECT * FROM additionalinfo_has_teamowner\n" +
                         "WHERE AdditionalInfo_Teams_name= \"" + teamName + "\" \n" +
                         "AND AdditionalInfo_Seasons_Year = \"" + seasonYear + "\";");
                 ArrayList<String> owners = new ArrayList<>();
+                HashSet<String> teamOwnersHashSet = new HashSet<>();
                 while (ownersSet.next()) {
                     String ownerUsername = ownersSet.getString("TeamOwner_Username");
                     owners.add(ownerUsername);
+                    teamOwnersHashSet.add(ownerUsername);
                 }
                 // select nominating team owner:
                 String nominatingOwner = owners.get(0);
@@ -443,6 +438,7 @@ public class DataUploader {
                 HashMap<String, ArrayList<String>> ownersMap = new HashMap<>();
                 ownersMap.put(nominatingOwner, owners);
                 additionalInfo.setOwners(ownersMap);
+                additionalInfo.setTeamOwnersHashSet(teamOwnersHashSet);
 
                 // attach managers
                 ResultSet managersSet = databaseManager.executeQuerySelect("" +
@@ -450,13 +446,16 @@ public class DataUploader {
                         "WHERE AdditionalInfo_Teams_name= \"" + teamName + "\" \n" +
                         "AND AdditionalInfo_Seasons_Year = \"" + seasonYear + "\";");
                 ArrayList<String> managers = new ArrayList<>();
+                HashSet<String> teamManagersHashSet= new HashSet<>();
                 while (managersSet.next()) {
                     String username = managersSet.getString("TeamManager_Username");
                     managers.add(username);
+                    teamManagersHashSet.add(username);
                 }
                 HashMap<String, ArrayList<String>> managersMap = new HashMap<>();
                 managersMap.put(nominatingOwner, managers);
                 additionalInfo.setManagers(managersMap);
+                additionalInfo.setTeamManagersHashSet(teamManagersHashSet);
 
                 // attach coaches
                 ResultSet coachesSet = databaseManager.executeQuerySelect("" +
