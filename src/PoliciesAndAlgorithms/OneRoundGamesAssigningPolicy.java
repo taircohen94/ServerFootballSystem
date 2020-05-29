@@ -5,6 +5,7 @@ import AssociationAssets.Game;
 import AssociationAssets.League;
 import AssociationAssets.Season;
 import AssociationAssets.Team;
+import Model.RecordException;
 import Users.EReferee;
 import Users.Referee;
 
@@ -42,16 +43,16 @@ public class OneRoundGamesAssigningPolicy extends GamesAssigningPolicy {
      * @return hashmap of games, the key is the game ID
      * @throws Exception in case of not enough referees or null parameters or if games already assigned.
      */
-    public HashMap<Integer, Game> executePolicy(HashMap<String, Team> teams, Map<String, Referee> refs, LocalDate startDate, Season season, League league) throws Exception {
-        if(teams == null || refs == null || startDate == null || season == null || league == null) throw new Exception("At least one parameter is wrong");
-        if(gamesAssigned) throw new Exception("Games already assigned for this season");
+    public HashMap<Integer, Game> executePolicy(HashMap<String, Team> teams, Map<String, Referee> refs, LocalDate startDate, Season season, League league) throws RecordException {
+        if(teams == null || refs == null || startDate == null || season == null || league == null) throw new RecordException("At least one parameter is wrong");
+        if(gamesAssigned) throw new RecordException("Games already assigned for this season");
         HashMap <Integer,Game> games = new HashMap<>();
         int refereeCount = refs.size();
         int mainRefereeCount = countMainReferees(refs);
         int teamsCount = teams.size();
 
-        if(mainRefereeCount >= teamsCount/2) throw new Exception("There is not enough main referees, can't assign games");
-        else if(refereeCount-mainRefereeCount < teamsCount) throw new Exception("There is not enough side referees, can't assign games");
+        if(mainRefereeCount >= teamsCount/2) throw new RecordException("There is not enough main referees, can't assign games");
+        else if(refereeCount-mainRefereeCount < teamsCount) throw new RecordException("There is not enough side referees, can't assign games");
 
         Map<String, Referee> mainReferees = getMainReferees(refs);
         Map<String, Referee> otherRefs = getOtherReferees(refs);
