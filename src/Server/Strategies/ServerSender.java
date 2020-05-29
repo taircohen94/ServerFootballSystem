@@ -221,7 +221,7 @@ public class ServerSender implements IServerStrategy {
             toClient.writeObject(answer);
             toClient.flush();
         } catch (RecordException e) {
-            toClient.writeObject(new StringBuilder(e.getMessage()));
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
             toClient.flush();
         }
     }
