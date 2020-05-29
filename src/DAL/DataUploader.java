@@ -424,10 +424,11 @@ public class DataUploader {
                 String teamName = resultSet.getString("Teams_name");
                 String seasonYear = resultSet.getString("Seasons_Year");
 
-                AdditionalInfo additionalInfo = new AdditionalInfo(allTeams.get(teamName), allSeasons.get(seasonYear));
+                Team team= allTeams.get(teamName);
+                Season season= allSeasons.get(seasonYear);
+                AdditionalInfo additionalInfo = new AdditionalInfo(team,season );
 
-                // attach owners
-
+                //region Attach owners
                 ResultSet ownersSet = databaseManager.executeQuerySelect("" +
                         "SELECT * FROM additionalinfo_has_teamowner\n" +
                         "WHERE AdditionalInfo_Teams_name= \"" + teamName + "\" \n" +
@@ -443,8 +444,9 @@ public class DataUploader {
                 HashMap<String, ArrayList<String>> ownersMap = new HashMap<>();
                 ownersMap.put(nominatingOwner, owners);
                 additionalInfo.setOwners(ownersMap);
+                //endregion
 
-                // attach managers
+                //region attach managers
                 ResultSet managersSet = databaseManager.executeQuerySelect("" +
                         "SELECT * FROM teammanager_has_additionalinfo\n" +
                         "WHERE AdditionalInfo_Teams_name= \"" + teamName + "\" \n" +
@@ -457,8 +459,9 @@ public class DataUploader {
                 HashMap<String, ArrayList<String>> managersMap = new HashMap<>();
                 managersMap.put(nominatingOwner, managers);
                 additionalInfo.setManagers(managersMap);
+                //endregion
 
-                // attach coaches
+                //region attach coaches
                 ResultSet coachesSet = databaseManager.executeQuerySelect("" +
                         "SELECT * FROM coach_has_additionalinfo\n" +
                         "WHERE AdditionalInfo_Teams_name= \"" + teamName + "\" \n" +
@@ -469,8 +472,9 @@ public class DataUploader {
                     coaches.add(username);
                 }
                 additionalInfo.setCoaches(coaches);
+                //endregion
 
-                // attach players
+                //region attach players
                 ResultSet playersSet = databaseManager.executeQuerySelect("" +
                         "SELECT * FROM player_has_additionalinfo\n" +
                         "WHERE AdditionalInfo_Teams_name= \"" + teamName + "\" \n" +
@@ -481,7 +485,12 @@ public class DataUploader {
                     players.add(username);
                 }
                 additionalInfo.setPlayers(players);
+                //endregion
 
+                //region attach additionalInfoWithSeasons (Team class), teamAdditionalInfo (Season class)
+                team.getAdditionalInfoWithSeasons().put(seasonYear,additionalInfo);
+                season.getTeamAdditionalInfo().put(teamName,additionalInfo);
+                //endregion
             }
         } catch (SQLException e) {
             e.printStackTrace();
