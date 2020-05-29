@@ -50,7 +50,7 @@ public class Server {
             counter++;
             serverStrategy.serverStrategy(clientSocket.getInputStream(), clientSocket.getOutputStream());
             clientSocket.close();
-            if(counter == 1){
+            if(counter == 3){
                 JDBCConnector jdbcConnector = new JDBCConnector();
                 jdbcConnector.connectDBSaveData();
                 jdbcConnector.connectDBUploadData();

@@ -99,14 +99,14 @@ public class ServerSender implements IServerStrategy {
     }
 
     private void defineGameSchedulingPolicy(ObjectOutputStream toClient, String[] array) throws IOException {
-//        try {
-//            model.defineGameSchedulingPolicy(array[1], array[2], array[3]);
-//            toClient.writeObject(new StringBuilder("Ok"));
-//            toClient.flush();
-//        } catch (RecordException e) {
-//            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
-//            toClient.flush();
-//        }
+        try {
+            model.defineGameSchedulingPolicy(array[1], array[2], array[3]);
+            toClient.writeObject(new StringBuilder("Ok"));
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
     }
 
     private void addEvent(ObjectOutputStream toClient, String[] array) throws IOException {
@@ -284,7 +284,8 @@ public class ServerSender implements IServerStrategy {
     private void LoginServer(ObjectOutputStream toClient, String[] array) throws IOException {
         try {
             if (model.login(array[1], array[2])) {
-                toClient.writeObject(new StringBuilder("Ok"));
+                String userType = model.UserType();
+                toClient.writeObject(new StringBuilder("Ok,"+userType));
                 toClient.flush();
             }
         } catch (FailedLoginException e) {

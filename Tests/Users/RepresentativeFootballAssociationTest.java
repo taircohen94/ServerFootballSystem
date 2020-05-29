@@ -2,6 +2,7 @@ package Users;
 
 import AssociationAssets.*;
 import Budget.AssociationBudget;
+import Model.RecordException;
 import PoliciesAndAlgorithms.RegularScorePolicy;
 import PoliciesAndAlgorithms.SimpleGamesAssigningPolicy;
 import Budget.TeamBudget;
@@ -117,7 +118,7 @@ public class RepresentativeFootballAssociationTest {
     public void setGamesAssigningPolicy()  {
         try {
             representative.SetGamesAssigningPolicy(gamePolicy,league,season);
-        } catch (OperationNotSupportedException e) {
+        } catch (RecordException e) {
             e.printStackTrace();
         }
         assertNotEquals(representative.getAssigningPolicy(),null);

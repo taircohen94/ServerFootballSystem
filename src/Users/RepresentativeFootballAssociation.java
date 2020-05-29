@@ -185,20 +185,20 @@ public class RepresentativeFootballAssociation extends Fan  {
      * useCase #9.6 - define assign game policy
      * can only set assigning policy if the current season hasn't started yet.
      */
-    public void SetGamesAssigningPolicy(GamesAssigningPolicy policy, League league, Season season) throws OperationNotSupportedException {
+    public void SetGamesAssigningPolicy(GamesAssigningPolicy policy, League league, Season season) throws RecordException {
         if(policy!=null && league!=null && season!=null){
             SeasonLeagueBinder binder = FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(league.getLeagueName()).getSeasonBinders().get(season.getYear());
-            if(binder == null) throw new OperationNotSupportedException("This combination of league and season doesn't exists");
+            if(binder == null) throw new RecordException("This combination of league and season doesn't exists");
             binder.setAssigningPolicy(policy);
         }
-        else throw new OperationNotSupportedException("Incorrect season or league provided");
+        else throw new RecordException("Incorrect season or league provided");
 
     }
 
     /**
      * useCase #9.7 - activate the Games Assigning
      */
-    public void activateGamesAssigning(League league, Season season) throws Exception {
+    public void activateGamesAssigning(League league, Season season) throws RecordException {
         if(league!=null && season!=null){
             //get the teams from the season binder
             HashMap<String,Team> teams = FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(league.getLeagueName()).getSeasonBinders().get(season.getYear()).getTeams();
