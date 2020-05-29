@@ -54,10 +54,26 @@ public class ServerSender implements IServerStrategy {
                 case "getFieldsForTeamAtSeason":
                     getFieldsForTeamAtSeason(toClient, array);
                     break;
+                case "editCoachDetails":
+                    editCoachDetails(toClient, array);
+                    break;
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private void editCoachDetails(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            model.editCoachDetails(array[1], array[2], array[3], array[4],
+                    array[5], array[6], array[7]);
+            toClient.writeObject(new StringBuilder("Ok"));
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+
     }
 
     private void getFieldsForTeamAtSeason(ObjectOutputStream toClient, String[] array) throws IOException {
