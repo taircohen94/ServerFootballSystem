@@ -872,4 +872,67 @@ public class Model extends Observable implements IModel {
         }
         return answer;
     }
+
+    public StringBuilder getCoachesForTeamAtSeason(String teamName, String seasonYear) throws RecordException {
+        StringBuilder answer = new StringBuilder();
+        Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
+        AdditionalInfo additionalInfo = team.getAdditionalInfoWithSeasons().get(seasonYear);
+        if(additionalInfo != null){
+            Set<String> coachSet = additionalInfo.getCoaches();
+            if(coachSet != null){
+                fillAnswer(answer,coachSet);
+            }
+            else{
+                throw new RecordException("There is no coaches at the team "+teamName+" at season "+seasonYear);
+            }
+        }
+        return answer;
+    }
+
+    public StringBuilder getPlayersForTeamAtSeason(String teamName, String seasonYear) throws RecordException {
+        StringBuilder answer = new StringBuilder();
+        Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
+        AdditionalInfo additionalInfo = team.getAdditionalInfoWithSeasons().get(seasonYear);
+        if(additionalInfo != null){
+            Set<String> playerSet = additionalInfo.getPlayers();
+            if(playerSet != null){
+                fillAnswer(answer,playerSet);
+            }
+            else{
+                throw new RecordException("There is no players at the team "+teamName+" at season "+seasonYear);
+            }
+        }
+        return answer;
+    }
+
+    public StringBuilder getTeamManagersForTeamAtSeason(String teamName, String seasonYear) throws RecordException {
+        StringBuilder answer = new StringBuilder();
+        Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
+        AdditionalInfo additionalInfo = team.getAdditionalInfoWithSeasons().get(seasonYear);
+        if(additionalInfo != null){
+            Set<String> teamManagerSet = additionalInfo.getTeamManagersHashSet();
+            if(teamManagerSet != null){
+                fillAnswer(answer,teamManagerSet);
+            }
+            else{
+                throw new RecordException("There is no Team Managers at the team "+teamName+" at season "+seasonYear);
+            }
+        }
+        return answer;
+    }
+
+    public StringBuilder getFieldsForTeamAtSeason(String teamName, String seasonYear) throws RecordException {
+        StringBuilder answer = new StringBuilder();
+        Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
+        if(team != null){
+            Set<String> fieldSet = team.getFields().keySet();
+            if(fieldSet != null){
+                fillAnswer(answer,fieldSet);
+            }
+            else{
+                throw new RecordException("There is no Fields at the team "+teamName+" at season "+seasonYear);
+            }
+        }
+        return answer;
+    }
 }
