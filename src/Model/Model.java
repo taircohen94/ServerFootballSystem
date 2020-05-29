@@ -214,18 +214,23 @@ public class Model extends Observable implements IModel {
         TeamOwner teamOwner = (TeamOwner) user;
         Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
         Season season = FootballSystem.getInstance().getSeasonDB().getAllSeasons().get(seasonYear);
-        if (training == null && role == null) {
-            teamOwner.editCoachDetails(team, season, userName, firstName,
-                    lastName, null, null);
-        } else if (training == null) {
-            teamOwner.editCoachDetails(team, season, userName, firstName,
-                    lastName, null, ECoachRole.valueOf(role));
-        } else if (role == null) {
-            teamOwner.editCoachDetails(team, season, userName, firstName,
-                    lastName, ETraining.valueOf(training), null);
-        } else {
-            teamOwner.editCoachDetails(team, season, userName, firstName,
-                    lastName, ETraining.valueOf(training), ECoachRole.valueOf(role));
+        try {
+            if (training == null && role == null) {
+                teamOwner.editCoachDetails(team, season, userName, firstName,
+                        lastName, null, null);
+            } else if (training == null) {
+                teamOwner.editCoachDetails(team, season, userName, firstName,
+                        lastName, null, ECoachRole.valueOf(role));
+            } else if (role == null) {
+                teamOwner.editCoachDetails(team, season, userName, firstName,
+                        lastName, ETraining.valueOf(training), null);
+            } else {
+                teamOwner.editCoachDetails(team, season, userName, firstName,
+                        lastName, ETraining.valueOf(training), ECoachRole.valueOf(role));
+            }
+        }catch (Exception e){
+            String cause = e.getMessage();
+            throw new RecordException(cause);
         }
     }
 
@@ -236,12 +241,17 @@ public class Model extends Observable implements IModel {
         TeamOwner teamOwner = (TeamOwner) user;
         Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
         Season season = FootballSystem.getInstance().getSeasonDB().getAllSeasons().get(seasonYear);
-        if (role == null) {
-            teamOwner.editPlayerDetails(team, season, userName, firstName,
-                    lastName, null);
-        } else {
-            teamOwner.editPlayerDetails(team, season, userName, firstName,
-                    lastName, EPlayerRole.valueOf(role));
+        try {
+            if (role == null) {
+                teamOwner.editPlayerDetails(team, season, userName, firstName,
+                        lastName, null);
+            } else {
+                teamOwner.editPlayerDetails(team, season, userName, firstName,
+                        lastName, EPlayerRole.valueOf(role));
+            }
+        }catch (Exception e) {
+            String cause = e.getMessage();
+            throw new RecordException(cause);
         }
     }
 
@@ -253,15 +263,22 @@ public class Model extends Observable implements IModel {
         Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
         Season season = FootballSystem.getInstance().getSeasonDB().getAllSeasons().get(seasonYear);
         try {
-            int capa = Integer.parseInt(capacity);
-            if (capa < 0) {
-                throw new RecordException("please insert valid capacity. only integer greater then 0");
+            if(!capacity.isEmpty()) {
+                int capa = Integer.parseInt(capacity);
+                if (capa < 0) {
+                    throw new RecordException("please insert valid capacity. only integer greater then 0");
+                }
             }
         } catch (Exception e) {
             throw new RecordException("please insert valid capacity. only integer greater then 0");
         }
-        teamOwner.editFieldDetails(team, season, fieldName, city,
-                capacity);
+        try {
+            teamOwner.editFieldDetails(team, season, fieldName, city,
+                    capacity);
+        }catch (Exception e) {
+            String cause = e.getMessage();
+            throw new RecordException(cause);
+        }
     }
 
     /**
