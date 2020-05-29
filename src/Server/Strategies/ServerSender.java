@@ -69,9 +69,65 @@ public class ServerSender implements IServerStrategy {
                 case "getGameIds":
                     getGameIds(toClient);
                     break;
+                case "exportGameReport":
+                    exportGameReport(toClient,array);
+                    break;
+                case "addEvent":
+                    addEvent(toClient,array);
+                    break;
+                case "defineScoreTablePolicy":
+                    defineScoreTablePolicy(toClient,array);
+                    break;
+                case "defineGameSchedulingPolicy":
+                    defineGameSchedulingPolicy(toClient,array);
+                    break;
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void defineScoreTablePolicy(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            model.defineScoreTablePolicy(array[1], array[2], array[3]);
+            toClient.writeObject(new StringBuilder("Ok"));
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+
+    private void defineGameSchedulingPolicy(ObjectOutputStream toClient, String[] array) throws IOException {
+//        try {
+//            model.defineGameSchedulingPolicy(array[1], array[2], array[3]);
+//            toClient.writeObject(new StringBuilder("Ok"));
+//            toClient.flush();
+//        } catch (RecordException e) {
+//            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+//            toClient.flush();
+//        }
+    }
+
+    private void addEvent(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            model.addEvent(Integer.parseInt(array[1]), array[2], array[3]);
+            toClient.writeObject(new StringBuilder("Ok"));
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+
+    private void exportGameReport(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            model.exportGameReport(Integer.parseInt(array[1]), array[2], array[3]);
+            toClient.writeObject(new StringBuilder("Ok"));
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
         }
     }
     private void getGameIds(ObjectOutputStream toClient) throws IOException {

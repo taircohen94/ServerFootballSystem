@@ -16,6 +16,7 @@ public class Server {
     private int listeningInterval;
     private IServerStrategy serverStrategy;
     private volatile boolean stop;
+    private int counter = 0;
 
     public Server(int port, int listeningInterval, IServerStrategy serverStrategy) {
         this.port = port;
@@ -29,22 +30,14 @@ public class Server {
 
     private void runServer() {
         try {
-            int counter = 0;
             ServerSocket serverSocket = new ServerSocket(port);
             serverSocket.setSoTimeout(listeningInterval);
             while (!stop) {
                 try {
-                    counter++;
                     Socket clientSocket = serverSocket.accept(); // blocking call
                     handleClient(clientSocket);
                 } catch (SocketTimeoutException e) {
 
-                }
-                if(counter == 1000){
-                    JDBCConnector jdbcConnector = new JDBCConnector();
-                    jdbcConnector.connectDBSaveData();
-                    jdbcConnector.connectDBUploadData();
-                    counter = 0;
                 }
             }
             serverSocket.close();
@@ -54,8 +47,15 @@ public class Server {
 
     private void handleClient(Socket clientSocket) {
         try {
+            counter++;
             serverStrategy.serverStrategy(clientSocket.getInputStream(), clientSocket.getOutputStream());
             clientSocket.close();
+            if(counter == 1){
+                JDBCConnector jdbcConnector = new JDBCConnector();
+                jdbcConnector.connectDBSaveData();
+                jdbcConnector.connectDBUploadData();
+                counter = 0;
+            }
         } catch (IOException e) {
         }
     }
