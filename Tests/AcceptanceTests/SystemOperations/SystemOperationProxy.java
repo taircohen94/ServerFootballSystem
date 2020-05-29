@@ -1,7 +1,6 @@
 package AcceptanceTests.SystemOperations;
 
-import AcceptanceTests.DataObjects.TeamDetails;
-import AcceptanceTests.DataObjects.UserDetails;
+import AcceptanceTests.DataObjects.*;
 import AssociationAssets.EEventType;
 
 public class SystemOperationProxy implements  ISystemOperationsBridge{
@@ -122,6 +121,62 @@ public class SystemOperationProxy implements  ISystemOperationsBridge{
     public boolean editTeamManagerDetails(String userName, String password, String name, String seasonYear, String teamManagerUserName, String changeFirstName, String lastName) {
         if (real != null){
             return real.editTeamManagerDetails( userName,  password,  name,  seasonYear,  teamManagerUserName,  changeFirstName,  lastName);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean editPlayerDetails(String userName, String password, String name, String seasonYear, String teamManagerUserName, String changeFirstName, String lastName,String role) {
+        if (real != null){
+            return real.editPlayerDetails( userName,  password,  name,  seasonYear,  teamManagerUserName,  changeFirstName,  lastName,role);
+        }
+        return false;
+    }
+
+    @Override
+    public UserDetails getUnPrivilegeUserForTest() {
+        if (real != null){
+            return real.getUnPrivilegeUserForTest();
+        }
+        return null;
+    }
+
+    @Override
+    public PlayerDetails getRegisteredPlayerForTest() {
+        if (real != null){
+            return real.getRegisteredPlayerForTest();
+        }
+        return null;
+    }
+
+    @Override
+    public CoachDetails getRegisteredCoachForTest() {
+        if (real != null){
+            return real.getRegisteredCoachForTest();
+        }
+        return null;
+    }
+
+    @Override
+    public FieldDetails getExistFieldForTest() {
+        if (real != null){
+            return real.getExistFieldForTest();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean editCoachDetails(String userName, String password, String teamName, String seasonYear, String userNamePlayer, String firstName, String lastName, String training, String role){
+        if (real != null){
+            return real.editCoachDetails( userName,  password,  teamName,  seasonYear,  userNamePlayer,  firstName,  lastName,training,role);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean editFieldDetails(String userName, String password, String name, String seasonYear, String fieldName, String city, String capacity) {
+        if (real != null){
+            return real.editFieldDetails( userName,  password,  name,  seasonYear,  fieldName,  city,  capacity);
         }
         return false;
     }

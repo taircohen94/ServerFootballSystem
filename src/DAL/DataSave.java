@@ -63,19 +63,12 @@ public class DataSave {
 
     public void saveAllData() {
         saveUsers();
-        //System.out.println("saved users");
         saveFields();
-        //System.out.println("saved fields");
         saveLeagues();
-        //System.out.println("saved Leagues");
         saveSeasons();
-        //System.out.println("saved seasons");
         saveTeams();
-        //System.out.println("saved teams");
         saveGames();
-        //System.out.println("saved games");
         saveAdditionalInfo();
-        //System.out.println("saved additionalInfo");
         saveSeasonLeagueBinders();
     }
 
@@ -156,7 +149,7 @@ public class DataSave {
                                 "VALUES(?,?) " +
                                 "ON DUPLICATE KEY UPDATE " +
                                 "Teams_name=?," +
-                                "Seasons_Year?;";
+                                "Seasons_Year=?;";
                 try {
                     ps = databaseManager.conn.prepareStatement(query); //compiling query in the DB
                     ps.setString(1, additionalInfo.getTeam().getName());
@@ -170,9 +163,10 @@ public class DataSave {
 
 
                     // additionalinfo_has_teamowner table
-                    Iterator iter = additionalInfo.getOwners().values().iterator();
+                    Iterator iter = additionalInfo.getTeamOwnersHashSet().iterator();
                     while (iter.hasNext()) {
-                        String owner = (String) iter.next();
+                        String owner = iter.next().toString();
+                        //owner = owner.substring(1,owner.length()-1);
                         query =
                                 "INSERT  INTO \n" +
                                         "\tadditionalinfo_has_teamowner(AdditionalInfo_Teams_name,AdditionalInfo_Seasons_Year,TeamOwner_Username)\n" +
@@ -219,9 +213,10 @@ public class DataSave {
                     }
 
                     // teammanager_has_additionalinfo table
-                    iter = additionalInfo.getManagers().values().iterator();
+                    iter = additionalInfo.getTeamManagersHashSet().iterator();
                     while (iter.hasNext()) {
-                        String manager = (String) iter.next();
+                        String manager = iter.next().toString();
+                        //manager= manager.substring(1,manager.length()-1);
                         query =
                                 "INSERT  INTO \n" +
                                         "\tteammanager_has_additionalinfo(TeamManager_Username,AdditionalInfo_Teams_name,AdditionalInfo_Seasons_Year)\n" +
