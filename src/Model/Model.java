@@ -4,7 +4,6 @@ import AssociationAssets.*;
 import DB.FieldDB;
 import DB.LeagueDB;
 import DB.SeasonDB;
-import DB.TeamDB;
 import PoliciesAndAlgorithms.OneRoundGamesAssigningPolicy;
 import PoliciesAndAlgorithms.RegularScorePolicy;
 import PoliciesAndAlgorithms.ScoreTablePolicy2;
@@ -127,9 +126,9 @@ public class Model extends Observable implements IModel {
         Fan tmpUser = footballSystem.login(username, password);
         // Save the user as an object
         user = footballSystem.getFanByUserName(username);
-        if(user instanceof RepresentativeFootballAssociation){
-            ArrayList<String> notifications =  ((RepresentativeFootballAssociation) user).getNotificationTeams();
-            if(notifications.size() > 0){
+        if (user instanceof RepresentativeFootballAssociation) {
+            ArrayList<String> notifications = ((RepresentativeFootballAssociation) user).getNotificationTeams();
+            if (notifications.size() > 0) {
                 setChanged();
                 notifyObservers(user);
             }
@@ -198,10 +197,10 @@ public class Model extends Observable implements IModel {
         TeamOwner teamOwner = (TeamOwner) user;
         Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
         Season season = FootballSystem.getInstance().getSeasonDB().getAllSeasons().get(seasonYear);
-        try{
+        try {
             teamOwner.editTMDetails(team, season, userName, firstName,
                     lastName);
-        }  catch (Exception e) {
+        } catch (Exception e) {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
@@ -527,7 +526,7 @@ public class Model extends Observable implements IModel {
             case "Regular Schedule Policy":
                 try {
                     repUser.SetGamesAssigningPolicy(new SimpleGamesAssigningPolicy(), league, season);
-                    runGameSchedulingAlgorithm(leagueName,seasonYear);
+                    runGameSchedulingAlgorithm(leagueName, seasonYear);
 
                 } catch (OperationNotSupportedException e) {
                     // TODO: 5/26/2020 handle exc
@@ -608,7 +607,7 @@ public class Model extends Observable implements IModel {
         Season season = FootballSystem.getInstance().getSeasonDB().getAllSeasons().get(seasonYear);
         League league = FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(leagueName);
 
-        repUser.activateGamesAssigning(league,season);
+        repUser.activateGamesAssigning(league, season);
 
 
         return true;
@@ -745,8 +744,7 @@ public class Model extends Observable implements IModel {
         Referee referee = (Referee) user;
         try {
             referee.removeEventsAfterGameOver(gameID, eventIndex);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
@@ -809,16 +807,18 @@ public class Model extends Observable implements IModel {
 
     public StringBuilder getAllTeams() throws RecordException {
         StringBuilder answer = new StringBuilder();
-        TeamDB teamDB = FootballSystem.getInstance().getTeamDB();
-        if (teamDB != null) {
-            HashMap<String, Team> teamHashMap = teamDB.getAllTeams();
-            if (teamHashMap != null && teamHashMap.size() > 0) {
-                fillAnswer(answer, teamHashMap.keySet());
-            } else {
-                throw new RecordException("There is no teams at the DB");
+        if (user instanceof TeamOwner) {
+            TeamOwner teamOwner = (TeamOwner) user;
+            List<AdditionalInfo> additionalInfos = teamOwner.getAdditionalInfo();
+            Set<String> teamsByOwner = new HashSet<>();
+            for (AdditionalInfo a :
+                    additionalInfos) {
+                teamsByOwner.add(a.getTeam().getName());
             }
-        } else {
-            throw new RecordException("Team DB does not exits");
+            if(teamsByOwner.size() == 0){
+                throw new RecordException("You are not owing any team!");
+            }
+            fillAnswer(answer, teamsByOwner);
         }
         return answer;
     }
@@ -894,13 +894,12 @@ public class Model extends Observable implements IModel {
         StringBuilder answer = new StringBuilder();
         Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
         AdditionalInfo additionalInfo = team.getAdditionalInfoWithSeasons().get(seasonYear);
-        if(additionalInfo != null){
+        if (additionalInfo != null) {
             Set<String> coachSet = additionalInfo.getCoaches();
-            if(coachSet != null){
-                fillAnswer(answer,coachSet);
-            }
-            else{
-                throw new RecordException("There is no coaches at the team "+teamName+" at season "+seasonYear);
+            if (coachSet != null) {
+                fillAnswer(answer, coachSet);
+            } else {
+                throw new RecordException("There is no coaches at the team " + teamName + " at season " + seasonYear);
             }
         }
         return answer;
@@ -910,13 +909,12 @@ public class Model extends Observable implements IModel {
         StringBuilder answer = new StringBuilder();
         Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
         AdditionalInfo additionalInfo = team.getAdditionalInfoWithSeasons().get(seasonYear);
-        if(additionalInfo != null){
+        if (additionalInfo != null) {
             Set<String> playerSet = additionalInfo.getPlayers();
-            if(playerSet != null){
-                fillAnswer(answer,playerSet);
-            }
-            else{
-                throw new RecordException("There is no players at the team "+teamName+" at season "+seasonYear);
+            if (playerSet != null) {
+                fillAnswer(answer, playerSet);
+            } else {
+                throw new RecordException("There is no players at the team " + teamName + " at season " + seasonYear);
             }
         }
         return answer;
@@ -926,13 +924,12 @@ public class Model extends Observable implements IModel {
         StringBuilder answer = new StringBuilder();
         Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
         AdditionalInfo additionalInfo = team.getAdditionalInfoWithSeasons().get(seasonYear);
-        if(additionalInfo != null){
+        if (additionalInfo != null) {
             Set<String> teamManagerSet = additionalInfo.getTeamManagersHashSet();
-            if(teamManagerSet != null){
-                fillAnswer(answer,teamManagerSet);
-            }
-            else{
-                throw new RecordException("There is no Team Managers at the team "+teamName+" at season "+seasonYear);
+            if (teamManagerSet != null) {
+                fillAnswer(answer, teamManagerSet);
+            } else {
+                throw new RecordException("There is no Team Managers at the team " + teamName + " at season " + seasonYear);
             }
         }
         return answer;
@@ -941,15 +938,33 @@ public class Model extends Observable implements IModel {
     public StringBuilder getFieldsForTeamAtSeason(String teamName, String seasonYear) throws RecordException {
         StringBuilder answer = new StringBuilder();
         Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
-        if(team != null){
+        if (team != null) {
             Set<String> fieldSet = team.getFields().keySet();
-            if(fieldSet != null){
-                fillAnswer(answer,fieldSet);
-            }
-            else{
-                throw new RecordException("There is no Fields at the team "+teamName+" at season "+seasonYear);
+            if (fieldSet != null) {
+                fillAnswer(answer, fieldSet);
+            } else {
+                throw new RecordException("There is no Fields at the team " + teamName + " at season " + seasonYear);
             }
         }
         return answer;
+    }
+
+    public StringBuilder getGameIds() throws RecordException {
+        StringBuilder answer = new StringBuilder();
+        if (user instanceof Referee) {
+            Referee rep = (Referee) user;
+            List<Game> games = rep.getMyGames();
+            Set<String> gameSet = new HashSet<>();
+            for (Game g :
+                    games) {
+                gameSet.add(String.valueOf(g.getGID()));
+            }
+            if(gameSet.size() == 0){
+                throw new RecordException("You are not judging any game!");
+            }
+            fillAnswer(answer, gameSet);
+        }
+        return answer;
+
     }
 }
