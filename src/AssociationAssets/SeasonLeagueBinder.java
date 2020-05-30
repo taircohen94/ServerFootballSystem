@@ -3,10 +3,7 @@ package AssociationAssets;
 import PoliciesAndAlgorithms.GamesAssigningPolicy;
 import PoliciesAndAlgorithms.ScoreTablePolicy;
 import Users.Referee;
-import com.sun.xml.internal.bind.v2.TODO;
-import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
 
-import javax.naming.OperationNotSupportedException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,7 +50,15 @@ public class SeasonLeagueBinder {
         return true;
     }
 
+    public void setScoreTablePolicyUploader(ScoreTablePolicy scoreTablePolicy) throws UnsupportedOperationException {
+        if(scoreTablePolicy!= null)
+            this.scoreTablePolicy = scoreTablePolicy;
 
+    }
+    public void setAssigningPolicyUploader(GamesAssigningPolicy assigningPolicy) {
+        if(assigningPolicy != null)
+            this.assigningPolicy = assigningPolicy;
+    }
 
     public ScoreTablePolicy getScoreTablePolicy() {
         return scoreTablePolicy;
@@ -76,7 +81,7 @@ public class SeasonLeagueBinder {
 
     public boolean hasStarted() {
         for (Map.Entry<Integer,Game> entry:games.entrySet()) {
-            if(entry.getValue().isFinished())
+            if(entry.getValue().isSomeGameHasStarted())
                 return true;
         }
         return false;

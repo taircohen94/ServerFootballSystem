@@ -438,4 +438,14 @@ public class Game {
     public void setGID(int gid) {
         this.GID = gid;
     }
+
+    public boolean isSomeGameHasStarted() {
+        LocalDateTime currentDate = LocalDateTime.now();
+        LocalDateTime gameDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        long minutes = ChronoUnit.MINUTES.between(gameDate, currentDate);
+        if(minutes > 0){
+            return true;
+        }
+        return false;
+    }
 }
