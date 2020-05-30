@@ -79,16 +79,15 @@ public class SimpleGamesAssigningPolicy extends GamesAssigningPolicy {
                 Game game = new Game(dateNew,new Time(21,0,0),host.getMainField(),host,guest,mainRef,sideRef1,sideRef2,season,league);
                 int gid = gidHelper++;
                 game.setGID(gid);
-                games.put(gidCounter,game);
+                games.put(gid,game);
                 //second game between same rivals, opposite host and guest
                 calendar = Calendar.getInstance();
                 calendar.setTime(Date.valueOf(startDate));
                 calendar.add(Calendar.DAY_OF_YEAR, (weeks+1)*7*(numberOfGames/4));
                 dateNew = calendar.getTime();
                 Game game2 = new Game(dateNew,new Time(21,0,0),guest.getMainField(),guest,host,mainRef,sideRef1,sideRef2,season,league);
-                gid = ++gidCounter + (teamsCount/2) + (numberOfGames/4);
-                game2.setGID(gid);
-                games.put(gid,game2);
+                game2.setGID(++gid);
+                games.put(++gid,game2);
             }
             else{
                 //even team count and more than 2
