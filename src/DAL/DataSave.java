@@ -469,17 +469,23 @@ public class DataSave {
     public void saveTeams() {
         for (Team team : allTeams.values()) {
             PreparedStatement ps = null;
+
+            SeasonLeagueBinder binder =team.getCurrentSeason().getLeagueBinders().get(team.getCurrentLeague().getLeagueName());
+            int teamPoints= binder.getLeagueTable().get(team.getName());
+
+            // save to teams table:
             int active = 0;
             if (team.getIsActive() == ETeamStatus.ACTIVE) active = 1;
             String query = "INSERT INTO \n" +
-                    "\tteams(name, Fields_Name_Main, teamStatus, Seasons_has_Leagues_Seasons_Year, Seasons_has_Leagues_Leagues_Name) " +
-                    "VALUES(?,?,?,?,?) " +
+                    "\tteams(name, Fields_Name_Main, teamStatus, Seasons_has_Leagues_Seasons_Year, Seasons_has_Leagues_Leagues_Name,leagueTablePoints) " +
+                    "VALUES(?,?,?,?,?,?) " +
                     "ON DUPLICATE KEY UPDATE " +
                     "name=?," +
                     "Fields_Name_Main=?," +
                     "teamStatus=?," +
                     "Seasons_has_Leagues_Seasons_Year=?," +
-                    "Seasons_has_Leagues_Leagues_Name=?;";
+                    "Seasons_has_Leagues_Leagues_Name=?," +
+                    "leagueTablePoints=?;";
             try {
                 ps = databaseManager.conn.prepareStatement(query); //compiling query in the DB
                 ps.setString(1, team.getName());
@@ -487,12 +493,16 @@ public class DataSave {
                 ps.setInt(3, active);
                 ps.setInt(4, Integer.parseInt(team.getCurrentSeason().getYear()));
                 ps.setString(5, team.getCurrentLeague().getLeagueName());
+                ps.setInt(6, teamPoints);
 
-                ps.setString(6, team.getName());
-                ps.setString(7, team.getMainField().getName());
-                ps.setInt(8, active);
-                ps.setInt(9, Integer.parseInt(team.getCurrentSeason().getYear()));
-                ps.setString(10, team.getCurrentLeague().getLeagueName());
+
+                ps.setString(7, team.getName());
+                ps.setString(8, team.getMainField().getName());
+                ps.setInt(9, active);
+                ps.setInt(10, Integer.parseInt(team.getCurrentSeason().getYear()));
+                ps.setString(11, team.getCurrentLeague().getLeagueName());
+                ps.setInt(12, teamPoints);
+
                 //System.out.println(ps.toString());
                 ps.executeUpdate();
                 databaseManager.conn.commit();
