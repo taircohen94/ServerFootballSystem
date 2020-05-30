@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+
+import Model.RecordException;
 import System.*;
 import Users.*;
 
@@ -51,7 +53,7 @@ public class Game {
      * @param season
      * @param league
      */
-    public Game(Date date,Time time, Field field, Team host, Team guest, Referee main, Referee side1, Referee side2, Season season, League league) throws Exception {
+    public Game(Date date,Time time, Field field, Team host, Team guest, Referee main, Referee side1, Referee side2, Season season, League league) throws RecordException {
 
         // Validating methods:
         validateReferees(main,side1,side2);
@@ -91,9 +93,9 @@ public class Game {
      * @param guest
      * @throws Exception
      */
-    private void validateTeams(Team host, Team guest) throws Exception {
+    private void validateTeams(Team host, Team guest) throws RecordException {
         if(host.getTID()==guest.getTID())
-            throw new DuplicateValueException();
+            throw new RecordException("error in validate teams");
     }
 
     /**
@@ -103,12 +105,12 @@ public class Game {
      * @param side2
      * @throws Exception
      */
-    private void validateReferees(Referee main, Referee side1, Referee side2) throws Exception {
+    private void validateReferees(Referee main, Referee side1, Referee side2) throws RecordException {
 
         if(main.getUserName().equals(side1.getUserName())||
                 main.getUserName().equals(side2.getUserName())||
                 side1.getUserName().equals(side2.getUserName()))
-            throw new DuplicateValueException();
+            throw new RecordException("duplicate referee");
     }
     //endregion
 
@@ -336,6 +338,7 @@ public class Game {
         else if(eventType == EEventType.GoalGUEST)
             score.setGoalsGuest(score.getGoalsGuest() + 1);
 
+        notifyObserver(description,eventType);
         // Write to the log
         Logger.getInstance().addActionToLogger("Event was added to gameID: "+GID+", Event type: "+ event.getEventType());
 
@@ -392,7 +395,7 @@ public class Game {
         if (this.observers.size() > 0) {
             for (Fan fan :
                     this.observers) {
-                fan.updateGame(description,eventType);
+                fan.updateGame(this.GID,description,eventType);
             }
 
         }
@@ -420,18 +423,16 @@ public class Game {
     public boolean isFinished() {
         LocalDateTime currentDate = LocalDateTime.now();
         LocalDateTime gameDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        if(currentDate.getYear() == gameDate.getYear()){
-            long minutes = ChronoUnit.MINUTES.between(gameDate, currentDate);
-            if( minutes/60 >= 2 ){
-                setStatus(EGameStatus.FINISHED);
-                //update league table
-                this.getLeague().updateGameScore(season.getYear(),host.getName(),guest.getName(),getScore());
-                //update that league started for use case 9.5 (RFA can change score policy only before the beginning of the season)
-                String season = getLeague().getCurrentSeason();
-                return true;
-            }
+        long minutes = ChronoUnit.MINUTES.between(gameDate, currentDate);
+        if( minutes/60 >= 2 ){
+            setStatus(EGameStatus.FINISHED);
+            //update league table
+            this.getLeague().updateGameScore(season.getYear(),host.getName(),guest.getName(),getScore());
+            return true;
         }
-        return false;
+        else{
+            return false;
+        }
     }
 
     public void setGID(int gid) {

@@ -48,4 +48,12 @@ public class Field {
         this.capacity = capacity;
     }
     //endregion
+    @Override
+    public String toString() {
+        return "Field{" +
+                "name='" + name + '\'' +
+                ", city='" + city + '\'' +
+                ", capacity=" + capacity +
+                '}';
+    }
 }

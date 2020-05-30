@@ -1,10 +1,10 @@
 package Model;
 
 import AssociationAssets.*;
+import DAL.JDBCConnector;
 import DB.FieldDB;
 import DB.LeagueDB;
 import DB.SeasonDB;
-import DB.TeamDB;
 import PoliciesAndAlgorithms.OneRoundGamesAssigningPolicy;
 import PoliciesAndAlgorithms.RegularScorePolicy;
 import PoliciesAndAlgorithms.ScoreTablePolicy2;
@@ -13,7 +13,6 @@ import System.FootballSystem;
 import Users.*;
 import javafx.util.Pair;
 
-import javax.naming.OperationNotSupportedException;
 import javax.security.auth.login.FailedLoginException;
 import java.util.*;
 
@@ -127,9 +126,9 @@ public class Model extends Observable implements IModel {
         Fan tmpUser = footballSystem.login(username, password);
         // Save the user as an object
         user = footballSystem.getFanByUserName(username);
-        if(user instanceof RepresentativeFootballAssociation){
-            ArrayList<String> notifications =  ((RepresentativeFootballAssociation) user).getNotificationTeams();
-            if(notifications.size() > 0){
+        if (user instanceof RepresentativeFootballAssociation) {
+            ArrayList<String> notifications = ((RepresentativeFootballAssociation) user).getNotificationTeams();
+            if (notifications.size() > 0) {
                 setChanged();
                 notifyObservers(user);
             }
@@ -179,14 +178,15 @@ public class Model extends Observable implements IModel {
         try {
             Team newTeam = new Team(TEAM_ID++, name, season, field, null, teamOwnerUser);
             FootballSystem.getInstance().addTeamToDB(newTeam);
+            newTeam.setCurrentLeague(FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(leagueName));
+            newTeam.addSeasonToTeam(season);
         } catch (Exception e) {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
-        //send the request to the RFA
-        //   String request = "";
-        //    notifyAll();
-        // notifyObservers(request);
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
         return true;
 
     }
@@ -198,13 +198,16 @@ public class Model extends Observable implements IModel {
         TeamOwner teamOwner = (TeamOwner) user;
         Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
         Season season = FootballSystem.getInstance().getSeasonDB().getAllSeasons().get(seasonYear);
-        try{
+        try {
             teamOwner.editTMDetails(team, season, userName, firstName,
                     lastName);
-        }  catch (Exception e) {
+        } catch (Exception e) {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
     }
 
     public void editCoachDetails(String teamName, String seasonYear, String userName, String firstName, String lastName, String training, String role) throws RecordException {
@@ -214,19 +217,27 @@ public class Model extends Observable implements IModel {
         TeamOwner teamOwner = (TeamOwner) user;
         Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
         Season season = FootballSystem.getInstance().getSeasonDB().getAllSeasons().get(seasonYear);
-        if (training == null && role == null) {
-            teamOwner.editCoachDetails(team, season, userName, firstName,
-                    lastName, null, null);
-        } else if (training == null) {
-            teamOwner.editCoachDetails(team, season, userName, firstName,
-                    lastName, null, ECoachRole.valueOf(role));
-        } else if (role == null) {
-            teamOwner.editCoachDetails(team, season, userName, firstName,
-                    lastName, ETraining.valueOf(training), null);
-        } else {
-            teamOwner.editCoachDetails(team, season, userName, firstName,
-                    lastName, ETraining.valueOf(training), ECoachRole.valueOf(role));
+        try {
+            if (training == null && role == null) {
+                teamOwner.editCoachDetails(team, season, userName, firstName,
+                        lastName, null, null);
+            } else if (training == null) {
+                teamOwner.editCoachDetails(team, season, userName, firstName,
+                        lastName, null, ECoachRole.valueOf(role));
+            } else if (role == null) {
+                teamOwner.editCoachDetails(team, season, userName, firstName,
+                        lastName, ETraining.valueOf(training), null);
+            } else {
+                teamOwner.editCoachDetails(team, season, userName, firstName,
+                        lastName, ETraining.valueOf(training), ECoachRole.valueOf(role));
+            }
+        } catch (Exception e) {
+            String cause = e.getMessage();
+            throw new RecordException(cause);
         }
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
     }
 
     public void editPlayerDetails(String teamName, String seasonYear, String userName, String firstName, String lastName, String role) throws RecordException {
@@ -236,13 +247,21 @@ public class Model extends Observable implements IModel {
         TeamOwner teamOwner = (TeamOwner) user;
         Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
         Season season = FootballSystem.getInstance().getSeasonDB().getAllSeasons().get(seasonYear);
-        if (role == null) {
-            teamOwner.editPlayerDetails(team, season, userName, firstName,
-                    lastName, null);
-        } else {
-            teamOwner.editPlayerDetails(team, season, userName, firstName,
-                    lastName, EPlayerRole.valueOf(role));
+        try {
+            if (role == null) {
+                teamOwner.editPlayerDetails(team, season, userName, firstName,
+                        lastName, null);
+            } else {
+                teamOwner.editPlayerDetails(team, season, userName, firstName,
+                        lastName, EPlayerRole.valueOf(role));
+            }
+        } catch (Exception e) {
+            String cause = e.getMessage();
+            throw new RecordException(cause);
         }
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
     }
 
     public void editFieldDetails(String teamName, String seasonYear, String fieldName, String city, String capacity) throws RecordException {
@@ -253,15 +272,25 @@ public class Model extends Observable implements IModel {
         Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
         Season season = FootballSystem.getInstance().getSeasonDB().getAllSeasons().get(seasonYear);
         try {
-            int capa = Integer.parseInt(capacity);
-            if (capa < 0) {
-                throw new RecordException("please insert valid capacity. only integer greater then 0");
+            if (!capacity.isEmpty()) {
+                int capa = Integer.parseInt(capacity);
+                if (capa < 0) {
+                    throw new RecordException("please insert valid capacity. only integer greater then 0");
+                }
             }
         } catch (Exception e) {
             throw new RecordException("please insert valid capacity. only integer greater then 0");
         }
-        teamOwner.editFieldDetails(team, season, fieldName, city,
-                capacity);
+        try {
+            teamOwner.editFieldDetails(team, season, fieldName, city,
+                    capacity);
+        } catch (Exception e) {
+            String cause = e.getMessage();
+            throw new RecordException(cause);
+        }
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
     }
 
     /**
@@ -494,7 +523,7 @@ public class Model extends Observable implements IModel {
      * @return true for success, false for failure
      */
     @Override
-    public boolean defineGameSchedulingPolicy(String policy, String leagueName, String seasonYear) throws RecordException, Exception {
+    public boolean defineGameSchedulingPolicy(String policy, String leagueName, String seasonYear) throws RecordException {
 
         // Only Representative is allowed to define a policy.
         if (!(user instanceof RepresentativeFootballAssociation))
@@ -508,31 +537,14 @@ public class Model extends Observable implements IModel {
         // Set requested policy
         switch (policy) {
             case "Regular Schedule Policy":
-                try {
-                    repUser.SetGamesAssigningPolicy(new SimpleGamesAssigningPolicy(), league, season);
-                    runGameSchedulingAlgorithm(leagueName,seasonYear);
-
-                } catch (OperationNotSupportedException e) {
-                    // TODO: 5/26/2020 handle exc
-                    e.printStackTrace();
-                }
-
-
+                repUser.SetGamesAssigningPolicy(new SimpleGamesAssigningPolicy(), league, season);
+                runGameSchedulingAlgorithm(leagueName, seasonYear);
                 break;
-
             case "One Round Schedule Policy":
-                try {
-                    repUser.SetGamesAssigningPolicy(new OneRoundGamesAssigningPolicy(), league, season);
-                } catch (OperationNotSupportedException e) {
-                    // TODO: 5/26/2020 handle exc
-                    throw new RecordException(e.getMessage());
-
-                }
+                repUser.SetGamesAssigningPolicy(new OneRoundGamesAssigningPolicy(), league, season);
                 break;
-
             default:
                 throw new RecordException("You have to choose policy");
-
         }
         return true;
     }
@@ -582,7 +594,7 @@ public class Model extends Observable implements IModel {
      * @return true for success, false for failure
      */
     @Override
-    public boolean runGameSchedulingAlgorithm(String leagueName, String seasonYear) throws Exception {
+    public boolean runGameSchedulingAlgorithm(String leagueName, String seasonYear) throws RecordException {
 
         // Only Representative is allowed to define a policy.
         if (!(user instanceof RepresentativeFootballAssociation))
@@ -591,7 +603,7 @@ public class Model extends Observable implements IModel {
         Season season = FootballSystem.getInstance().getSeasonDB().getAllSeasons().get(seasonYear);
         League league = FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(leagueName);
 
-        repUser.activateGamesAssigning(league,season);
+        repUser.activateGamesAssigning(league, season);
 
 
         return true;
@@ -610,21 +622,16 @@ public class Model extends Observable implements IModel {
      */
     @Override
     public boolean addEvent(int gameID, String eventType, String description) throws RecordException {
-
         // Only Referee is allowed to add an event.
         if (!(user instanceof Referee)) {
             throw new RecordException("You dont have have permission to add event");
         }
-
         ValidateObject.getValidatedGame(gameID);
-
         Referee referee = (Referee) user;
-        try {
-            referee.addEventToAssignedGame(gameID, EEventType.valueOf(eventType), description);
-        } catch (Exception e) {
-            String cause = e.getMessage();
-            throw new RecordException(cause);
-        }
+        referee.addEventToAssignedGame(gameID, EEventType.valueOf(eventType), description);
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
         return true;
     }
 
@@ -728,8 +735,7 @@ public class Model extends Observable implements IModel {
         Referee referee = (Referee) user;
         try {
             referee.removeEventsAfterGameOver(gameID, eventIndex);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
@@ -792,16 +798,18 @@ public class Model extends Observable implements IModel {
 
     public StringBuilder getAllTeams() throws RecordException {
         StringBuilder answer = new StringBuilder();
-        TeamDB teamDB = FootballSystem.getInstance().getTeamDB();
-        if (teamDB != null) {
-            HashMap<String, Team> teamHashMap = teamDB.getAllTeams();
-            if (teamHashMap != null && teamHashMap.size() > 0) {
-                fillAnswer(answer, teamHashMap.keySet());
-            } else {
-                throw new RecordException("There is no teams at the DB");
+        if (user instanceof TeamOwner) {
+            TeamOwner teamOwner = (TeamOwner) user;
+            List<AdditionalInfo> additionalInfos = teamOwner.getAdditionalInfo();
+            Set<String> teamsByOwner = new HashSet<>();
+            for (AdditionalInfo a :
+                    additionalInfos) {
+                teamsByOwner.add(a.getTeam().getName());
             }
-        } else {
-            throw new RecordException("Team DB does not exits");
+            if (teamsByOwner.size() == 0) {
+                throw new RecordException("You are not owing any team!");
+            }
+            fillAnswer(answer, teamsByOwner);
         }
         return answer;
     }
@@ -870,6 +878,102 @@ public class Model extends Observable implements IModel {
         } else {
             throw new RecordException("Season DB does not exits");
         }
+        return answer;
+    }
+
+    public StringBuilder getCoachesForTeamAtSeason(String teamName, String seasonYear) throws RecordException {
+        StringBuilder answer = new StringBuilder();
+        Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
+        AdditionalInfo additionalInfo = team.getAdditionalInfoWithSeasons().get(seasonYear);
+        if (additionalInfo != null) {
+            Set<String> coachSet = additionalInfo.getCoaches();
+            if (coachSet != null) {
+                fillAnswer(answer, coachSet);
+            } else {
+                throw new RecordException("There is no coaches at the team " + teamName + " at season " + seasonYear);
+            }
+        }
+        return answer;
+    }
+
+    public StringBuilder getPlayersForTeamAtSeason(String teamName, String seasonYear) throws RecordException {
+        StringBuilder answer = new StringBuilder();
+        Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
+        AdditionalInfo additionalInfo = team.getAdditionalInfoWithSeasons().get(seasonYear);
+        if (additionalInfo != null) {
+            Set<String> playerSet = additionalInfo.getPlayers();
+            if (playerSet != null) {
+                fillAnswer(answer, playerSet);
+            } else {
+                throw new RecordException("There is no players at the team " + teamName + " at season " + seasonYear);
+            }
+        }
+        return answer;
+    }
+
+    public StringBuilder getTeamManagersForTeamAtSeason(String teamName, String seasonYear) throws RecordException {
+        StringBuilder answer = new StringBuilder();
+        Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
+        AdditionalInfo additionalInfo = team.getAdditionalInfoWithSeasons().get(seasonYear);
+        if (additionalInfo != null) {
+            Set<String> teamManagerSet = additionalInfo.getTeamManagersHashSet();
+            if (teamManagerSet != null) {
+                fillAnswer(answer, teamManagerSet);
+            } else {
+                throw new RecordException("There is no Team Managers at the team " + teamName + " at season " + seasonYear);
+            }
+        }
+        return answer;
+    }
+
+    public StringBuilder getFieldsForTeamAtSeason(String teamName, String seasonYear) throws RecordException {
+        StringBuilder answer = new StringBuilder();
+        Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
+        if (team != null) {
+            Set<String> fieldSet = team.getFields().keySet();
+            if (fieldSet != null) {
+                fillAnswer(answer, fieldSet);
+            } else {
+                throw new RecordException("There is no Fields at the team " + teamName + " at season " + seasonYear);
+            }
+        }
+        return answer;
+    }
+
+    public StringBuilder getGameIds() throws RecordException {
+        StringBuilder answer = new StringBuilder();
+        if (user instanceof Referee) {
+            Referee rep = (Referee) user;
+            List<Game> games = rep.getMyGames();
+            Set<String> gameSet = new HashSet<>();
+            for (Game g :
+                    games) {
+                gameSet.add(String.valueOf(g.getGID()));
+            }
+            if (gameSet.size() == 0) {
+                throw new RecordException("You are not judging any game!");
+            }
+            fillAnswer(answer, gameSet);
+        }
+        return answer;
+
+    }
+
+    public StringBuilder checkNotification() throws RecordException {
+        HashMap<Integer, String[]> notification = user.getPendingNotifications();
+        if(notification.size() == 0){
+            throw new RecordException("None");
+        }
+        StringBuilder answer = new StringBuilder();
+        Collection <String[]> strings = notification.values();
+        HashSet notifi = new HashSet();
+        for (String [] array :strings) {
+            for (int i = 0; i < array.length; i++) {
+                notifi.add(array[i]);
+            }
+        }
+        fillAnswer(answer, notifi);
+        user.clearNotification();
         return answer;
     }
 }

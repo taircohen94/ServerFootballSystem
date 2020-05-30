@@ -692,7 +692,7 @@ public class TeamOwner extends Fan {
         // if the user exist
         if (FootballSystem.getInstance().existFanByUserName(userName)) {
             // check if this user name is coaching at the team
-            if (additionalInfoToSearch.getCoaches().contains(userName)) {
+            if (additionalInfoToSearch.getPlayers().contains(userName)) {
                 Player player = (Player) FootballSystem.getInstance().getFanByUserName(userName);
                 if (firstName != null && !firstName.isEmpty()) {
                     player.setfName(firstName);

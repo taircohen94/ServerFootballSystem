@@ -4,12 +4,16 @@ import DAL.JDBCConnector;
 import Server.Strategies.IServerStrategy;
 import org.junit.rules.Timeout;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.TimerTask;
 
 public class Server {
     private int port;
@@ -25,33 +29,18 @@ public class Server {
 
     public void start() {
         runServer();
-//        new Thread(() -> {
-//            runServer();
-//        }).start();
-        //new Thread(this::runServer).start();
     }
 
     private void runServer() {
         try {
-            int counter = 0;
             ServerSocket serverSocket = new ServerSocket(port);
             serverSocket.setSoTimeout(listeningInterval);
             while (!stop) {
                 try {
-                    counter++;
                     Socket clientSocket = serverSocket.accept(); // blocking call
                     handleClient(clientSocket);
-//                    new Thread(() -> {
-//                        handleClient(clientSocket);
-//                    }).start();
                 } catch (SocketTimeoutException e) {
 
-                }
-                if(counter == 1000){
-                    JDBCConnector jdbcConnector = new JDBCConnector();
-                    jdbcConnector.connectDBSaveData();
-                    jdbcConnector.connectDBUploadData();
-                    counter = 0;
                 }
             }
             serverSocket.close();

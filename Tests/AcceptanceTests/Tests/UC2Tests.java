@@ -1,5 +1,6 @@
 package AcceptanceTests.Tests;
 import AcceptanceTests.DataObjects.TeamDetails;
+import AcceptanceTests.DataObjects.UserDetails;
 import AcceptanceTests.SystemOperations.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,9 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class UC2Tests {
     ISystemOperationsBridge systemOperations;
     TeamDetails registeredTeam;
+    UserDetails teamOwner;
+
     @Before
     public void Setup(){
         systemOperations = new RealSystemOperations();
+        teamOwner = systemOperations.getRegisteredTeamOwnerForTest();
         registeredTeam = systemOperations.getRegisteredTeamForTest();
     }
 
