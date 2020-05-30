@@ -134,10 +134,10 @@ public class AdditionalInfo {
         if (!players.contains(player)) {
             players.add(player);
             // Write to the log
-            Logger.getInstance().addActionToLogger(dateLog + " " + now + ": Player "+player+ "was added to the team: "+team.getName()+".");
+            Logger.getInstance().addActionToLogger(dateLog + " " + now + ": Player "+player+ " was added to the team: "+team.getName()+".");
             return true;
         }
-        Logger.getInstance().addErrorToLogger(dateLog + " " + now + ":Adding Player "+player+ "was failed to the team: "+team.getName()+".");
+        Logger.getInstance().addErrorToLogger(dateLog + " " + now + ":Adding Player "+player+ " was failed to the team: "+team.getName()+".");
         return false;
     }
 
@@ -158,7 +158,7 @@ public class AdditionalInfo {
             coaches.add(coach);
             // Write to the log
 
-            Logger.getInstance().addActionToLogger(dateLog + " " + now + ": Coach "+coach+ "was added to the team: "+team.getName()+".");
+            Logger.getInstance().addActionToLogger(dateLog + " " + now + ": Coach "+coach+ " was added to the team: "+team.getName()+".");
             return true;
         }
         Logger.getInstance().addErrorToLogger(dateLog + " " + now + ": Coach adding was failed: "+coach+ "was failed to add to the team: "+team.getName()+".");
@@ -198,7 +198,7 @@ public class AdditionalInfo {
         }
         // Write to the log
 
-        Logger.getInstance().addActionToLogger(" Manager "+teamManager+ "was added to the team: "+team.getName()+".");
+        Logger.getInstance().addActionToLogger(" Manager "+teamManager+ " was added to the team: "+team.getName()+".");
         return true;
     }
 
@@ -232,7 +232,7 @@ public class AdditionalInfo {
             this.teamOwnersHashSet.add(teamOwner);
         }
         // Write to the log
-        Logger.getInstance().addActionToLogger("Team Owner  "+teamOwner+ "was added to the team: "+team.getName()+".");
+        Logger.getInstance().addActionToLogger("Team Owner  "+teamOwner+ " was added to the team: "+team.getName()+".");
         return true;
     }
 
