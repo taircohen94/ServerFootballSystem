@@ -1,16 +1,13 @@
 package Users;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import AssociationAssets.EEventType;
 import AssociationAssets.EScheduleOrPlaceEvent;
 import AssociationAssets.Game;
-import System.*;
+import DAL.JDBCConnector;
+import System.Complains;
+
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * A fan of a sports club, national team, team or athlete,
@@ -220,12 +217,8 @@ public class Fan extends Guest implements IFan, Serializable {
         game.delete(this);
     }
 
-    public void updateGame(String description, EEventType eventType) {
-        if (this.status == EStatus.ONLINE) {
-            // TODO: 29/04/2020 pop up message
-        } else {
-            pendingNotifications.put(notificationID++, new String[]{description, eventType.name()});
-        }
+    public void updateGame(int gid, String description, EEventType eventType) {
+        pendingNotifications.put(notificationID++, new String[]{"Game Id: " + gid, "Event: " + eventType.name(), " " + description, "0"});
     }
 
     /**
@@ -354,8 +347,17 @@ public class Fan extends Guest implements IFan, Serializable {
         }
     }
 
-    public void addNotification(int nID, String [] notification) {
-        pendingNotifications.put(nID,notification);
+    public void addNotification(int nID, String[] notification) {
+        pendingNotifications.put(nID, notification);
+    }
+
+    public void clearNotification() {
+        for (String [] array: this.pendingNotifications.values()) {
+            array[3] = "1";
+        }
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
     }
 
 
