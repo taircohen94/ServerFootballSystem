@@ -81,11 +81,28 @@ public class ServerSender implements IServerStrategy {
                 case "defineGameSchedulingPolicy":
                     defineGameSchedulingPolicy(toClient,array);
                     break;
+                case "checkNotification":
+                    checkNotification(toClient);
+                    break;
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
+
+
+    private void checkNotification(ObjectOutputStream toClient) throws IOException {
+        try {
+            StringBuilder answer = model.checkNotification();
+            toClient.writeObject(answer);
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+
+
 
     private void defineScoreTablePolicy(ObjectOutputStream toClient, String[] array) throws IOException {
         try {

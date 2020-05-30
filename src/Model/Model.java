@@ -1,6 +1,7 @@
 package Model;
 
 import AssociationAssets.*;
+import DAL.JDBCConnector;
 import DB.FieldDB;
 import DB.LeagueDB;
 import DB.SeasonDB;
@@ -12,7 +13,6 @@ import System.FootballSystem;
 import Users.*;
 import javafx.util.Pair;
 
-import javax.naming.OperationNotSupportedException;
 import javax.security.auth.login.FailedLoginException;
 import java.util.*;
 
@@ -184,10 +184,9 @@ public class Model extends Observable implements IModel {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
-        //send the request to the RFA
-        //   String request = "";
-        //    notifyAll();
-        // notifyObservers(request);
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
         return true;
 
     }
@@ -206,6 +205,9 @@ public class Model extends Observable implements IModel {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
     }
 
     public void editCoachDetails(String teamName, String seasonYear, String userName, String firstName, String lastName, String training, String role) throws RecordException {
@@ -233,6 +235,9 @@ public class Model extends Observable implements IModel {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
     }
 
     public void editPlayerDetails(String teamName, String seasonYear, String userName, String firstName, String lastName, String role) throws RecordException {
@@ -254,6 +259,9 @@ public class Model extends Observable implements IModel {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
     }
 
     public void editFieldDetails(String teamName, String seasonYear, String fieldName, String city, String capacity) throws RecordException {
@@ -280,6 +288,9 @@ public class Model extends Observable implements IModel {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
     }
 
     /**
@@ -611,21 +622,16 @@ public class Model extends Observable implements IModel {
      */
     @Override
     public boolean addEvent(int gameID, String eventType, String description) throws RecordException {
-
         // Only Referee is allowed to add an event.
         if (!(user instanceof Referee)) {
             throw new RecordException("You dont have have permission to add event");
         }
-
         ValidateObject.getValidatedGame(gameID);
-
         Referee referee = (Referee) user;
-        try {
-            referee.addEventToAssignedGame(gameID, EEventType.valueOf(eventType), description);
-        } catch (Exception e) {
-            String cause = e.getMessage();
-            throw new RecordException(cause);
-        }
+        referee.addEventToAssignedGame(gameID, EEventType.valueOf(eventType), description);
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
         return true;
     }
 
@@ -951,5 +957,23 @@ public class Model extends Observable implements IModel {
         }
         return answer;
 
+    }
+
+    public StringBuilder checkNotification() throws RecordException {
+        HashMap<Integer, String[]> notification = user.getPendingNotifications();
+        if(notification.size() == 0){
+            throw new RecordException("None");
+        }
+        StringBuilder answer = new StringBuilder();
+        Collection <String[]> strings = notification.values();
+        HashSet notifi = new HashSet();
+        for (String [] array :strings) {
+            for (int i = 0; i < array.length; i++) {
+                notifi.add(array[i]);
+            }
+        }
+        fillAnswer(answer, notifi);
+        user.clearNotification();
+        return answer;
     }
 }
