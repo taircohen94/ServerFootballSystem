@@ -961,19 +961,38 @@ public class Model extends Observable implements IModel {
 
     public StringBuilder checkNotification() throws RecordException {
         HashMap<Integer, String[]> notification = user.getPendingNotifications();
-        if(notification.size() == 0){
+        if (notification.size() == 0) {
             throw new RecordException("None");
         }
         StringBuilder answer = new StringBuilder();
-        Collection <String[]> strings = notification.values();
+        Collection<String[]> strings = notification.values();
         HashSet notifi = new HashSet();
-        for (String [] array :strings) {
+        for (String[] array : strings) {
             for (int i = 0; i < array.length; i++) {
                 notifi.add(array[i]);
             }
         }
         fillAnswer(answer, notifi);
         user.clearNotification();
+        return answer;
+    }
+
+    public StringBuilder availableSeasonsForLeague(String league) throws RecordException{
+        StringBuilder answer = new StringBuilder();
+        League league1 = FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(league);
+        if (league1 != null) {
+            Map<String, SeasonLeagueBinder> seasonLeagueBinderMap = league1.getSeasonBinders();
+            if (seasonLeagueBinderMap != null) {
+                Set<String> seasonSet = seasonLeagueBinderMap.keySet();
+                fillAnswer(answer, seasonSet);
+            }
+            else{
+                throw new RecordException("There isn't any season at the league");
+            }
+
+        } else {
+            throw new RecordException("The league is not exist");
+        }
         return answer;
     }
 }
