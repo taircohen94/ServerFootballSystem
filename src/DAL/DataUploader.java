@@ -133,6 +133,7 @@ public class DataUploader {
                     allFans.put(username, fan);
                 }
 
+                fan = allFans.get(username);
                 // attach fan's notifications:
                 ResultSet notificationsSet = databaseManager.executeQuerySelect(
                         "select * from notifications where Username=\"" +username+"\" and seen=0;");
@@ -594,7 +595,6 @@ public class DataUploader {
                 e.printStackTrace();
             }
             team.setAwayGames(awayGames);
-
         }
     }
 
@@ -635,6 +635,10 @@ public class DataUploader {
                     String teamName = teamsSet.getString("name");
                     Team team = allTeams.get(teamName);
                     teams.put(teamName, team);
+
+                    // add the team to the league's table
+                    int teamPoints= teamsSet.getInt("leagueTablePoints");
+                    binder.getLeagueTable().put(teamName,teamPoints);
                 }
                 binder.addTeamsToLeague(teams);
 

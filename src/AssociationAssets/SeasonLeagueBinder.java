@@ -22,8 +22,6 @@ public class SeasonLeagueBinder {
     GamesAssigningPolicy assigningPolicy;// not in the constructor
 
 
-
-
     public SeasonLeagueBinder(Season season, League league) {
         this.season = season;
         this.league = league;
