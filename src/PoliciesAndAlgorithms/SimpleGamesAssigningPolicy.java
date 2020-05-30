@@ -63,7 +63,7 @@ public class SimpleGamesAssigningPolicy extends GamesAssigningPolicy {
         int[][] combinations = getCombinations(teamsCount,numberOfGames);
         int weeks = 0;
         if(evenTeamNumber){
-            int gidHelper = 1;
+            int gidHelper = 500;
             //even team count
             for (int i = 0; i < numberOfGames/4; i++) {
                 //for each week of games
@@ -102,7 +102,7 @@ public class SimpleGamesAssigningPolicy extends GamesAssigningPolicy {
 
        else{
            //odd team count
-            int gidHelper = 1;
+            int gidHelper = 500;
             for (int i = 0; i < (numberOfGames/((teamsCount-1)/2))/2; i++) {
                 //for each week of games
                 int[][] teamsOfGame = getMatchParticipants(teams,combinations,teamsCount/2);

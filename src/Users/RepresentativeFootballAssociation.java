@@ -211,6 +211,11 @@ public class RepresentativeFootballAssociation extends Fan  {
             HashMap<Integer, Game> games = binder.getAssigningPolicy().executePolicy(teams,refs,LocalDate.now(), season, league);
             //adding the games to the league
             binder.addGamesToLeague(games);
+            for (Game game: games.values()) {
+                if(game != null) {
+                    FootballSystem.getInstance().addGameToDB(game);
+                }
+            }
         }
     }
 
