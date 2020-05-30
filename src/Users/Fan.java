@@ -142,7 +142,7 @@ public class Fan extends Guest implements IFan ,Serializable {
                 ": " + fName + '\'' +
                 " " + lName + '\'' +
                 ", my status is" + status +
-                ", my search History is " + searchHistory ;
+                ", my search History is " + searchHistory.toString() ;
     }
 
     /**

@@ -268,7 +268,7 @@ public class Referee extends Fan {
             }
             else{
                 Logger.getInstance().addErrorToLogger("Referee export report of the game was failed. " + getUserName() + " GameID: " + gameID);
-                throw new Exception("This game isn't exists");
+                throw new Exception("You are not assign to this game");
             }
         }
         else {

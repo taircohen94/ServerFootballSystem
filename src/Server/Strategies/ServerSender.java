@@ -20,30 +20,214 @@ public class ServerSender implements IServerStrategy {
             StringBuilder clientCommand = (StringBuilder) fromClient.readObject();
             String command = clientCommand.toString();
             String[] array = command.split(",");
-            if (array[0].equals("Login")) {
-                LoginServer(toClient, array);
-            } else if (array[0].equals("getAllTeams")) {
-                getAllTeamsServer(toClient);
-            } else if (array[0].equals("getAllSeasons")) {
-                getAllSeasonsServer(toClient);
-            } else if (array[0].equals("availableSeasonsForTeam")) {
-                availableSeasonsForTeamServer(toClient, array[1]);
-            } else if (array[0].equals("getAllLeagues")) {
-                getAllLeaguesServer(toClient);
-            } else if (array[0].equals("getAllFields")) {
-                getAllFieldsServer(toClient);
-            } else if (array[0].equals("createTeam")) {
-                createTeamServer(toClient,array);
+            switch (array[0]) {
+                case "Login":
+                    LoginServer(toClient, array);
+                    break;
+                case "getAllTeams":
+                    getAllTeamsServer(toClient);
+                    break;
+                case "getAllSeasons":
+                    getAllSeasonsServer(toClient);
+                    break;
+                case "availableSeasonsForTeam":
+                    availableSeasonsForTeamServer(toClient, array[1]);
+                    break;
+                case "getAllLeagues":
+                    getAllLeaguesServer(toClient);
+                    break;
+                case "getAllFields":
+                    getAllFieldsServer(toClient);
+                    break;
+                case "createTeam":
+                    createTeamServer(toClient, array);
+                    break;
+                case "getCoachesForTeamAtSeason":
+                    getCoachesForTeamAtSeason(toClient, array);
+                    break;
+                case "getTeamManagersForTeamAtSeason":
+                    getTeamManagersForTeamAtSeason(toClient, array);
+                    break;
+                case "getPlayersForTeamAtSeason":
+                    getPlayersForTeamAtSeason(toClient, array);
+                    break;
+                case "getFieldsForTeamAtSeason":
+                    getFieldsForTeamAtSeason(toClient, array);
+                    break;
+                case "editCoachDetails":
+                    editCoachDetails(toClient, array);
+                    break;
+                case "editTeamManagerDetails":
+                    editTeamManagerDetails(toClient, array);
+                    break;
+                case "editPlayerDetails":
+                    editPlayerDetails(toClient, array);
+                    break;
+                case "editFieldDetails":
+                    editFieldDetails(toClient, array);
+                    break;
+                case "getGameIds":
+                    getGameIds(toClient);
+                    break;
+                case "exportGameReport":
+                    exportGameReport(toClient,array);
+                    break;
+                case "addEvent":
+                    addEvent(toClient,array);
+                    break;
+                case "defineScoreTablePolicy":
+                    defineScoreTablePolicy(toClient,array);
+                    break;
+                case "defineGameSchedulingPolicy":
+                    defineGameSchedulingPolicy(toClient,array);
+                    break;
             }
-
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    private void createTeamServer(ObjectOutputStream toClient, String[] array) throws IOException{
+    private void defineScoreTablePolicy(ObjectOutputStream toClient, String[] array) throws IOException {
         try {
-            if(model.createTeam(array[1],array[2],array[3],array[4])){
+            model.defineScoreTablePolicy(array[1], array[2], array[3]);
+            toClient.writeObject(new StringBuilder("Ok"));
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+
+    private void defineGameSchedulingPolicy(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            model.defineGameSchedulingPolicy(array[1], array[2], array[3]);
+            toClient.writeObject(new StringBuilder("Ok"));
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+
+    private void addEvent(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            model.addEvent(Integer.parseInt(array[1]), array[2], array[3]);
+            toClient.writeObject(new StringBuilder("Ok"));
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+
+    private void exportGameReport(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            model.exportGameReport(Integer.parseInt(array[1]), array[2], array[3]);
+            toClient.writeObject(new StringBuilder("Ok"));
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+    private void getGameIds(ObjectOutputStream toClient) throws IOException {
+        try {
+            StringBuilder answer = model.getGameIds();
+            toClient.writeObject(answer);
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+
+    private void editFieldDetails(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            model.editFieldDetails(array[1], array[2], array[3], array[4],
+                    array[5]);
+            toClient.writeObject(new StringBuilder("Ok"));
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+    private void editPlayerDetails(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            model.editPlayerDetails(array[1], array[2], array[3], array[4],
+                    array[5], array[6]);
+            toClient.writeObject(new StringBuilder("Ok"));
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+    private void editCoachDetails(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            model.editCoachDetails(array[1], array[2], array[3], array[4],
+                    array[5], array[6], array[7]);
+            toClient.writeObject(new StringBuilder("Ok"));
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+    private void editTeamManagerDetails(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            model.editTeamManagerDetails(array[1], array[2], array[3], array[4],
+                    array[5]);
+            toClient.writeObject(new StringBuilder("Ok"));
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+    private void getFieldsForTeamAtSeason(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            StringBuilder answer = model.getFieldsForTeamAtSeason(array[1], array[2]);
+            toClient.writeObject(answer);
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+    private void getPlayersForTeamAtSeason(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            StringBuilder answer = model.getPlayersForTeamAtSeason(array[1], array[2]);
+            toClient.writeObject(answer);
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+    private void getTeamManagersForTeamAtSeason(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            StringBuilder answer = model.getTeamManagersForTeamAtSeason(array[1], array[2]);
+            toClient.writeObject(answer);
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+    private void getCoachesForTeamAtSeason(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            StringBuilder answer = model.getCoachesForTeamAtSeason(array[1], array[2]);
+            toClient.writeObject(answer);
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
+        }
+    }
+    private void createTeamServer(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            if (model.createTeam(array[1], array[2], array[3], array[4])) {
                 toClient.writeObject(new StringBuilder("Ok"));
                 toClient.flush();
             }
@@ -52,7 +236,6 @@ public class ServerSender implements IServerStrategy {
             toClient.flush();
         }
     }
-
     private void getAllFieldsServer(ObjectOutputStream toClient) throws IOException {
         try {
             StringBuilder answer = model.getAllFields();
@@ -63,7 +246,6 @@ public class ServerSender implements IServerStrategy {
             toClient.flush();
         }
     }
-
     private void getAllLeaguesServer(ObjectOutputStream toClient) throws IOException {
         try {
             StringBuilder answer = model.getAllLeagues();
@@ -74,13 +256,11 @@ public class ServerSender implements IServerStrategy {
             toClient.flush();
         }
     }
-
     private void availableSeasonsForTeamServer(ObjectOutputStream toClient, String teamName) throws IOException {
         StringBuilder answer = model.availableSeasonsForTeam(teamName);
         toClient.writeObject(answer);
         toClient.flush();
     }
-
     private void getAllSeasonsServer(ObjectOutputStream toClient) throws IOException {
         try {
             StringBuilder answer = model.getAllSeasons();
@@ -91,22 +271,21 @@ public class ServerSender implements IServerStrategy {
             toClient.flush();
         }
     }
-
     private void getAllTeamsServer(ObjectOutputStream toClient) throws IOException {
         try {
             StringBuilder answer = model.getAllTeams();
             toClient.writeObject(answer);
             toClient.flush();
         } catch (RecordException e) {
-            toClient.writeObject(new StringBuilder(e.getMessage()));
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
             toClient.flush();
         }
     }
-
     private void LoginServer(ObjectOutputStream toClient, String[] array) throws IOException {
         try {
             if (model.login(array[1], array[2])) {
-                toClient.writeObject(new StringBuilder("Ok"));
+                String userType = model.UserType();
+                toClient.writeObject(new StringBuilder("Ok,"+userType));
                 toClient.flush();
             }
         } catch (FailedLoginException e) {
