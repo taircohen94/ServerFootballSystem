@@ -81,17 +81,11 @@ public class DataUploader {
     public void uploadSystemAssets() {
         //System.out.println("start upload system assets");
         uploadFields();
-        //System.out.println("uploaded Fields");
         uploadLeagues();
-        //System.out.println("uploaded Leagues");
         uploadSeasons();
-        //System.out.println("uploaded Seasons");
         uploadTeams();
-        //System.out.println("uploaded Teams");
         uploadGames();
-        //System.out.println("uploaded Games");
         attachTeamsGames();
-        //System.out.println("uploaded TeamsGames");
 
         uploadAdditionalInfo();
         uploadSeasonLeagueBinders();
@@ -125,16 +119,6 @@ public class DataUploader {
      */
     private void uploadFans() {
         ResultSet resultSet = databaseManager.executeQuerySelect("SELECT * FROM fans");
-
-//        ResultSet resultSet = databaseManager.executeQuerySelect("    " +
-//                "SELECT * FROM fans, teamowner, coach, player, referee, rfa, systemmanager, teammanager\n" +
-//                "    WHERE fans.Username = teamowner.username\n" +
-//                "    AND fans.Username<> coach.Username\n" +
-//                "    AND fans.Username<> player.Username\n" +
-//                "    AND fans.Username<> referee.Username\n" +
-//                "    AND fans.Username<> rfa.Username\n" +
-//                "    AND fans.Username<> systemmanager.Username\n" +
-//                "    AND fans.Username<> teammanager.Username");
         try {
             while (resultSet.next()) {
                 String username = resultSet.getString("Username");
@@ -150,7 +134,9 @@ public class DataUploader {
                 fan.setStatus(status);
 
                 // add to fans map
-                allFans.put(username, fan);
+                if(!allFans.containsKey(username)) {
+                    allFans.put(username, fan);
+                }
 
             }
         } catch (SQLException e) {
@@ -424,18 +410,25 @@ public class DataUploader {
                 String teamName = resultSet.getString("Teams_name");
                 String seasonYear = resultSet.getString("Seasons_Year");
 
-                AdditionalInfo additionalInfo = new AdditionalInfo(allTeams.get(teamName), allSeasons.get(seasonYear));
+                Team team= allTeams.get(teamName);
+                Season season= allSeasons.get(seasonYear);
+                AdditionalInfo additionalInfo = new AdditionalInfo(team,season );
 
-                // attach owners
-
+                //region Attach owners
                 ResultSet ownersSet = databaseManager.executeQuerySelect("" +
                         "SELECT * FROM additionalinfo_has_teamowner\n" +
                         "WHERE AdditionalInfo_Teams_name= \"" + teamName + "\" \n" +
                         "AND AdditionalInfo_Seasons_Year = \"" + seasonYear + "\";");
                 ArrayList<String> owners = new ArrayList<>();
+                HashSet<String> teamOwnersHashSet= new HashSet<>();
                 while (ownersSet.next()) {
                     String ownerUsername = ownersSet.getString("TeamOwner_Username");
                     owners.add(ownerUsername);
+                    teamOwnersHashSet.add(ownerUsername);
+
+                    // add additional info to team owner's object
+                    TeamOwner teamOwner= allTeamOwners.get(ownerUsername);
+                    teamOwner.addAdditionalInfo(additionalInfo);
                 }
                 // select nominating team owner:
                 String nominatingOwner = owners.get(0);
@@ -443,22 +436,32 @@ public class DataUploader {
                 HashMap<String, ArrayList<String>> ownersMap = new HashMap<>();
                 ownersMap.put(nominatingOwner, owners);
                 additionalInfo.setOwners(ownersMap);
+                additionalInfo.setTeamOwnersHashSet(teamOwnersHashSet);
+                //endregion
 
-                // attach managers
+                //region attach managers
                 ResultSet managersSet = databaseManager.executeQuerySelect("" +
                         "SELECT * FROM teammanager_has_additionalinfo\n" +
                         "WHERE AdditionalInfo_Teams_name= \"" + teamName + "\" \n" +
                         "AND AdditionalInfo_Seasons_Year = \"" + seasonYear + "\";");
                 ArrayList<String> managers = new ArrayList<>();
+                HashSet<String> teamManagersHashSet = new HashSet<>();
                 while (managersSet.next()) {
                     String username = managersSet.getString("TeamManager_Username");
                     managers.add(username);
+                    teamManagersHashSet.add(username);
+
+                    // add additional info to team managers's object
+                    TeamManager teamManager= allTeamManagers.get(username);
+                    teamManager.addAdditionalInfo(additionalInfo);
                 }
                 HashMap<String, ArrayList<String>> managersMap = new HashMap<>();
                 managersMap.put(nominatingOwner, managers);
                 additionalInfo.setManagers(managersMap);
+                additionalInfo.setTeamManagersHashSet(teamManagersHashSet);
+                //endregion
 
-                // attach coaches
+                //region attach coaches
                 ResultSet coachesSet = databaseManager.executeQuerySelect("" +
                         "SELECT * FROM coach_has_additionalinfo\n" +
                         "WHERE AdditionalInfo_Teams_name= \"" + teamName + "\" \n" +
@@ -467,10 +470,15 @@ public class DataUploader {
                 while (coachesSet.next()) {
                     String username = coachesSet.getString("Coach_Username");
                     coaches.add(username);
+
+                    // add additional info to team coach's object
+                    Coach coach= allCoaches.get(username);
+                    coach.addAdditionalInfo(additionalInfo);
                 }
                 additionalInfo.setCoaches(coaches);
+                //endregion
 
-                // attach players
+                //region attach players
                 ResultSet playersSet = databaseManager.executeQuerySelect("" +
                         "SELECT * FROM player_has_additionalinfo\n" +
                         "WHERE AdditionalInfo_Teams_name= \"" + teamName + "\" \n" +
@@ -479,9 +487,18 @@ public class DataUploader {
                 while (playersSet.next()) {
                     String username = playersSet.getString("Player_Username");
                     players.add(username);
+
+                    // add additional info to team player's object
+                    Player player= allPlayers.get(username);
+                    player.addAdditionalInfo(additionalInfo);
                 }
                 additionalInfo.setPlayers(players);
+                //endregion
 
+                //region attach additionalInfoWithSeasons (Team class), teamAdditionalInfo (Season class)
+                team.getAdditionalInfoWithSeasons().put(seasonYear,additionalInfo);
+                season.getTeamAdditionalInfo().put(teamName,additionalInfo);
+                //endregion
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -699,8 +716,8 @@ public class DataUploader {
             while (resultSet.next()) {
                 int gid = resultSet.getInt("idGames");
                 String datestr = resultSet.getString("DateTime");
-                Time time = Time.valueOf(datestr.split(" ")[1]);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS");
+                Time time = Time.valueOf(datestr.split(" ")[1]+":00");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
                 java.util.Date cDate = dateFormat.parse(datestr);
                 int goalHost = resultSet.getInt("GoalHost");
                 int goalGuest = resultSet.getInt("GoalGuest");
@@ -726,13 +743,13 @@ public class DataUploader {
                     String username = refereesSet.getString("Referee_Username");
                     String role = refereesSet.getString("Game_Role");
                     switch (role) {
-                        case "main":
+                        case "MAIN":
                             main = allReferees.get(username);
                             break;
-                        case "side1":
+                        case "VAR":
                             side1 = allReferees.get(username);
                             break;
-                        case "side2":
+                        case "ASSISTANT":
                             side2 = allReferees.get(username);
                             break;
                     }
@@ -740,6 +757,10 @@ public class DataUploader {
 
                 Game game = new Game(cDate, time, field, host, guest, main, side1, side2, season, league);
                 game.setScore(goalHost, goalGuest);
+                game.setGID(gid);
+                main.addGame(game);
+                side1.addGame(game);
+                side2.addGame(game);
 
                 // TODO: game.setGID - consider fix on class game
 
@@ -752,7 +773,7 @@ public class DataUploader {
                     int eventID= eventsSet.getInt("EventID");
                     String eDateStr = eventsSet.getString("DateTime");
                     Time eTime = Time.valueOf(eDateStr.split(" ")[1]);
-                    SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
                     dFormat.setLenient(false);
                     java.util.Date eDate = dFormat.parse(eDateStr.split(" ")[0]);
                     String eventType= eventsSet.getString("EventType");

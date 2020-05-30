@@ -5,6 +5,7 @@ import AssociationAssets.Game;
 import AssociationAssets.League;
 import AssociationAssets.Season;
 import AssociationAssets.Team;
+import Model.RecordException;
 import Users.EReferee;
 import Users.Referee;
 
@@ -42,22 +43,23 @@ public class OneRoundGamesAssigningPolicy extends GamesAssigningPolicy {
      * @return hashmap of games, the key is the game ID
      * @throws Exception in case of not enough referees or null parameters or if games already assigned.
      */
-    public HashMap<Integer, Game> executePolicy(HashMap<String, Team> teams, Map<String, Referee> refs, LocalDate startDate, Season season, League league) throws Exception {
-        if(teams == null || refs == null || startDate == null || season == null || league == null) throw new Exception("At least one parameter is wrong");
-        if(gamesAssigned) throw new Exception("Games already assigned for this season");
+    public HashMap<Integer, Game> executePolicy(HashMap<String, Team> teams, Map<String, Referee> refs, LocalDate startDate, Season season, League league) throws RecordException {
+        if(teams == null || refs == null || startDate == null || season == null || league == null) throw new RecordException("At least one parameter is wrong");
+        if(gamesAssigned) throw new RecordException("Games already assigned for this season");
         HashMap <Integer,Game> games = new HashMap<>();
         int refereeCount = refs.size();
         int mainRefereeCount = countMainReferees(refs);
         int teamsCount = teams.size();
 
-        if(mainRefereeCount >= teamsCount/2) throw new Exception("There is not enough main referees, can't assign games");
-        else if(refereeCount-mainRefereeCount < teamsCount) throw new Exception("There is not enough side referees, can't assign games");
+        if(mainRefereeCount >= teamsCount/2) throw new RecordException("There is not enough main referees, can't assign games");
+        else if(refereeCount-mainRefereeCount < teamsCount) throw new RecordException("There is not enough side referees, can't assign games");
 
         Map<String, Referee> mainReferees = getMainReferees(refs);
         Map<String, Referee> otherRefs = getOtherReferees(refs);
         int numberOfGames = nChooseTwo(teamsCount);
         int mainRefWithExtraGame = (numberOfGames % mainRefereeCount);
         int otherRefWithExtraGame = (numberOfGames*2 % (refereeCount-mainRefereeCount));
+        int counterMinutes = 0;
         //String[] of team names
         String[] teamName = getNamesArray(teams);
         boolean evenTeamNumber = (teamsCount % 2 == 0);
@@ -69,6 +71,7 @@ public class OneRoundGamesAssigningPolicy extends GamesAssigningPolicy {
             for (int i = 0; i < numberOfGames/4; i++) {
                 //for each week of games
                 int[][] teamsOfGame = getMatchParticipants(teams,combinations,teamsCount/2);
+                counterMinutes = 0;
                 for (int j = 0; j <teamsCount/2; j++) {
                     //create all games of this round
                     Team host = teams.get(teamName[teamsOfGame[j][0]]);
@@ -81,8 +84,9 @@ public class OneRoundGamesAssigningPolicy extends GamesAssigningPolicy {
                     calendar.add(Calendar.DAY_OF_YEAR, weeks*7);
                     java.util.Date dateNew = calendar.getTime();
                     //first game between those teams
-                    Game game = new Game(dateNew,new Time(21,0,0),host.getMainField(),host,guest,mainRef,sideRef1,sideRef2,season,league);
+                    Game game = new Game(dateNew,new Time(21,counterMinutes,0),host.getMainField(),host,guest,mainRef,sideRef1,sideRef2,season,league);
                     int gid = gidHelper++;
+                    counterMinutes+=2;
                     game.setGID(gid);
                     games.put(gidCounter,game);
                 }
