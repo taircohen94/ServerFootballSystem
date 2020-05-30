@@ -628,10 +628,10 @@ public class TeamOwner extends Fan {
             // check if this user name is coaching at the team
             if (additionalInfoToSearch.getCoaches().contains(userName)) {
                 Coach coach = (Coach) FootballSystem.getInstance().getFanByUserName(userName);
-                if (firstName != null && !firstName.isEmpty()) {
+                if (!firstName.equals("null")) {
                     coach.setfName(firstName);
                 }
-                if (lastName != null && !lastName.isEmpty()) {
+                if (!lastName.equals("null")) {
                     coach.setlName(lastName);
                 }
                 if (eCoachRole != null) {
@@ -664,10 +664,10 @@ public class TeamOwner extends Fan {
             // check if this user name is coaching at the team
             if (additionalInfoToSearch.getTeamManagersHashSet().contains(userName)) {
                 TeamManager teamManager = (TeamManager) FootballSystem.getInstance().getFanByUserName(userName);
-                if (firstName != null && !firstName.isEmpty()) {
+                if (!firstName.equals("null")) {
                     teamManager.setfName(firstName);
                 }
-                if (lastName != null && !lastName.isEmpty()) {
+                if (!lastName.equals("null")) {
                     teamManager.setlName(lastName);
                 }
             } else {
@@ -694,10 +694,10 @@ public class TeamOwner extends Fan {
             // check if this user name is coaching at the team
             if (additionalInfoToSearch.getPlayers().contains(userName)) {
                 Player player = (Player) FootballSystem.getInstance().getFanByUserName(userName);
-                if (firstName != null && !firstName.isEmpty()) {
+                if (!firstName.equals("null")) {
                     player.setfName(firstName);
                 }
-                if (lastName != null && !lastName.isEmpty()) {
+                if (!lastName.equals("null")) {
                     player.setlName(lastName);
                 }
                 if (role != null) {
