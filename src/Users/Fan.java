@@ -219,7 +219,7 @@ public class Fan extends Guest implements IFan, Serializable {
 
     public void updateGame(int gid, String description, EEventType eventType) {
         pendingNotifications.put(notificationID++, new String[]{"Game Id: " + gid, "Event: " + eventType.name(), " " + description, "0"});
-    }
+        }
 
     /**
      * This method should receive a complain text (from the service layer)

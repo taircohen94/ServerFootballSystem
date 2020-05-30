@@ -181,6 +181,9 @@ public class Model extends Observable implements IModel {
             newTeam.setCurrentLeague(FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(leagueName));
             newTeam.addSeasonToTeam(season);
             League l = FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(leagueName);
+            HashMap<String,Team> teamHashMap = new HashMap();
+            teamHashMap.put(newTeam.getName(),newTeam);
+            l.addTeamsToLeague(seasonYear,teamHashMap);
         } catch (Exception e) {
             String cause = e.getMessage();
             throw new RecordException(cause);
@@ -968,13 +971,17 @@ public class Model extends Observable implements IModel {
         }
         StringBuilder answer = new StringBuilder();
         Collection<String[]> strings = notification.values();
-        HashSet notifi = new HashSet();
+        ArrayList<String> notifi = new ArrayList<>();
         for (String[] array : strings) {
             for (int i = 0; i < array.length; i++) {
                 notifi.add(array[i]);
             }
         }
-        fillAnswer(answer, notifi);
+        answer.append("Ok,");
+        for (String s : notifi) {
+            answer.append(s);
+            answer.append(",");
+        }
         user.clearNotification();
         return answer;
     }
