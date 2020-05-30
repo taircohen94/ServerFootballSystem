@@ -17,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 public class DataSave {
@@ -63,19 +64,12 @@ public class DataSave {
 
     public void saveAllData() {
         saveUsers();
-        //System.out.println("saved users");
         saveFields();
-        //System.out.println("saved fields");
         saveLeagues();
-        //System.out.println("saved Leagues");
         saveSeasons();
-        //System.out.println("saved seasons");
         saveTeams();
-        //System.out.println("saved teams");
         saveGames();
-        //System.out.println("saved games");
         saveAdditionalInfo();
-        //System.out.println("saved additionalInfo");
         saveSeasonLeagueBinders();
     }
 
@@ -92,20 +86,20 @@ public class DataSave {
     }
 
     private void saveSeasonLeagueBinders() {
-        PreparedStatement ps=null;
+        PreparedStatement ps = null;
         for (Season s : allSeasons.values()) {
             for (SeasonLeagueBinder binder : s.getLeagueBinders().values()) {
                 int scorePolicy = (binder.getScoreTablePolicy() instanceof RegularScorePolicy) ? 1 : 2;
                 int gamePolicy = (binder.getAssigningPolicy() instanceof SimpleGamesAssigningPolicy) ? 1 : 2;
-                String query=
+                String query =
                         "INSERT INTO \n" +
-                        "\tseasons_has_leagues(Seasons_Year, Leagues_Name, ScorePolicy, SchedulePolicy)\n" +
-                        "VALUES(?,?,?,?) " +
-                        "ON DUPLICATE KEY UPDATE " +
-                        "Seasons_Year=?," +
-                        "Leagues_Name=?," +
-                        "ScorePolicy=?," +
-                        "SchedulePolicy=?;";
+                                "\tseasons_has_leagues(Seasons_Year, Leagues_Name, ScorePolicy, SchedulePolicy)\n" +
+                                "VALUES(?,?,?,?) " +
+                                "ON DUPLICATE KEY UPDATE " +
+                                "Seasons_Year=?," +
+                                "Leagues_Name=?," +
+                                "ScorePolicy=?," +
+                                "SchedulePolicy=?;";
                 try {
                     ps = databaseManager.conn.prepareStatement(query); //compiling query in the DB
                     ps.setInt(1, Integer.parseInt(s.getYear()));
@@ -121,29 +115,28 @@ public class DataSave {
                     //System.out.println(ps.toString());
                     ps.executeUpdate();
                     databaseManager.conn.commit();
-                }
-                catch(SQLException e){
-                try {
-                    databaseManager.conn.rollback();
-                } catch (SQLException e2) {
-                    e2.printStackTrace();
-                }
-                e.printStackTrace();
-            } finally{
-                try {
-                    if (ps != null) {
-                        ps.close();
+                } catch (SQLException e) {
+                    try {
+                        databaseManager.conn.rollback();
+                    } catch (SQLException e2) {
+                        e2.printStackTrace();
                     }
-                } catch (SQLException e3) {
-                    e3.printStackTrace();
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (ps != null) {
+                            ps.close();
+                        }
+                    } catch (SQLException e3) {
+                        e3.printStackTrace();
+                    }
                 }
+
             }
 
         }
 
     }
-
-}
 
     public void saveAdditionalInfo() {
         PreparedStatement ps = null;
@@ -156,7 +149,7 @@ public class DataSave {
                                 "VALUES(?,?) " +
                                 "ON DUPLICATE KEY UPDATE " +
                                 "Teams_name=?," +
-                                "Seasons_Year?;";
+                                "Seasons_Year=?;";
                 try {
                     ps = databaseManager.conn.prepareStatement(query); //compiling query in the DB
                     ps.setString(1, additionalInfo.getTeam().getName());
@@ -170,9 +163,10 @@ public class DataSave {
 
 
                     // additionalinfo_has_teamowner table
-                    Iterator iter = additionalInfo.getOwners().values().iterator();
+                    Iterator iter = additionalInfo.getTeamOwnersHashSet().iterator();
                     while (iter.hasNext()) {
-                        String owner = (String) iter.next();
+                        String owner = iter.next().toString();
+                        //owner = owner.substring(1,owner.length()-1);
                         query =
                                 "INSERT  INTO \n" +
                                         "\tadditionalinfo_has_teamowner(AdditionalInfo_Teams_name,AdditionalInfo_Seasons_Year,TeamOwner_Username)\n" +
@@ -219,9 +213,10 @@ public class DataSave {
                     }
 
                     // teammanager_has_additionalinfo table
-                    iter = additionalInfo.getManagers().values().iterator();
+                    iter = additionalInfo.getTeamManagersHashSet().iterator();
                     while (iter.hasNext()) {
-                        String manager = (String) iter.next();
+                        String manager = iter.next().toString();
+                        //manager= manager.substring(1,manager.length()-1);
                         query =
                                 "INSERT  INTO \n" +
                                         "\tteammanager_has_additionalinfo(TeamManager_Username,AdditionalInfo_Teams_name,AdditionalInfo_Seasons_Year)\n" +
@@ -295,7 +290,7 @@ public class DataSave {
             // change date formatting
             java.util.Date dt = game.getDate();
             java.text.SimpleDateFormat sdf =
-                    new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
             String dateStr = sdf.format(dt);
 
             // save game:
@@ -362,11 +357,11 @@ public class DataSave {
                 ps = databaseManager.conn.prepareStatement(query); //compiling query in the DB
                 ps.setInt(1, game.getGID());
                 ps.setString(2, game.getMain().getUserName());
-                ps.setString(3, "main");
+                ps.setString(3, "MAIN");
 
                 ps.setInt(4, game.getGID());
                 ps.setString(5, game.getMain().getUserName());
-                ps.setString(6, "main");
+                ps.setString(6, "MAIN");
                 //System.out.println(ps.toString());
                 ps.executeUpdate();
                 databaseManager.conn.commit();
@@ -384,11 +379,11 @@ public class DataSave {
                 ps = databaseManager.conn.prepareStatement(query); //compiling query in the DB
                 ps.setInt(1, game.getGID());
                 ps.setString(2, game.getSide1().getUserName());
-                ps.setString(3, "side1");
+                ps.setString(3, "VAR");
 
                 ps.setInt(4, game.getGID());
                 ps.setString(5, game.getSide1().getUserName());
-                ps.setString(6, "side1");
+                ps.setString(6, "VAR");
                 //System.out.println(ps.toString());
                 ps.executeUpdate();
                 databaseManager.conn.commit();
@@ -406,11 +401,11 @@ public class DataSave {
                 ps = databaseManager.conn.prepareStatement(query); //compiling query in the DB
                 ps.setInt(1, game.getGID());
                 ps.setString(2, game.getSide2().getUserName());
-                ps.setString(3, "side2");
+                ps.setString(3, "ASSISTANT");
 
                 ps.setInt(4, game.getGID());
                 ps.setString(5, game.getSide2().getUserName());
-                ps.setString(6, "side2");
+                ps.setString(6, "ASSISTANT");
                 //System.out.println(ps.toString());
                 ps.executeUpdate();
                 databaseManager.conn.commit();
@@ -418,8 +413,8 @@ public class DataSave {
 
 
                 // save events:
-                int eventID=1;
-                for (Event event:game.getEvents()) {
+                int eventID = 1;
+                for (Event event : game.getEvents()) {
                     event.getDate().setHours(event.getTime().getHours());
                     event.getDate().setMinutes(event.getTime().getMinutes());
                     String eDateStr = sdf.format(event.getDate());
@@ -717,19 +712,21 @@ public class DataSave {
 
     public void saveFans() {
         for (Fan fan : allFans.values()) {
-            int offlineStatus = 0;
-            String query =
-                    "INSERT INTO   \n" +
-                            "\tfans(Username,FirstName, LastName, AccountStatus)\n" +
-                            "VALUES(?,?,?,?)" +
-                            "ON DUPLICATE KEY UPDATE \n" +
-                            "Username = ?,\n" +
-                            "FirstName= ?,\n" +
-                            "LastName= ?,\n" +
-                            "AccountStatus=?;";
-
             PreparedStatement ps = null;
             try {
+                //region Save to fans table
+                int offlineStatus = 0;
+                String query =
+                        "INSERT INTO   \n" +
+                                "\tfans(Username,FirstName, LastName, AccountStatus)\n" +
+                                "VALUES(?,?,?,?)" +
+                                "ON DUPLICATE KEY UPDATE \n" +
+                                "Username = ?,\n" +
+                                "FirstName= ?,\n" +
+                                "LastName= ?,\n" +
+                                "AccountStatus=?;";
+
+
                 ps = databaseManager.conn.prepareStatement(query); //compiling query in the DB
                 ps.setString(1, fan.getUserName());
                 ps.setString(2, fan.getfName());
@@ -743,6 +740,40 @@ public class DataSave {
                 //System.out.println(ps.toString());
                 ps.executeUpdate();
                 databaseManager.conn.commit();
+                //endregion
+
+                //region Save to notifications table
+                for (Map.Entry<Integer, String[]> notification : fan.getPendingNotifications().entrySet()) {
+                    String nString = notification.getValue()[0]+"~"+notification.getValue()[1] +"~"+notification.getValue()[2];
+                    int seen= Integer.parseInt(notification.getValue()[3]);
+                    query =
+                            "INSERT INTO   \n" +
+                                    "\tnotifications(idNotifications, Seen, Username, Description)\n" +
+                                    "VALUES(?,?,?,?)" +
+                                    "ON DUPLICATE KEY UPDATE \n" +
+                                    "idNotifications = ?,\n" +
+                                    "Seen= ?,\n" +
+                                    "Username= ?,\n" +
+                                    "Description=?;";
+
+                    ps = databaseManager.conn.prepareStatement(query); //compiling query in the DB
+                    ps.setInt(1, notification.getKey());
+                    ps.setInt(2, seen);
+                    ps.setString(3, fan.getUserName());
+                    ps.setString(4, nString);
+
+                    ps.setInt(5, notification.getKey());
+                    ps.setInt(6, seen);
+                    ps.setString(7, fan.getUserName());
+                    ps.setString(8, nString);
+                    //System.out.println(ps.toString());
+                    ps.executeUpdate();
+                    databaseManager.conn.commit();
+                    //endregion
+                }
+
+
+
             } catch (SQLException e) {
                 try {
                     databaseManager.conn.rollback();
@@ -1000,7 +1031,7 @@ public class DataSave {
             // change date formatting
             java.util.Date dt = p.getbDate();
             java.text.SimpleDateFormat sdf =
-                    new java.text.SimpleDateFormat("yyyy-MM-dd");
+                    new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
             String dateStr = sdf.format(dt);
 
             String query =

@@ -85,7 +85,7 @@ public class Referee extends Fan {
      *
      * # use case 10.3
      */
-    public void addEventToAssignedGame(int gameID, EEventType eventType, String description) throws Exception {
+    public void addEventToAssignedGame(int gameID, EEventType eventType, String description) throws RecordException {
         Game gameToAdd = getGame(gameID);
         if(gameToAdd != null ){
             if(!gameToAdd.isFinished()) {
@@ -94,7 +94,7 @@ public class Referee extends Fan {
                 gameToAdd.notifyObserver(description,eventType);
             }
             else{
-                throw new UnsupportedOperationException("Adding events after game over is not allowed");
+                throw new RecordException("Adding events after game over is not allowed");
             }
         }
         else{
@@ -268,7 +268,7 @@ public class Referee extends Fan {
             }
             else{
                 Logger.getInstance().addErrorToLogger("Referee export report of the game was failed. " + getUserName() + " GameID: " + gameID);
-                throw new Exception("This game isn't exists");
+                throw new Exception("You are not assign to this game");
             }
         }
         else {

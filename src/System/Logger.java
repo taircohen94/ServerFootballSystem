@@ -104,7 +104,9 @@ public class Logger {
     public void addActionToLogger(String action){
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
-        getActionLog().add(date + " " + time + ": " + action);
+        String log = date + " " + time + ": " + action;
+        getActionLog().add(log);
+        WriteActionLoggerToFile(log);
     }
 
     /**
@@ -114,7 +116,10 @@ public class Logger {
     public void addErrorToLogger(String action){
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
-        getErrorActionLog().add(date + " " + time + ": " + action);
+        String log = date + " " + time + ": " + action;
+        getErrorActionLog().add(log);
+        WriteErrorLoggerToFile(log); //not sure if need this line
+
     }
 
     private Collection<String> getErrorActionLog() {
@@ -129,34 +134,50 @@ public class Logger {
         return errorLog;
     }
 
-    public void WriteActionLoggerToFile(File filepath) {
-        try {
-
-            FileOutputStream fileOut = new FileOutputStream(filepath);
-            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-            objectOut.writeObject(actionLog);
-            objectOut.close();
-            fileOut.close();
-            System.out.println("The Action Logger was successfully written to a file");
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
+    public void WriteActionLoggerToFile(String log) {
+        try(FileWriter fw = new FileWriter("action_Logger.txt", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw))
+        {
+            out.println(log);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+//        try {
+//
+//            FileOutputStream fileOut = new FileOutputStream(filepath);
+//            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+//            objectOut.writeObject(actionLog);
+//            objectOut.close();
+//            fileOut.close();
+//            System.out.println("The Action Logger was successfully written to a file");
+//
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
     }
 
 
-    public void WriteErrorLoggerToFile(File filepath) {
-        try {
-
-            FileOutputStream fileOut = new FileOutputStream(filepath);
-            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-            objectOut.writeObject(errorLog);
-            objectOut.close();
-            fileOut.close();
-            System.out.println("The Error Logger was successfully written to a file");
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
+    public void WriteErrorLoggerToFile(String log) {
+        try(FileWriter fw = new FileWriter("error_Logger.txt", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw))
+        {
+            out.println(log);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+//        try {
+//
+//            FileOutputStream fileOut = new FileOutputStream(filepath);
+//            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+//            objectOut.writeObject(errorLog);
+//            objectOut.close();
+//            fileOut.close();
+//            System.out.println("The Error Logger was successfully written to a file");
+//
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
     }
 }

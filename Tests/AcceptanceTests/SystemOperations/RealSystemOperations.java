@@ -1,7 +1,6 @@
 package AcceptanceTests.SystemOperations;
 
-import AcceptanceTests.DataObjects.TeamDetails;
-import AcceptanceTests.DataObjects.UserDetails;
+import AcceptanceTests.DataObjects.*;
 import AssociationAssets.*;
 import PoliciesAndAlgorithms.GamesAssigningPolicy;
 import PoliciesAndAlgorithms.OneRoundGamesAssigningPolicy;
@@ -27,43 +26,69 @@ public class RealSystemOperations implements ISystemOperationsBridge{
 
     public RealSystemOperations() {
         this.model = new Model();
-        initDB();
+        initDBAcordingToMain();
     }
 
-    private void initDB() {
+    private void initDBAcordingToMain() {
+        //Season
         Season season = new Season("2020");
         Season season1 = new Season("2021");
         FootballSystem.getInstance().addSeasonToDB(season);
         FootballSystem.getInstance().addSeasonToDB(season1);
 
+        //League
+        League league = new League("La Liga");
+        League league1 = new League("liga");
+        FootballSystem.getInstance().addLeagueToDB(league);
+        FootballSystem.getInstance().addLeagueToDB(league1);
+        FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(league.getLeagueName()).addSeasonToLeague(season);
+        FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(league1.getLeagueName()).addSeasonToLeague(season1);
+
+        //Field
         Field field = new Field("Blomfield","teal aviv",1000);
-        Field field1 = new Field("tedi","teal aviv",1000);
+        Field field1 = new Field("Tedi","teal aviv",1000);
         FootballSystem.getInstance().addFieldToDB(field);
         FootballSystem.getInstance().addFieldToDB(field1);
 
-        FootballSystem.getInstance().signIn("tair123","1234","tair","cohen");
-        TeamOwner tairTO = (TeamOwner) FootballSystem.getInstance().creatingTeamOwner("tair123","tair","cohen");
+        //TeamOwner
+        FootballSystem.getInstance().signIn("4","4","tair","cohen");
+        FootballSystem.getInstance().creatingTeamOwner("4","tair","cohen");
+        TeamOwner tairTO = FootballSystem.getInstance().getTeamOwnerByUserName("4");
 
+        //Referee
         FootballSystem.getInstance().signIn("1","1","lala","la");
         FootballSystem.getInstance().creatingReferee("1","la","laala", EReferee.MAIN);
         FootballSystem.getInstance().signIn("2","2","lala","la");
         FootballSystem.getInstance().creatingReferee("2","la","laala", EReferee.ASSISTANT);
         FootballSystem.getInstance().signIn("3","3","lala","la");
         FootballSystem.getInstance().creatingReferee("3","la","laala", EReferee.ASSISTANT);
+        FootballSystem.getInstance().signIn("10","10","lala","la");
+        FootballSystem.getInstance().creatingReferee("10","la","laala", EReferee.MAIN);
 
-        Team team1 = new Team(45,"team1",season,field,null,(TeamOwner)FootballSystem.getInstance().getFanByUserName("tair123"));
-        Team team2 = new Team(55,"team2",season,field,null,(TeamOwner)FootballSystem.getInstance().getFanByUserName("tair123"));
-   //     tairTO.addCoach(team1,season,"coach-2020","123","c","c", ETraining.CDiploma, ECoachRole.AssistantCoach);
-//        tairTO.addField(team1,season,"Blomfield","tel-aviv",12222);
-  //      tairTO.addTeamManager(team1,season,"TM-2020","123","la","la");
-     //   tairTO.addPlayer(team1,season,"player-2020","123","la","la",new Date(17/10/1995),EPlayerRole.GoalKeeper);
+        //Team
+        Team team1 = new Team(45,"team1",season,field,null,(TeamOwner)FootballSystem.getInstance().getFanByUserName("4"));
+        Team team2 = new Team(55,"team2",season,field,null,(TeamOwner)FootballSystem.getInstance().getFanByUserName("4"));
+        team1.addSeasonToTeam(season);
+        team1.addSeasonToTeam(season1);
+        team2.addSeasonToTeam(season);
+        try {
+            tairTO.addCoach(team1,season,"coach-2020","123","c","c", ETraining.CDiploma,ECoachRole.AssistantCoach);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        tairTO.addField(team1,season,"Camp-No1","tel-aviv",12222);
+        tairTO.addTeamManager(team1,season,"TM-2020","123","la","la");
+        tairTO.addPlayer(team1,season,"player-2020","123","la","la",new Date(17/10/1995),EPlayerRole.GoalKeeper);
+
         try {
             FootballSystem.getInstance().addTeamToDB(team1);
             FootballSystem.getInstance().addTeamToDB(team2);
 
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
+        // Date date = new Date(2020-1900,4,12);
         //default time zone
         ZoneId defaultZoneId = ZoneId.systemDefault();
 
@@ -77,9 +102,8 @@ public class RealSystemOperations implements ISystemOperationsBridge{
         Referee main = FootballSystem.getInstance().getRefereeByUseName("1");
         Referee side1 = FootballSystem.getInstance().getRefereeByUseName("2");
         Referee side2 = FootballSystem.getInstance().getRefereeByUseName("3");
-        League league = new League("La Liga");
-        League league1 = new League("gal");
         Game game = null;
+
         try {
             game = new Game(date,time,field,team1,team2,main,side1,side2,season,league);
             game.addEvent(EEventType.GOALHOST,"descriprion");
@@ -106,6 +130,13 @@ public class RealSystemOperations implements ISystemOperationsBridge{
         FootballSystem.getInstance().addLeagueToDB(league);
         FootballSystem.getInstance().addLeagueToDB(league1);
         FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(league.getLeagueName()).addSeasonToLeague(season);
+        FootballSystem.getInstance().getGameDB().getAllGames().get(game.getGID()).getLeague().setAssigningPolicy("2021", new OneRoundGamesAssigningPolicy());
+        FootballSystem.getInstance().getGameDB().getAllGames().get(game.getGID()).getLeague().setScoreTablePolicy("2021", new ScoreTablePolicy2());
+
+    }
+    private void initDB() {
+
+
 
 
     }
@@ -134,9 +165,34 @@ public class RealSystemOperations implements ISystemOperationsBridge{
     }
 
     @Override
+    public CoachDetails getRegisteredCoachForTest() {
+        CoachDetails coach = new CoachDetails("coach-2020","123","c","c", ETraining.CDiploma,ECoachRole.AssistantCoach);
+        return coach;
+    }
+
+    @Override
+    public FieldDetails getExistFieldForTest() {
+        FieldDetails fieldDetails = new FieldDetails("Camp-No1","tel-aviv","12222");
+        return fieldDetails;
+    }
+
+    @Override
+    public PlayerDetails getRegisteredPlayerForTest() {
+        PlayerDetails player = new PlayerDetails("player-2020","123","la","la",EPlayerRole.GoalKeeper);
+        return player;
+    }
+
+    @Override
     public UserDetails getRegisteredTeamOwnerForTest() {
-        UserDetails teamOwner = new UserDetails("tair123","1234","tair","cohen");
+        UserDetails teamOwner = new UserDetails("4","4","tair","cohen");
         return teamOwner;
+    }
+
+    @Override
+    public UserDetails getUnPrivilegeUserForTest() {
+        UserDetails unPrivilege =new UserDetails("unPrivilege","unPrivilege");
+        FootballSystem.getInstance().signIn(unPrivilege.userName,unPrivilege.password,"lala","la");
+        return unPrivilege;
     }
 
 
@@ -159,7 +215,7 @@ public class RealSystemOperations implements ISystemOperationsBridge{
     @Override
     public boolean createNewTeam(String name, String leagueName, String seasonYear, String fieldName) {
         //login first
-        if(!login("tair123","1234")){
+        if(!login("4","4")){
             return false;
         }
         //TeamOwner create new team
@@ -186,9 +242,9 @@ public class RealSystemOperations implements ISystemOperationsBridge{
 
     @Override
     public boolean addEvent(String userName,String password, int gameID, EEventType eventType, int eventIndex, String description) {
-      if(!login(userName,password)){
-          return false;
-      }
+        if(!login(userName,password)){
+            return false;
+        }
 
         try {
             return model.addEvent(gameID,eventType.toString(),description);
@@ -221,6 +277,49 @@ public class RealSystemOperations implements ISystemOperationsBridge{
         } catch (Exception e) {
             return false;
         }
+        System.out.println(FootballSystem.getInstance().getFanByUserName(teamManagerUserName).viewProfile());
+        return true;
+    }
+
+    @Override
+    public boolean editCoachDetails(String userName, String password, String teamName, String seasonYear, String userNamePlayer, String firstName, String lastName, String training, String role) {
+        if(!login(userName,password)){
+            return false;
+        }
+        try {
+            model.editCoachDetails(teamName,seasonYear,userNamePlayer,firstName,lastName,training,role);
+        } catch (Exception e) {
+            return false;
+        }
+        System.out.println(FootballSystem.getInstance().getFanByUserName(userNamePlayer).viewProfile());
+        return true;
+    }
+
+    @Override
+    public boolean editFieldDetails(String userName, String password, String name, String seasonYear, String fieldName, String city, String capacity) {
+        if(!login(userName,password)){
+            return false;
+        }
+        try {
+            model.editFieldDetails(name,seasonYear,fieldName,city,capacity);
+        } catch (Exception e) {
+            return false;
+        }
+        System.out.println(FootballSystem.getInstance().getFieldDB().getAllFields().get(fieldName).toString());
+        return true;
+    }
+
+    @Override
+    public boolean editPlayerDetails(String userName, String password, String teamName, String seasonYear, String playerUserName, String firstName, String lastName,String role) {
+        if(!login(userName,password)){
+            return false;
+        }
+        try {
+            model.editPlayerDetails(teamName,seasonYear,playerUserName,firstName,lastName,role);
+        } catch (Exception e) {
+            return false;
+        }
+        System.out.println(FootballSystem.getInstance().getFanByUserName(playerUserName).viewProfile());
         return true;
     }
 
@@ -262,7 +361,7 @@ public class RealSystemOperations implements ISystemOperationsBridge{
             FootballSystem.getInstance().getGameDB().getAllGames().get(gameID).addEvent(EEventType.GOALHOST,"descriprion");
             Time time =Time.valueOf(LocalTime.of(LocalTime.now().getHour()-hoursBefore,LocalTime.now().getMinute()));
             FootballSystem.getInstance().getGameDB().getAllGames().get(gameID).setTime(time);
-              bool = model.updateEventAfterGameOver(gameID,eventIndex,eventType.toString(),description);
+            bool = model.updateEventAfterGameOver(gameID,eventIndex,eventType.toString(),description);
         } catch (RecordException e) {
             return false;
         }
