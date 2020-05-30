@@ -754,7 +754,7 @@ public class DataSave {
 
                 //region Save to notifications table
                 for (Map.Entry<Integer, String[]> notification : fan.getPendingNotifications().entrySet()) {
-                    String nString = notification.getValue()[0]+"~"+notification.getValue()[1] +"~"+notification.getValue()[2];
+                    String nString = notification.getValue()[0]+"~"+notification.getValue()[1] +"~"+notification.getValue()[2]+"~"+notification.getValue()[3];
                     int seen= Integer.parseInt(notification.getValue()[3]);
                     query =
                             "INSERT INTO   \n" +
