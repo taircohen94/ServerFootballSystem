@@ -542,6 +542,7 @@ public class Model extends Observable implements IModel {
                 break;
             case "One Round Schedule Policy":
                 repUser.SetGamesAssigningPolicy(new OneRoundGamesAssigningPolicy(), league, season);
+                runGameSchedulingAlgorithm(leagueName, seasonYear);
                 break;
             default:
                 throw new RecordException("You have to choose policy");

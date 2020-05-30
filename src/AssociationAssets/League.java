@@ -1,5 +1,6 @@
 package AssociationAssets;
 
+import Model.RecordException;
 import PoliciesAndAlgorithms.GamesAssigningPolicy;
 import PoliciesAndAlgorithms.RegularScorePolicy;
 import PoliciesAndAlgorithms.ScoreTablePolicy;
@@ -38,7 +39,7 @@ public class League {
         }
     }
 
-    public void setScoreTablePolicy(String year, ScoreTablePolicy scoreTablePolicy) {
+    public void setScoreTablePolicy(String year, ScoreTablePolicy scoreTablePolicy) throws RecordException {
         if (seasonBinders.containsKey(year)) {
             SeasonLeagueBinder binder = seasonBinders.get(year);
             binder.setScoreTablePolicy(scoreTablePolicy);
@@ -135,7 +136,7 @@ public class League {
         int previousPointsGuest = seasonLeagueBinder.getLeagueTable().get(guest);
         if(getScoreTablePolicy(season) == null){
             //define classic score policy
-            getSeasonBinders().get(year).setScoreTablePolicy(new RegularScorePolicy());
+            getSeasonBinders().get(year).setScoreTablePolicyUploader(new RegularScorePolicy());
         }
         if(hostWon(score)){
             seasonLeagueBinder.getLeagueTable().put(host,previousPointsHost + this.getScoreTablePolicy(season).getPolicyWinnerPoints());

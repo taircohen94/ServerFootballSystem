@@ -1,5 +1,6 @@
 package AssociationAssets;
 
+import Model.RecordException;
 import PoliciesAndAlgorithms.OneRoundGamesAssigningPolicy;
 import PoliciesAndAlgorithms.RegularScorePolicy;
 import org.junit.Before;
@@ -41,14 +42,22 @@ public class LeagueTest {
     @Test
     public void setScoreTablePolicy() {
         league.addSeasonToLeague(season);
-        league.setScoreTablePolicy("2020", new RegularScorePolicy());
+        try {
+            league.setScoreTablePolicy("2020", new RegularScorePolicy());
+        } catch (RecordException e) {
+            e.printStackTrace();
+        }
         assertNotNull(league.getScoreTablePolicy(season.year));
     }
 
     @Test
     public void getScoreTablePolicy() {
         league.addSeasonToLeague(season);
-        league.setScoreTablePolicy("2020", new RegularScorePolicy());
+        try {
+            league.setScoreTablePolicy("2020", new RegularScorePolicy());
+        } catch (RecordException e) {
+            e.printStackTrace();
+        }
         assertNotNull(league.getScoreTablePolicy(season.year));
     }
 

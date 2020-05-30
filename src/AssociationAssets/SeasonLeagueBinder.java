@@ -1,5 +1,6 @@
 package AssociationAssets;
 
+import Model.RecordException;
 import PoliciesAndAlgorithms.GamesAssigningPolicy;
 import PoliciesAndAlgorithms.ScoreTablePolicy;
 import Users.Referee;
@@ -35,22 +36,16 @@ public class SeasonLeagueBinder {
 
     //region Getters & Setters
     public void setAssigningPolicy(GamesAssigningPolicy assigningPolicy) {
-        if(!hasStarted())
             this.assigningPolicy = assigningPolicy;
-        else
-            throw new UnsupportedOperationException("Can't change Assigning policy after league already began");
 
     }
 
-    public boolean setScoreTablePolicy(ScoreTablePolicy scoreTablePolicy) throws UnsupportedOperationException {
-        if(!hasStarted())
+    public void setScoreTablePolicy(ScoreTablePolicy scoreTablePolicy){
             this.scoreTablePolicy = scoreTablePolicy;
-        else
-            throw new UnsupportedOperationException("Can't change score policy after league already began");
-        return true;
+
     }
 
-    public void setScoreTablePolicyUploader(ScoreTablePolicy scoreTablePolicy) throws UnsupportedOperationException {
+    public void setScoreTablePolicyUploader(ScoreTablePolicy scoreTablePolicy) {
         if(scoreTablePolicy!= null)
             this.scoreTablePolicy = scoreTablePolicy;
 

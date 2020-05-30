@@ -131,7 +131,11 @@ public class RealSystemOperations implements ISystemOperationsBridge{
         FootballSystem.getInstance().addLeagueToDB(league1);
         FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(league.getLeagueName()).addSeasonToLeague(season);
         FootballSystem.getInstance().getGameDB().getAllGames().get(game.getGID()).getLeague().setAssigningPolicy("2021", new OneRoundGamesAssigningPolicy());
-        FootballSystem.getInstance().getGameDB().getAllGames().get(game.getGID()).getLeague().setScoreTablePolicy("2021", new ScoreTablePolicy2());
+        try {
+            FootballSystem.getInstance().getGameDB().getAllGames().get(game.getGID()).getLeague().setScoreTablePolicy("2021", new ScoreTablePolicy2());
+        } catch (RecordException e) {
+            e.printStackTrace();
+        }
 
     }
     private void initDB() {

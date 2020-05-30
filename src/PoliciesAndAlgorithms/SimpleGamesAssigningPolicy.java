@@ -49,7 +49,7 @@ public class SimpleGamesAssigningPolicy extends GamesAssigningPolicy {
         int mainRefereeCount = countMainReferees(refs);
         int teamsCount = teams.size();
 
-        if(mainRefereeCount >= teamsCount/2) throw new RecordException("There is not enough main referees, can't assign games");
+        if(mainRefereeCount <= teamsCount/2) throw new RecordException("There is not enough main referees, can't assign games");
         else if(refereeCount-mainRefereeCount < teamsCount) throw new RecordException("There is not enough side referees, can't assign games");
 
         Map<String, Referee> mainReferees = getMainReferees(refs);
@@ -64,39 +64,76 @@ public class SimpleGamesAssigningPolicy extends GamesAssigningPolicy {
         int weeks = 0;
         if(evenTeamNumber){
             int gidHelper = 500;
-            //even team count
-            for (int i = 0; i < numberOfGames/4; i++) {
-                //for each week of games
-                int[][] teamsOfGame = getMatchParticipants(teams,combinations,teamsCount/2);
-                for (int j = 0; j <teamsCount/2; j++) {
-                    //create all games of this round
-                    Team host = teams.get(teamName[teamsOfGame[j][0]]);
-                    Team guest = teams.get(teamName[teamsOfGame[j][1]]);
-                    Referee mainRef = selectMainRef(mainReferees);
-                    Referee sideRef1 = selectSideRef(otherRefs);
-                    Referee sideRef2 = selectSideRef(otherRefs);
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(Date.valueOf(startDate));
-                    calendar.add(Calendar.DAY_OF_YEAR, weeks*7);
-                    java.util.Date dateNew = calendar.getTime();
-                    //first game between those teams
-                    Game game = new Game(dateNew,new Time(21,0,0),host.getMainField(),host,guest,mainRef,sideRef1,sideRef2,season,league);
-                    int gid = gidHelper++;
-                    game.setGID(gid);
-                    games.put(gidCounter,game);
-                    //second game between same rivals, opposite host and guest
-                    calendar = Calendar.getInstance();
-                    calendar.setTime(Date.valueOf(startDate));
-                    calendar.add(Calendar.DAY_OF_YEAR, (weeks+1)*7*(numberOfGames/4));
-                    dateNew = calendar.getTime();
-                    Game game2 = new Game(dateNew,new Time(21,0,0),guest.getMainField(),guest,host,mainRef,sideRef1,sideRef2,season,league);
-                    gid = ++gidCounter + (teamsCount/2) + (numberOfGames/4);
-                    game2.setGID(gid);
-                    games.put(gid,game2);
-                }
+            if(numberOfGames == 2){
+                //even team count
+                for (int i = 0; i < 1; i++) {
+                    //for each week of games
+                    for (int j = 0; j <teamsCount/2; j++) {
+                        //create all games of this round
+                        Team host = teams.get(teamName[0]);
+                        Team guest = teams.get(teamName[1]);
+                        Referee mainRef = selectMainRef(mainReferees);
+                        Referee sideRef1 = selectSideRef(otherRefs);
+                        Referee sideRef2 = selectSideRef(otherRefs);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(Date.valueOf(startDate));
+                        calendar.add(Calendar.DAY_OF_YEAR, weeks*7);
+                        java.util.Date dateNew = calendar.getTime();
+                        //first game between those teams
+                        Game game = new Game(dateNew,new Time(21,0,0),host.getMainField(),host,guest,mainRef,sideRef1,sideRef2,season,league);
+                        int gid = gidHelper++;
+                        game.setGID(gid);
+                        games.put(gidCounter,game);
+                        //second game between same rivals, opposite host and guest
+                        calendar = Calendar.getInstance();
+                        calendar.setTime(Date.valueOf(startDate));
+                        calendar.add(Calendar.DAY_OF_YEAR, 7);
+                        dateNew = calendar.getTime();
+                        Game game2 = new Game(dateNew,new Time(21,0,0),guest.getMainField(),guest,host,mainRef,sideRef1,sideRef2,season,league);
+                        gid = ++gidCounter + (teamsCount/2) + (numberOfGames/4);
+                        game2.setGID(gid);
+                        games.put(gid,game2);
+                    }
 
-                weeks++;
+                    weeks++;
+                }
             }
+            else{
+                //even team count
+                for (int i = 0; i < numberOfGames/4; i++) {
+                    //for each week of games
+                    int[][] teamsOfGame = getMatchParticipants(teams,combinations,teamsCount/2);
+                    for (int j = 0; j <teamsCount/2; j++) {
+                        //create all games of this round
+                        Team host = teams.get(teamName[teamsOfGame[j][0]]);
+                        Team guest = teams.get(teamName[teamsOfGame[j][1]]);
+                        Referee mainRef = selectMainRef(mainReferees);
+                        Referee sideRef1 = selectSideRef(otherRefs);
+                        Referee sideRef2 = selectSideRef(otherRefs);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(Date.valueOf(startDate));
+                        calendar.add(Calendar.DAY_OF_YEAR, weeks*7);
+                        java.util.Date dateNew = calendar.getTime();
+                        //first game between those teams
+                        Game game = new Game(dateNew,new Time(21,0,0),host.getMainField(),host,guest,mainRef,sideRef1,sideRef2,season,league);
+                        int gid = gidHelper++;
+                        game.setGID(gid);
+                        games.put(gidCounter,game);
+                        //second game between same rivals, opposite host and guest
+                        calendar = Calendar.getInstance();
+                        calendar.setTime(Date.valueOf(startDate));
+                        calendar.add(Calendar.DAY_OF_YEAR, (weeks+1)*7*(numberOfGames/4));
+                        dateNew = calendar.getTime();
+                        Game game2 = new Game(dateNew,new Time(21,0,0),guest.getMainField(),guest,host,mainRef,sideRef1,sideRef2,season,league);
+                        gid = ++gidCounter + (teamsCount/2) + (numberOfGames/4);
+                        game2.setGID(gid);
+                        games.put(gid,game2);
+                    }
+
+                    weeks++;
+                }
+            }
+
 
         }
 

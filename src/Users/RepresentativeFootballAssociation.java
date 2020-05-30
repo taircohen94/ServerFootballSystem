@@ -76,7 +76,11 @@ public class RepresentativeFootballAssociation extends Fan  {
             return;
         }
         League newLeague = new League(leagueName);
-        newLeague.setScoreTablePolicy(year, scorePolicy);
+        try {
+            newLeague.setScoreTablePolicy(year, scorePolicy);
+        } catch (RecordException e) {
+            e.printStackTrace();
+        }
         newLeague.setAssigningPolicy(year, gamePolicy);
         newLeague.addSeasonToLeague(season);
         setSeasonToLeague(newLeague, year, games, teams);
@@ -172,7 +176,7 @@ public class RepresentativeFootballAssociation extends Fan  {
     /**
      * useCase #9.5 - define Score Table policy
      */
-    public void SetScoreTablePolicy(ScoreTablePolicy policy, League league, Season season) throws UnsupportedOperationException {
+    public void SetScoreTablePolicy(ScoreTablePolicy policy, League league, Season season) throws RecordException {
         if(policy!=null && league!=null && season!=null){
             FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(league.getLeagueName()).getSeasonBinders().get(season.getYear()).setScoreTablePolicy(policy);
         }
