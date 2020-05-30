@@ -660,8 +660,8 @@ public class DataUploader {
                 binder.setAssigningPolicyUploader(gamesAssigningPolicy);
 
                 // attach season & league
-                binder.setScoreTablePolicyUploader(tablePolicy);
-                binder.setAssigningPolicyUploader(gamesAssigningPolicy);
+                season.addLeagueBinder(leagueName,binder);
+                league.addSeasonLeagueBinder(seasonYear,binder);
             }
         } catch (SQLException e) {
             e.printStackTrace();
