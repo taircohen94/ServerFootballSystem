@@ -86,20 +86,20 @@ public class DataSave {
     }
 
     private void saveSeasonLeagueBinders() {
-        PreparedStatement ps=null;
+        PreparedStatement ps = null;
         for (Season s : allSeasons.values()) {
             for (SeasonLeagueBinder binder : s.getLeagueBinders().values()) {
                 int scorePolicy = (binder.getScoreTablePolicy() instanceof RegularScorePolicy) ? 1 : 2;
                 int gamePolicy = (binder.getAssigningPolicy() instanceof SimpleGamesAssigningPolicy) ? 1 : 2;
-                String query=
+                String query =
                         "INSERT INTO \n" +
-                        "\tseasons_has_leagues(Seasons_Year, Leagues_Name, ScorePolicy, SchedulePolicy)\n" +
-                        "VALUES(?,?,?,?) " +
-                        "ON DUPLICATE KEY UPDATE " +
-                        "Seasons_Year=?," +
-                        "Leagues_Name=?," +
-                        "ScorePolicy=?," +
-                        "SchedulePolicy=?;";
+                                "\tseasons_has_leagues(Seasons_Year, Leagues_Name, ScorePolicy, SchedulePolicy)\n" +
+                                "VALUES(?,?,?,?) " +
+                                "ON DUPLICATE KEY UPDATE " +
+                                "Seasons_Year=?," +
+                                "Leagues_Name=?," +
+                                "ScorePolicy=?," +
+                                "SchedulePolicy=?;";
                 try {
                     ps = databaseManager.conn.prepareStatement(query); //compiling query in the DB
                     ps.setInt(1, Integer.parseInt(s.getYear()));
@@ -115,29 +115,28 @@ public class DataSave {
                     //System.out.println(ps.toString());
                     ps.executeUpdate();
                     databaseManager.conn.commit();
-                }
-                catch(SQLException e){
-                try {
-                    databaseManager.conn.rollback();
-                } catch (SQLException e2) {
-                    e2.printStackTrace();
-                }
-                e.printStackTrace();
-            } finally{
-                try {
-                    if (ps != null) {
-                        ps.close();
+                } catch (SQLException e) {
+                    try {
+                        databaseManager.conn.rollback();
+                    } catch (SQLException e2) {
+                        e2.printStackTrace();
                     }
-                } catch (SQLException e3) {
-                    e3.printStackTrace();
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (ps != null) {
+                            ps.close();
+                        }
+                    } catch (SQLException e3) {
+                        e3.printStackTrace();
+                    }
                 }
+
             }
 
         }
 
     }
-
-}
 
     public void saveAdditionalInfo() {
         PreparedStatement ps = null;
@@ -414,8 +413,8 @@ public class DataSave {
 
 
                 // save events:
-                int eventID=1;
-                for (Event event:game.getEvents()) {
+                int eventID = 1;
+                for (Event event : game.getEvents()) {
                     event.getDate().setHours(event.getTime().getHours());
                     event.getDate().setMinutes(event.getTime().getMinutes());
                     String eDateStr = sdf.format(event.getDate());
@@ -713,19 +712,21 @@ public class DataSave {
 
     public void saveFans() {
         for (Fan fan : allFans.values()) {
-            int offlineStatus = 0;
-            String query =
-                    "INSERT INTO   \n" +
-                            "\tfans(Username,FirstName, LastName, AccountStatus)\n" +
-                            "VALUES(?,?,?,?)" +
-                            "ON DUPLICATE KEY UPDATE \n" +
-                            "Username = ?,\n" +
-                            "FirstName= ?,\n" +
-                            "LastName= ?,\n" +
-                            "AccountStatus=?;";
-
             PreparedStatement ps = null;
             try {
+                //region Save to fans table
+                int offlineStatus = 0;
+                String query =
+                        "INSERT INTO   \n" +
+                                "\tfans(Username,FirstName, LastName, AccountStatus)\n" +
+                                "VALUES(?,?,?,?)" +
+                                "ON DUPLICATE KEY UPDATE \n" +
+                                "Username = ?,\n" +
+                                "FirstName= ?,\n" +
+                                "LastName= ?,\n" +
+                                "AccountStatus=?;";
+
+
                 ps = databaseManager.conn.prepareStatement(query); //compiling query in the DB
                 ps.setString(1, fan.getUserName());
                 ps.setString(2, fan.getfName());
@@ -739,6 +740,22 @@ public class DataSave {
                 //System.out.println(ps.toString());
                 ps.executeUpdate();
                 databaseManager.conn.commit();
+                //endregion
+
+                //region Save to notifications table
+                for (Map.Entry<Integer, String[]> notification : fan.getPendingNotifications().entrySet()) {
+//                    String query =
+//                            "INSERT INTO   \n" +
+//                                    "\tfans(Username,FirstName, LastName, AccountStatus)\n" +
+//                                    "VALUES(?,?,?,?)" +
+//                                    "ON DUPLICATE KEY UPDATE \n" +
+//                                    "Username = ?,\n" +
+//                                    "FirstName= ?,\n" +
+//                                    "LastName= ?,\n" +
+//                                    "AccountStatus=?;";
+                }
+
+
             } catch (SQLException e) {
                 try {
                     databaseManager.conn.rollback();
