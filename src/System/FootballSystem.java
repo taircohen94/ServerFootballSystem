@@ -6,7 +6,6 @@ import Model.RecordException;
 import OutSourceSystems.ProxyAccountingSystem;
 import OutSourceSystems.ProxyTaxRegulationSystem;
 import PoliciesAndAlgorithms.GamesAssigningPolicy;
-import Security.AESEncryption;
 import Security.SecuritySystem;
 import Users.*;
 
