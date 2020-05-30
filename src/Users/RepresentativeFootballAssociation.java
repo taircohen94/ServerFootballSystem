@@ -172,9 +172,17 @@ public class RepresentativeFootballAssociation extends Fan  {
     /**
      * useCase #9.5 - define Score Table policy
      */
-    public void SetScoreTablePolicy(ScoreTablePolicy policy, League league, Season season) throws UnsupportedOperationException {
+    public void SetScoreTablePolicy(ScoreTablePolicy policy, League league, Season season) throws RecordException {
         if(policy!=null && league!=null && season!=null){
-            FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(league.getLeagueName()).getSeasonBinders().get(season.getYear()).setScoreTablePolicy(policy);
+
+            SeasonLeagueBinder seasonLeagueBinder = FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(league.getLeagueName()).getSeasonBinders().get(season.getYear());
+            if(seasonLeagueBinder != null){
+                if(!seasonLeagueBinder.hasStarted())
+                    seasonLeagueBinder.setScoreTablePolicy(policy);
+                else{
+                    throw new RecordException("You can't change policy after games already started");
+                }
+            }
         }
     }
     public ArrayList<String> getNotificationTeams() {
@@ -189,7 +197,11 @@ public class RepresentativeFootballAssociation extends Fan  {
         if(policy!=null && league!=null && season!=null){
             SeasonLeagueBinder binder = FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(league.getLeagueName()).getSeasonBinders().get(season.getYear());
             if(binder == null) throw new RecordException("This combination of league and season doesn't exists");
-            binder.setAssigningPolicy(policy);
+            if(binder.getAssigningPolicy() != null && !binder.getAssigningPolicy().isGamesAssigned())
+                binder.setAssigningPolicy(policy);
+            else{
+                throw new RecordException("games for this season already assigned!");
+            }
         }
         else throw new RecordException("Incorrect season or league provided");
 

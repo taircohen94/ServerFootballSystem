@@ -544,9 +544,12 @@ public class Model extends Observable implements IModel {
                 repUser.SetGamesAssigningPolicy(new SimpleGamesAssigningPolicy(), league, season);
                 runGameSchedulingAlgorithm(leagueName, seasonYear);
                 break;
+
             case "One Round Schedule Policy":
                 repUser.SetGamesAssigningPolicy(new OneRoundGamesAssigningPolicy(), league, season);
+                runGameSchedulingAlgorithm(leagueName,seasonYear);
                 break;
+
             default:
                 throw new RecordException("You have to choose policy");
         }
@@ -607,7 +610,6 @@ public class Model extends Observable implements IModel {
         Season season = FootballSystem.getInstance().getSeasonDB().getAllSeasons().get(seasonYear);
         League league = FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(leagueName);
 
-        repUser.activateGamesAssigning(league, season);
         repUser.activateGamesAssigning(league, season);
 
 
