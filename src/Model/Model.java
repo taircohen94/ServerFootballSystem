@@ -180,6 +180,7 @@ public class Model extends Observable implements IModel {
             FootballSystem.getInstance().addTeamToDB(newTeam);
             newTeam.setCurrentLeague(FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(leagueName));
             newTeam.addSeasonToTeam(season);
+            League l = FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(leagueName);
         } catch (Exception e) {
             String cause = e.getMessage();
             throw new RecordException(cause);
