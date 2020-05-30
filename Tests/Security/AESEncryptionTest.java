@@ -23,7 +23,7 @@ class AESEncryptionTest {
 
     @Test
     void encrypt() {
-        cipher = AESEncryption.encrypt("admin","shhhh!!");
+        cipher = AESEncryption.encrypt("tair","shhhh!!");
         AESEncryption.encrypt("tair","");
     }
 
