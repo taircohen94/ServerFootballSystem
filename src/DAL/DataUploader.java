@@ -700,8 +700,9 @@ public class DataUploader {
                 int gid = resultSet.getInt("idGames");
                 String datestr = resultSet.getString("DateTime");
                 Time time = Time.valueOf(datestr.split(" ")[1]);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
                 java.util.Date cDate = dateFormat.parse(datestr);
+
                 int goalHost = resultSet.getInt("GoalHost");
                 int goalGuest = resultSet.getInt("GoalGuest");
                 String fields_name = resultSet.getString("Fields_Name");
@@ -740,6 +741,7 @@ public class DataUploader {
 
                 Game game = new Game(cDate, time, field, host, guest, main, side1, side2, season, league);
                 game.setScore(goalHost, goalGuest);
+                game.setGID(gid);
 
                 // TODO: game.setGID - consider fix on class game
 
@@ -752,7 +754,7 @@ public class DataUploader {
                     int eventID= eventsSet.getInt("EventID");
                     String eDateStr = eventsSet.getString("DateTime");
                     Time eTime = Time.valueOf(eDateStr.split(" ")[1]);
-                    SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                     dFormat.setLenient(false);
                     java.util.Date eDate = dFormat.parse(eDateStr.split(" ")[0]);
                     String eventType= eventsSet.getString("EventType");

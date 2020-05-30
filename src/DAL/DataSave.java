@@ -17,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 public class DataSave {
@@ -1000,7 +1001,7 @@ public class DataSave {
             // change date formatting
             java.util.Date dt = p.getbDate();
             java.text.SimpleDateFormat sdf =
-                    new java.text.SimpleDateFormat("yyyy-MM-dd");
+                    new java.text.SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
             String dateStr = sdf.format(dt);
 
             String query =
