@@ -129,7 +129,7 @@ public class League {
 
     public void updateGameScore(String year, String host, String guest, Score score) {
         SeasonLeagueBinder seasonLeagueBinder = seasonBinders.get(year);
-        String season = getCurrentSeason();
+        String season = year;
         int previousPointsHost = seasonLeagueBinder.getLeagueTable().get(host);
         int previousPointsGuest = seasonLeagueBinder.getLeagueTable().get(guest);
         if(getScoreTablePolicy(season) == null){

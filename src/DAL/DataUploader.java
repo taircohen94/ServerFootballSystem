@@ -138,17 +138,17 @@ public class DataUploader {
                     allFans.put(username, fan);
                 }
 
-                // attach fan's notifications:
-                ResultSet notificationsSet = databaseManager.executeQuerySelect(
-                        "SELECT * FROM notifications " + "" +
-                                "WHERE Username=" + username +
-                                "AND Seen = 0");
-                while (notificationsSet.next()) {
-                    int nID = notificationsSet.getInt("idNotifications");
-                    String descriptionStr = notificationsSet.getString("Description");
-                    String[] notification = descriptionStr.split("~");
-                    fan.addNotification(nID, notification);
-                }
+//                // attach fan's notifications:
+//                ResultSet notificationsSet = databaseManager.executeQuerySelect(
+//                        "SELECT * FROM notifications " + "" +
+//                                "WHERE Username=" + username +
+//                                "AND Seen = 0");
+//                while (notificationsSet.next()) {
+//                    int nID = notificationsSet.getInt("idNotifications");
+//                    String descriptionStr = notificationsSet.getString("Description");
+//                    String[] notification = descriptionStr.split("~");
+//                    fan.addNotification(nID, notification);
+//                }
 
             }
         } catch (SQLException e) {
