@@ -1,6 +1,7 @@
 package Model;
 
 import AssociationAssets.*;
+import DAL.JDBCConnector;
 import DB.FieldDB;
 import DB.LeagueDB;
 import DB.SeasonDB;
@@ -183,10 +184,9 @@ public class Model extends Observable implements IModel {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
-        //send the request to the RFA
-        //   String request = "";
-        //    notifyAll();
-        // notifyObservers(request);
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
         return true;
 
     }
@@ -205,6 +205,9 @@ public class Model extends Observable implements IModel {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
     }
 
     public void editCoachDetails(String teamName, String seasonYear, String userName, String firstName, String lastName, String training, String role) throws RecordException {
@@ -232,6 +235,9 @@ public class Model extends Observable implements IModel {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
     }
 
     public void editPlayerDetails(String teamName, String seasonYear, String userName, String firstName, String lastName, String role) throws RecordException {
@@ -253,6 +259,9 @@ public class Model extends Observable implements IModel {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
     }
 
     public void editFieldDetails(String teamName, String seasonYear, String fieldName, String city, String capacity) throws RecordException {
@@ -279,6 +288,9 @@ public class Model extends Observable implements IModel {
             String cause = e.getMessage();
             throw new RecordException(cause);
         }
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
     }
 
     /**
@@ -610,16 +622,16 @@ public class Model extends Observable implements IModel {
      */
     @Override
     public boolean addEvent(int gameID, String eventType, String description) throws RecordException {
-
         // Only Referee is allowed to add an event.
         if (!(user instanceof Referee)) {
             throw new RecordException("You dont have have permission to add event");
         }
-
         ValidateObject.getValidatedGame(gameID);
-
         Referee referee = (Referee) user;
         referee.addEventToAssignedGame(gameID, EEventType.valueOf(eventType), description);
+        JDBCConnector jdbcConnector = new JDBCConnector();
+        jdbcConnector.connectDBSaveData();
+        jdbcConnector.connectDBUploadData();
         return true;
     }
 
@@ -961,6 +973,7 @@ public class Model extends Observable implements IModel {
             }
         }
         fillAnswer(answer, notifi);
+        user.clearNotification();
         return answer;
     }
 }
