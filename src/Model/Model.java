@@ -604,6 +604,7 @@ public class Model extends Observable implements IModel {
         League league = FootballSystem.getInstance().getLeagueDB().getAllLeagues().get(leagueName);
 
         repUser.activateGamesAssigning(league, season);
+        repUser.activateGamesAssigning(league, season);
 
 
         return true;
