@@ -423,18 +423,16 @@ public class Game {
     public boolean isFinished() {
         LocalDateTime currentDate = LocalDateTime.now();
         LocalDateTime gameDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        if(currentDate.getYear() == gameDate.getYear()){
-            long minutes = ChronoUnit.MINUTES.between(gameDate, currentDate);
-            if( minutes/60 >= 2 ){
-                setStatus(EGameStatus.FINISHED);
-                //update league table
-                this.getLeague().updateGameScore(season.getYear(),host.getName(),guest.getName(),getScore());
-                //update that league started for use case 9.5 (RFA can change score policy only before the beginning of the season)
-                String season = getLeague().getCurrentSeason();
-                return true;
-            }
+        long minutes = ChronoUnit.MINUTES.between(gameDate, currentDate);
+        if( minutes/60 >= 2 ){
+            setStatus(EGameStatus.FINISHED);
+            //update league table
+            this.getLeague().updateGameScore(season.getYear(),host.getName(),guest.getName(),getScore());
+            return true;
         }
-        return false;
+        else{
+            return false;
+        }
     }
 
     public void setGID(int gid) {

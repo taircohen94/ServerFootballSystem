@@ -12,7 +12,6 @@ import System.FootballSystem;
 import Users.*;
 import javafx.util.Pair;
 
-import javax.naming.OperationNotSupportedException;
 import javax.security.auth.login.FailedLoginException;
 import java.util.*;
 
@@ -620,12 +619,7 @@ public class Model extends Observable implements IModel {
         ValidateObject.getValidatedGame(gameID);
 
         Referee referee = (Referee) user;
-        try {
-            referee.addEventToAssignedGame(gameID, EEventType.valueOf(eventType), description);
-        } catch (Exception e) {
-            String cause = e.getMessage();
-            throw new RecordException(cause);
-        }
+        referee.addEventToAssignedGame(gameID, EEventType.valueOf(eventType), description);
         return true;
     }
 
@@ -950,6 +944,12 @@ public class Model extends Observable implements IModel {
             fillAnswer(answer, gameSet);
         }
         return answer;
+
+    }
+
+    public StringBuilder checkNotification() throws RecordException {
+
+        return null;
 
     }
 }
