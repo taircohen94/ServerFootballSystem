@@ -133,7 +133,6 @@ public class DataUploader {
                 else status = EStatus.ONLINE;
                 fan.setStatus(status);
 
-
                 // add to fans map
                 if(!allFans.containsKey(username)) {
                     allFans.put(username, fan);
