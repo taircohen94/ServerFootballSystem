@@ -59,6 +59,7 @@ public class OneRoundGamesAssigningPolicy extends GamesAssigningPolicy {
         int numberOfGames = nChooseTwo(teamsCount);
         int mainRefWithExtraGame = (numberOfGames % mainRefereeCount);
         int otherRefWithExtraGame = (numberOfGames*2 % (refereeCount-mainRefereeCount));
+        int counterMinutes = 0;
         //String[] of team names
         String[] teamName = getNamesArray(teams);
         boolean evenTeamNumber = (teamsCount % 2 == 0);
@@ -70,6 +71,7 @@ public class OneRoundGamesAssigningPolicy extends GamesAssigningPolicy {
             for (int i = 0; i < numberOfGames/4; i++) {
                 //for each week of games
                 int[][] teamsOfGame = getMatchParticipants(teams,combinations,teamsCount/2);
+                counterMinutes = 0;
                 for (int j = 0; j <teamsCount/2; j++) {
                     //create all games of this round
                     Team host = teams.get(teamName[teamsOfGame[j][0]]);
@@ -82,8 +84,9 @@ public class OneRoundGamesAssigningPolicy extends GamesAssigningPolicy {
                     calendar.add(Calendar.DAY_OF_YEAR, weeks*7);
                     java.util.Date dateNew = calendar.getTime();
                     //first game between those teams
-                    Game game = new Game(dateNew,new Time(21,0,0),host.getMainField(),host,guest,mainRef,sideRef1,sideRef2,season,league);
+                    Game game = new Game(dateNew,new Time(21,counterMinutes,0),host.getMainField(),host,guest,mainRef,sideRef1,sideRef2,season,league);
                     int gid = gidHelper++;
+                    counterMinutes+=2;
                     game.setGID(gid);
                     games.put(gidCounter,game);
                 }

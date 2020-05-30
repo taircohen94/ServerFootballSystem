@@ -338,6 +338,7 @@ public class Game {
         else if(eventType == EEventType.GoalGUEST)
             score.setGoalsGuest(score.getGoalsGuest() + 1);
 
+        notifyObserver(description,eventType);
         // Write to the log
         Logger.getInstance().addActionToLogger("Event was added to gameID: "+GID+", Event type: "+ event.getEventType());
 
