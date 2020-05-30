@@ -781,8 +781,8 @@ public class DataUploader {
                     String eDateStr = eventsSet.getString("DateTime");
                     Time eTime = Time.valueOf(eDateStr.split(" ")[1]);
                     SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
-                    dFormat.setLenient(false);
-                    java.util.Date eDate = dFormat.parse(eDateStr.split(" ")[0]);
+                   // dFormat.setLenient(false);
+                    java.util.Date eDate = dFormat.parse(eDateStr);
                     String eventType = eventsSet.getString("EventType");
                     String description = eventsSet.getString("Description");
 
