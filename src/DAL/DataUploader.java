@@ -134,8 +134,20 @@ public class DataUploader {
                 fan.setStatus(status);
 
                 // add to fans map
-                if(!allFans.containsKey(username)) {
+                if (!allFans.containsKey(username)) {
                     allFans.put(username, fan);
+                }
+
+                // attach fan's notifications:
+                ResultSet notificationsSet = databaseManager.executeQuerySelect(
+                        "SELECT * FROM notifications " + "" +
+                                "WHERE Username=" + username +
+                                "AND Seen = 0");
+                while (notificationsSet.next()) {
+                    int nID = notificationsSet.getInt("idNotifications");
+                    String descriptionStr = notificationsSet.getString("Description");
+                    String[] notification = descriptionStr.split("~");
+                    fan.addNotification(nID, notification);
                 }
 
             }
@@ -410,9 +422,9 @@ public class DataUploader {
                 String teamName = resultSet.getString("Teams_name");
                 String seasonYear = resultSet.getString("Seasons_Year");
 
-                Team team= allTeams.get(teamName);
-                Season season= allSeasons.get(seasonYear);
-                AdditionalInfo additionalInfo = new AdditionalInfo(team,season );
+                Team team = allTeams.get(teamName);
+                Season season = allSeasons.get(seasonYear);
+                AdditionalInfo additionalInfo = new AdditionalInfo(team, season);
 
                 //region Attach owners
                 ResultSet ownersSet = databaseManager.executeQuerySelect("" +
@@ -420,14 +432,14 @@ public class DataUploader {
                         "WHERE AdditionalInfo_Teams_name= \"" + teamName + "\" \n" +
                         "AND AdditionalInfo_Seasons_Year = \"" + seasonYear + "\";");
                 ArrayList<String> owners = new ArrayList<>();
-                HashSet<String> teamOwnersHashSet= new HashSet<>();
+                HashSet<String> teamOwnersHashSet = new HashSet<>();
                 while (ownersSet.next()) {
                     String ownerUsername = ownersSet.getString("TeamOwner_Username");
                     owners.add(ownerUsername);
                     teamOwnersHashSet.add(ownerUsername);
 
                     // add additional info to team owner's object
-                    TeamOwner teamOwner= allTeamOwners.get(ownerUsername);
+                    TeamOwner teamOwner = allTeamOwners.get(ownerUsername);
                     teamOwner.addAdditionalInfo(additionalInfo);
                 }
                 // select nominating team owner:
@@ -452,7 +464,7 @@ public class DataUploader {
                     teamManagersHashSet.add(username);
 
                     // add additional info to team managers's object
-                    TeamManager teamManager= allTeamManagers.get(username);
+                    TeamManager teamManager = allTeamManagers.get(username);
                     teamManager.addAdditionalInfo(additionalInfo);
                 }
                 HashMap<String, ArrayList<String>> managersMap = new HashMap<>();
@@ -472,7 +484,7 @@ public class DataUploader {
                     coaches.add(username);
 
                     // add additional info to team coach's object
-                    Coach coach= allCoaches.get(username);
+                    Coach coach = allCoaches.get(username);
                     coach.addAdditionalInfo(additionalInfo);
                 }
                 additionalInfo.setCoaches(coaches);
@@ -489,15 +501,15 @@ public class DataUploader {
                     players.add(username);
 
                     // add additional info to team player's object
-                    Player player= allPlayers.get(username);
+                    Player player = allPlayers.get(username);
                     player.addAdditionalInfo(additionalInfo);
                 }
                 additionalInfo.setPlayers(players);
                 //endregion
 
                 //region attach additionalInfoWithSeasons (Team class), teamAdditionalInfo (Season class)
-                team.getAdditionalInfoWithSeasons().put(seasonYear,additionalInfo);
-                season.getTeamAdditionalInfo().put(teamName,additionalInfo);
+                team.getAdditionalInfoWithSeasons().put(seasonYear, additionalInfo);
+                season.getTeamAdditionalInfo().put(teamName, additionalInfo);
                 //endregion
             }
         } catch (SQLException e) {
@@ -716,7 +728,7 @@ public class DataUploader {
             while (resultSet.next()) {
                 int gid = resultSet.getInt("idGames");
                 String datestr = resultSet.getString("DateTime");
-                Time time = Time.valueOf(datestr.split(" ")[1]+":00");
+                Time time = Time.valueOf(datestr.split(" ")[1] + ":00");
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
                 java.util.Date cDate = dateFormat.parse(datestr);
                 int goalHost = resultSet.getInt("GoalHost");
@@ -768,18 +780,18 @@ public class DataUploader {
 
                 // attach events:
                 ResultSet eventsSet = databaseManager.executeQuerySelect(
-                        "select * from events where gameID="+ gid);
-                while (eventsSet.next()){
-                    int eventID= eventsSet.getInt("EventID");
+                        "select * from events where gameID=" + gid);
+                while (eventsSet.next()) {
+                    int eventID = eventsSet.getInt("EventID");
                     String eDateStr = eventsSet.getString("DateTime");
                     Time eTime = Time.valueOf(eDateStr.split(" ")[1]);
                     SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
                     dFormat.setLenient(false);
                     java.util.Date eDate = dFormat.parse(eDateStr.split(" ")[0]);
-                    String eventType= eventsSet.getString("EventType");
-                    String description= eventsSet.getString("Description");
+                    String eventType = eventsSet.getString("EventType");
+                    String description = eventsSet.getString("Description");
 
-                    Event e=new Event(eDate, eTime,EEventType.valueOf(eventType),description);
+                    Event e = new Event(eDate, eTime, EEventType.valueOf(eventType), description);
                     game.getEvents().add(e);
                 }
 

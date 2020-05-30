@@ -1,4 +1,5 @@
 package Users;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,29 +18,29 @@ import System.*;
  *
  * @ Written by Yuval Ben Eliezer
  */
-public class Fan extends Guest implements IFan ,Serializable {
+public class Fan extends Guest implements IFan, Serializable {
     private static int notificationID = 1;
     private String userName;
     private String fName;
     private String lName;
     private EStatus status;
-    private HashMap<Integer,String[]> pendingGameNotifications;
+    private HashMap<Integer, String[]> pendingNotifications; //  for fan: <notificationID, String[EEventType,Description]
     //private HashMap<String,APageEditor> pendingPageNotifications;
     private HashMap<String, EScheduleOrPlaceEvent> pendingScheduleNotifications;
     private List<String> searchHistory;
 
     /**
      * @param userName - Unique user name
-     * @param fName - First name of the fan
-     * @param lName - Last name of the fan
-     * When a fan is created his status is ONLINE
+     * @param fName    - First name of the fan
+     * @param lName    - Last name of the fan
+     *                 When a fan is created his status is ONLINE
      */
     public Fan(String userName, String fName, String lName) {
         this.userName = userName;
         this.fName = fName;
         this.lName = lName;
         this.searchHistory = new ArrayList<>();
-        this.pendingGameNotifications = new HashMap<>();
+        this.pendingNotifications = new HashMap<>();
 //        this.pendingPageNotifications = new HashMap<>();
         this.pendingScheduleNotifications = new HashMap<>();
         this.status = EStatus.ONLINE;
@@ -47,7 +48,7 @@ public class Fan extends Guest implements IFan ,Serializable {
 
     /**
      * When a fan leaves the system, a fan's status changes to offline
-     *
+     * <p>
      * # use case 3.1
      */
     public void logout() {
@@ -55,7 +56,8 @@ public class Fan extends Guest implements IFan ,Serializable {
     }
 
     /**
-     *  With this function you can view fan information.
+     * With this function you can view fan information.
+     *
      * @return - His full name, status and search history.
      */
     public String viewProfile() { //useCase 3.6
@@ -67,9 +69,25 @@ public class Fan extends Guest implements IFan ,Serializable {
     }
 
     public void setUserName(String userName) {
-        if(userName!=null) {
+        if (userName != null) {
             this.userName = userName;
         }
+    }
+
+    public static int getNotificationID() {
+        return notificationID;
+    }
+
+    public static void setNotificationID(int notificationID) {
+        Fan.notificationID = notificationID;
+    }
+
+    public HashMap<Integer, String[]> getPendingNotifications() {
+        return pendingNotifications;
+    }
+
+    public void setPendingNotifications(HashMap<Integer, String[]> pendingNotifications) {
+        this.pendingNotifications = pendingNotifications;
     }
 
     public String getfName() {
@@ -77,7 +95,7 @@ public class Fan extends Guest implements IFan ,Serializable {
     }
 
     public void setfName(String fName) {
-        if(fName != null){
+        if (fName != null) {
             this.fName = fName;
         }
     }
@@ -87,7 +105,7 @@ public class Fan extends Guest implements IFan ,Serializable {
     }
 
     public void setlName(String lName) {
-        if(lName != null){
+        if (lName != null) {
             this.lName = lName;
         }
     }
@@ -99,18 +117,19 @@ public class Fan extends Guest implements IFan ,Serializable {
     /**
      * This function changes the player's status in the system
      * if the player had notifications while offline, show them to him when online.
+     *
      * @param status - It could be:
-     *      *             ONLINE , OFFLINE
+     *               *             ONLINE , OFFLINE
      */
     public void setStatus(EStatus status) {
         boolean wasOffline = false;
-        if(this.status == EStatus.OFFLINE) wasOffline = true;
-        if(status != null) {
+        if (this.status == EStatus.OFFLINE) wasOffline = true;
+        if (status != null) {
             this.status = status;
             //checking if this fan was offline and now became online
             if (status == EStatus.ONLINE && wasOffline) {
-                if (pendingGameNotifications.size() != 0) {
-                    for (Map.Entry<Integer, String[] > entry : pendingGameNotifications.entrySet()) {
+                if (pendingNotifications.size() != 0) {
+                    for (Map.Entry<Integer, String[]> entry : pendingNotifications.entrySet()) {
                         // TODO: 29/04/2020 show some pop up message to the user about each notification
                         System.out.println(entry.getKey());
                     }
@@ -122,8 +141,8 @@ public class Fan extends Guest implements IFan ,Serializable {
 //                    }
 //                }
                 //clear notifications after the user got them
-                pendingGameNotifications.clear();
-                pendingGameNotifications.clear();
+                pendingNotifications.clear();
+                pendingNotifications.clear();
             }
 
         }
@@ -133,7 +152,7 @@ public class Fan extends Guest implements IFan ,Serializable {
      * With this function you can view fan information.
      * Provides a brief description of the player,
      * His full name, status and search history.
-     *
+     * <p>
      * # use case 3.6
      */
     @Override
@@ -142,30 +161,30 @@ public class Fan extends Guest implements IFan ,Serializable {
                 ": " + fName + '\'' +
                 " " + lName + '\'' +
                 ", my status is" + status +
-                ", my search History is " + searchHistory.toString() ;
+                ", my search History is " + searchHistory.toString();
     }
 
     /**
-     *A fan can sign up to track personal pages
+     * A fan can sign up to track personal pages
      * With this function, a fan can sign up to track player and coach pages
-     *
+     * <p>
      * # use case 3.2
      *
      * @param pageEditor - The page the fan wants to sign up for
      */
-    public void subscribePersonalPage(APageEditor pageEditor){//useCase 3.2
+    public void subscribePersonalPage(APageEditor pageEditor) {//useCase 3.2
         pageEditor.register(this);
     }
 
     /**
      * A fan can delete a subscription to track personal pages
      * In this function, a fan can delete tracker of player and coach pages
-     *
+     * <p>
      * # use case 3.2
      *
      * @param pageEditor - The page the fan wants to stop following
      */
-    public void removeRegisterFromPersonalPage(APageEditor pageEditor){//useCase 3.2
+    public void removeRegisterFromPersonalPage(APageEditor pageEditor) {//useCase 3.2
         pageEditor.delete(this);
     }
 
@@ -173,66 +192,69 @@ public class Fan extends Guest implements IFan ,Serializable {
         // TODO: 12/04/2020 Ask Alon&Amit about team page
     }
 
-    public void update(APageEditor pageEditor,String feed){}
+    public void update(APageEditor pageEditor, String feed) {
+    }
 
     /**
-     *A fan can sign up to track games
+     * A fan can sign up to track games
      * With this function, a fan can sign up to games
-     *
+     * <p>
      * # use case 3.3
      *
      * @param game - The game the fan wants to sign up for
      */
-    public void subscribeGames(Game game){//useCase 3.2
+    public void subscribeGames(Game game) {//useCase 3.2
         game.register(this);
     }
 
     /**
      * A fan can delete a subscription to track game
      * In this function, a fan can delete tracker of game
-     *
+     * <p>
      * # use case 3.2
      * # use case 3.2
      *
      * @param game - The game the fan wants to stop following
      */
-    public void removeRegisterFromGames(Game game){//useCase 3.2
+    public void removeRegisterFromGames(Game game) {//useCase 3.2
         game.delete(this);
     }
 
     public void updateGame(String description, EEventType eventType) {
-        if(this.status == EStatus.ONLINE){
+        if (this.status == EStatus.ONLINE) {
             // TODO: 29/04/2020 pop up message
-        }
-        else{
-            pendingGameNotifications.put(notificationID++,new String[]{description,eventType.name()});
+        } else {
+            pendingNotifications.put(notificationID++, new String[]{description, eventType.name()});
         }
     }
 
     /**
      * This method should receive a complain text (from the service layer)
      * and sends the complain to a complaint box .
+     *
      * @param complain - Verbal text describing the complain
      */
     public void submitComplain(String complain) {//useCase 3.4
-        Complains.getInstance().addComplain(complain,this);
+        Complains.getInstance().addComplain(complain, this);
     }
 
     /**
-     *A fan can respond to a complaint he has sent to the administrator
+     * A fan can respond to a complaint he has sent to the administrator
      *
      * @param systemManager - The administrator who responded to the complaint
-     * @param Complain - The Complaint
-     * @param response - The answer to the complaint
-     *
-     * # use case 3.4
+     * @param Complain      - The Complaint
+     * @param response      - The answer to the complaint
+     *                      <p>
+     *                      # use case 3.4
      */
-    public void getResponseForComplain(SystemManager systemManager,String Complain,String response){}
+    public void getResponseForComplain(SystemManager systemManager, String Complain, String response) {
+    }
 
     /**
      * A fan can view his search history
-     *
+     * <p>
      * # use case 3.5
+     *
      * @return search history.
      */
     public List<String> getSearchHistory() { //useCase 3.5
@@ -241,11 +263,12 @@ public class Fan extends Guest implements IFan ,Serializable {
 
     /**
      * A fan can view his search history
-     *
+     * <p>
      * # use case 3.5
+     *
      * @return search history in order to display it on the screen.
      */
-    public String viewSearchHistory(){ //useCase 3.5
+    public String viewSearchHistory() { //useCase 3.5
         StringBuilder res = new StringBuilder();
         for (String aSearchHistory : this.searchHistory) {
             res.append(aSearchHistory);
@@ -254,7 +277,7 @@ public class Fan extends Guest implements IFan ,Serializable {
     }
 
     public void setSearchHistory(List<String> searchHistory) {
-        if(searchHistory!= null) {
+        if (searchHistory != null) {
             this.searchHistory = searchHistory;
         }
     }
@@ -262,11 +285,12 @@ public class Fan extends Guest implements IFan ,Serializable {
     /**
      * A fan can perform system searches
      * A fan search history is saved to the system
+     *
      * @param name - The content for which the fan wants information
-     * return null - If no result is found
+     *             return null - If no result is found
      */
     @Override
-    public String searchByName(String name){
+    public String searchByName(String name) {
         if (name != null) {
             String res = super.searchByName(name);
             this.searchHistory.add(name);
@@ -278,11 +302,12 @@ public class Fan extends Guest implements IFan ,Serializable {
     /**
      * A fan can perform system searches
      * A fan search history is saved to the system
+     *
      * @param categoryName - The category for which the fan wants information
-     * return null - If no result is found
+     *                     return null - If no result is found
      */
     @Override
-   public LinkedList<String> searchByCategory(String categoryName){
+    public LinkedList<String> searchByCategory(String categoryName) {
 //        if (categoryName != null) {
 //            String res = super.searchByCategory(categoryName);
 //            this.searchHistory.add(categoryName);
@@ -291,41 +316,46 @@ public class Fan extends Guest implements IFan ,Serializable {
         return null;
     }
 
-    public void addTimeChangedNotification(String notification){
-        if(notification != null && notification.length() != 0){
-            if(this.status == EStatus.ONLINE){
+    public void addTimeChangedNotification(String notification) {
+        if (notification != null && notification.length() != 0) {
+            if (this.status == EStatus.ONLINE) {
                 //throw some exception or other way to let the service layer to pop up message for referee
             }
             //save the notifications for later (show it when referee is online)
-            else{
+            else {
                 pendingScheduleNotifications.put(notification, EScheduleOrPlaceEvent.TIME_CHANGED);
             }
         }
 
     }
 
-    public void addDateChangedNotification(String notification){
-        if(notification != null && notification.length() != 0){
-            if(this.status == EStatus.ONLINE){
+    public void addDateChangedNotification(String notification) {
+        if (notification != null && notification.length() != 0) {
+            if (this.status == EStatus.ONLINE) {
                 //throw some exception or other way to let the service layer to pop up message for referee
             }
             //save the notifications for later (show it when referee is online)
-            else{
+            else {
                 pendingScheduleNotifications.put(notification, EScheduleOrPlaceEvent.DATE_CHANGED);
             }
         }
     }
 
-    public void addFieldChangedNotification(String notification){
-        if(notification != null && notification.length() != 0){
-            if(this.status == EStatus.ONLINE){
+    public void addFieldChangedNotification(String notification) {
+        if (notification != null && notification.length() != 0) {
+            if (this.status == EStatus.ONLINE) {
                 //throw some exception or other way to let the service layer to pop up message for referee
             }
             //save the notifications for later (show it when referee is online)
-            else{
-                pendingScheduleNotifications.put(notification, EScheduleOrPlaceEvent.FIELD_CHANGED);;
+            else {
+                pendingScheduleNotifications.put(notification, EScheduleOrPlaceEvent.FIELD_CHANGED);
+                ;
             }
         }
+    }
+
+    public void addNotification(int nID, String [] notification) {
+        pendingNotifications.put(nID,notification);
     }
 
 
