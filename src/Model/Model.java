@@ -222,13 +222,13 @@ public class Model extends Observable implements IModel {
         Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
         Season season = FootballSystem.getInstance().getSeasonDB().getAllSeasons().get(seasonYear);
         try {
-            if (training == null && role == null) {
+            if (training.equals("null") && role.equals("null")) {
                 teamOwner.editCoachDetails(team, season, userName, firstName,
                         lastName, null, null);
-            } else if (training == null) {
+            } else if (training.equals("null")) {
                 teamOwner.editCoachDetails(team, season, userName, firstName,
                         lastName, null, ECoachRole.valueOf(role));
-            } else if (role == null) {
+            } else if (role.equals("null")) {
                 teamOwner.editCoachDetails(team, season, userName, firstName,
                         lastName, ETraining.valueOf(training), null);
             } else {
@@ -252,7 +252,7 @@ public class Model extends Observable implements IModel {
         Team team = FootballSystem.getInstance().getTeamDB().getAllTeams().get(teamName);
         Season season = FootballSystem.getInstance().getSeasonDB().getAllSeasons().get(seasonYear);
         try {
-            if (role == null) {
+            if (role.equals("null")) {
                 teamOwner.editPlayerDetails(team, season, userName, firstName,
                         lastName, null);
             } else {
