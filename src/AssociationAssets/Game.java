@@ -395,7 +395,7 @@ public class Game {
         if (this.observers.size() > 0) {
             for (Fan fan :
                     this.observers) {
-                fan.updateGame(description,eventType);
+                fan.updateGame(this.GID,description,eventType);
             }
 
         }

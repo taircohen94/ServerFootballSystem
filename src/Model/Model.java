@@ -948,8 +948,19 @@ public class Model extends Observable implements IModel {
     }
 
     public StringBuilder checkNotification() throws RecordException {
-
-        return null;
-
+        HashMap<Integer, String[]> notification = user.getPendingNotifications();
+        if(notification.size() == 0){
+            throw new RecordException("None");
+        }
+        StringBuilder answer = new StringBuilder();
+        Collection <String[]> strings = notification.values();
+        HashSet notifi = new HashSet();
+        for (String [] array :strings) {
+            for (int i = 0; i < array.length; i++) {
+                notifi.add(array[i]);
+            }
+        }
+        fillAnswer(answer, notifi);
+        return answer;
     }
 }

@@ -220,11 +220,11 @@ public class Fan extends Guest implements IFan, Serializable {
         game.delete(this);
     }
 
-    public void updateGame(String description, EEventType eventType) {
+    public void updateGame(int gid,String description, EEventType eventType) {
         if (this.status == EStatus.ONLINE) {
             // TODO: 29/04/2020 pop up message
         } else {
-            pendingNotifications.put(notificationID++, new String[]{description, eventType.name()});
+            pendingNotifications.put(notificationID++, new String[]{"Game Id: "+gid,"Event: "+ eventType.name()," "+description});
         }
     }
 
