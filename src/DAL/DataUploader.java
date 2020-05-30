@@ -101,15 +101,10 @@ public class DataUploader {
         uploadCoaches();
         uploadTeamManagers();
         uploadTeamOwners();
-        //System.out.println("uploaded players, coaches team owners and teamManagers");
         uploadSystemManagers();
-        //System.out.println("uploaded system Managers");
         uploadRFAs();
-        //System.out.println("uploaded RFAs");
         uploadReferees();
-        //System.out.println("uploaded referees");
         uploadFans();
-        //System.out.println("uploaded fans");
         uploadPasswordsUsers();
     }
 
@@ -138,17 +133,16 @@ public class DataUploader {
                     allFans.put(username, fan);
                 }
 
-//                // attach fan's notifications:
-//                ResultSet notificationsSet = databaseManager.executeQuerySelect(
-//                        "SELECT * FROM notifications " + "" +
-//                                "WHERE Username=" + username +
-//                                "AND Seen = 0");
-//                while (notificationsSet.next()) {
-//                    int nID = notificationsSet.getInt("idNotifications");
-//                    String descriptionStr = notificationsSet.getString("Description");
-//                    String[] notification = descriptionStr.split("~");
-//                    fan.addNotification(nID, notification);
-//                }
+                // attach fan's notifications:
+                ResultSet notificationsSet = databaseManager.executeQuerySelect(
+                        "select * from notifications where Username=\"" +username+"\" and seen=0;");
+
+                while (notificationsSet.next()) {
+                    int nID = notificationsSet.getInt("idNotifications");
+                    String descriptionStr = notificationsSet.getString("Description");
+                    String[] notification = descriptionStr.split("~");
+                    fan.addNotification(nID, notification);
+                }
 
             }
         } catch (SQLException e) {
@@ -189,6 +183,7 @@ public class DataUploader {
             e.printStackTrace();
         }
     }
+
 
     /**
      * Upload all RFAs from DB.
@@ -728,7 +723,7 @@ public class DataUploader {
             while (resultSet.next()) {
                 int gid = resultSet.getInt("idGames");
                 String datestr = resultSet.getString("DateTime");
-                Time time = Time.valueOf(datestr.split(" ")[1] + ":00");
+                Time time = Time.valueOf(datestr.split(" ")[1]);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
                 java.util.Date cDate = dateFormat.parse(datestr);
                 int goalHost = resultSet.getInt("GoalHost");
