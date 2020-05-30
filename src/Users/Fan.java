@@ -201,7 +201,7 @@ public class Fan extends Guest implements IFan, Serializable {
      * @param game - The game the fan wants to sign up for
      */
     public void subscribeGames(Game game) {//useCase 3.2
-        game.register(this);
+        game.register(this.userName);
     }
 
     /**

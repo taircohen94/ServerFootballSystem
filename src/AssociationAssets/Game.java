@@ -35,7 +35,7 @@ public class Game {
     Team guest;
     Referee main, side1, side2;
     List<Event> events;
-    private List<Fan> observers;
+    private List<String> observers;
     private EGameStatus status;
     //endregion
 
@@ -126,7 +126,7 @@ public class Game {
         this.events = events;
     }
 
-    public void setObservers(List<Fan> observers) {
+    public void setObservers(List<String> observers) {
         this.observers = observers;
     }
 
@@ -373,7 +373,7 @@ public class Game {
 
     //endregion
 
-    public void register(Fan observer){
+    public void register(String observer){
         if(observer != null) {
             this.observers.add(observer);
         }
@@ -385,7 +385,7 @@ public class Game {
         }
     }
 
-    public List<Fan> getObservers() {
+    public List<String> getObservers() {
         return observers;
     }
 
@@ -393,9 +393,12 @@ public class Game {
     public void notifyObserver(String description,EEventType eventType) {
 
         if (this.observers.size() > 0) {
-            for (Fan fan :
+            for (String fan :
                     this.observers) {
-                fan.updateGame(this.GID,description,eventType);
+                Fan fann = FootballSystem.getInstance().getFanByUserName(fan);
+                if(fann != null) {
+                    fann.updateGame(this.GID, description, eventType);
+                }
             }
 
         }
@@ -427,7 +430,7 @@ public class Game {
         if( minutes/60 >= 2 ){
             setStatus(EGameStatus.FINISHED);
             //update league table
-            this.getLeague().updateGameScore(season.getYear(),host.getName(),guest.getName(),getScore());
+//            this.getLeague().updateGameScore(season.getYear(),host.getName(),guest.getName(),getScore());
             return true;
         }
         else{
