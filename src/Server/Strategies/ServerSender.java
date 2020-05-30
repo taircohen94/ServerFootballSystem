@@ -84,9 +84,23 @@ public class ServerSender implements IServerStrategy {
                 case "checkNotification":
                     checkNotification(toClient);
                     break;
+                case "availableSeasonsForLeague":
+                    availableSeasonsForLeague(toClient,array);
+                    break;
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void availableSeasonsForLeague(ObjectOutputStream toClient, String[] array) throws IOException {
+        try {
+            StringBuilder answer = model.availableSeasonsForLeague(array[1]);
+            toClient.writeObject(answer);
+            toClient.flush();
+        } catch (RecordException e) {
+            toClient.writeObject(new StringBuilder(e.getErrorMessage()));
+            toClient.flush();
         }
     }
 

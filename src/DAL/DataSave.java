@@ -744,16 +744,34 @@ public class DataSave {
 
                 //region Save to notifications table
                 for (Map.Entry<Integer, String[]> notification : fan.getPendingNotifications().entrySet()) {
-//                    String query =
-//                            "INSERT INTO   \n" +
-//                                    "\tfans(Username,FirstName, LastName, AccountStatus)\n" +
-//                                    "VALUES(?,?,?,?)" +
-//                                    "ON DUPLICATE KEY UPDATE \n" +
-//                                    "Username = ?,\n" +
-//                                    "FirstName= ?,\n" +
-//                                    "LastName= ?,\n" +
-//                                    "AccountStatus=?;";
+                    String nString = notification.getValue()[0]+"~"+notification.getValue()[1] +"~"+notification.getValue()[2];
+                    int seen= Integer.parseInt(notification.getValue()[3]);
+                    query =
+                            "INSERT INTO   \n" +
+                                    "\tnotifications(idNotifications, Seen, Username, Description)\n" +
+                                    "VALUES(?,?,?,?)" +
+                                    "ON DUPLICATE KEY UPDATE \n" +
+                                    "idNotifications = ?,\n" +
+                                    "Seen= ?,\n" +
+                                    "Username= ?,\n" +
+                                    "Description=?;";
+
+                    ps = databaseManager.conn.prepareStatement(query); //compiling query in the DB
+                    ps.setInt(1, notification.getKey());
+                    ps.setInt(2, seen);
+                    ps.setString(3, fan.getUserName());
+                    ps.setString(4, nString);
+
+                    ps.setInt(5, notification.getKey());
+                    ps.setInt(6, seen);
+                    ps.setString(7, fan.getUserName());
+                    ps.setString(8, nString);
+                    //System.out.println(ps.toString());
+                    ps.executeUpdate();
+                    databaseManager.conn.commit();
+                    //endregion
                 }
+
 
 
             } catch (SQLException e) {
