@@ -656,8 +656,8 @@ public class DataUploader {
                 binder.addGamesToLeague(games);
 
                 // attach policies
-                binder.setScoreTablePolicy(tablePolicy);
-                binder.setAssigningPolicy(gamesAssigningPolicy);
+                binder.setScoreTablePolicyUploader(tablePolicy);
+                binder.setAssigningPolicyUploader(gamesAssigningPolicy);
 
                 // attach season & league
                 binder.setScoreTablePolicyUploader(tablePolicy);
