@@ -3,9 +3,9 @@ package AcceptanceTests.Tests;
 import AcceptanceTests.DataObjects.*;
 import AcceptanceTests.SystemOperations.ISystemOperationsBridge;
 import AcceptanceTests.SystemOperations.RealSystemOperations;
-import Users.ECoachRole;
-import Users.EPlayerRole;
-import Users.ETraining;
+import BL.Users.ECoachRole;
+import BL.Users.EPlayerRole;
+import BL.Users.ETraining;
 import org.junit.Before;
 import org.junit.Test;
 

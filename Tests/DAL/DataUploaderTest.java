@@ -1,14 +1,13 @@
 package DAL;
 
-import AssociationAssets.League;
+import BL.AssociationAssets.League;
+import BL.System.FootballSystem;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
-import java.util.Map;
 
-import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import System.*;
+
 public class DataUploaderTest {
 
     JDBCConnector connector;

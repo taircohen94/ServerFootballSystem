@@ -1,10 +1,11 @@
 package Budget;
 
-import AssociationAssets.Field;
-import AssociationAssets.Season;
-import AssociationAssets.Team;
-import PoliciesAndAlgorithms.SimpleGamesAssigningPolicy;
-import Users.RepresentativeFootballAssociation;
+import BL.AssociationAssets.Field;
+import BL.AssociationAssets.Season;
+import BL.AssociationAssets.Team;
+import BL.Budget.TeamBudget;
+import BL.PoliciesAndAlgorithms.SimpleGamesAssigningPolicy;
+import BL.Users.RepresentativeFootballAssociation;
 import javafx.util.Pair;
 import org.junit.Before;
 import org.junit.Test;

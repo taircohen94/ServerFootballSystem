@@ -1,5 +1,7 @@
 package Users;
-import AssociationAssets.*;
+import BL.AssociationAssets.*;
+import BL.Users.EReferee;
+import BL.Users.Referee;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import java.sql.Time;
@@ -41,7 +43,7 @@ class RefereeTest {
         events = new LinkedList<>();
         events.add(e1);
         events.add(e2);
-        main = new Referee("1", "main", "main",EReferee.MAIN);
+        main = new Referee("1", "main", "main", EReferee.MAIN);
         side1 = new Referee("2", "side1", "side1",EReferee.ASSISTANT);
         side2 = new Referee("3", "side2", "side1",EReferee.ASSISTANT);
         game = new Game(date, time, field, host, guest, main, side1, side2, season, league);

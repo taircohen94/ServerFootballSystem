@@ -1,8 +1,6 @@
 package IntegrationTests;
 
-import AssociationAssets.AdditionalInfo;
-import Users.Player;
-import Users.TeamOwner;
+import BL.Users.TeamOwner;
 
 public class TeamOwnerStub extends TeamOwner {
 

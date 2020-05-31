@@ -1,12 +1,12 @@
 package AcceptanceTests;
 
-import AssociationAssets.*;
-import Budget.TeamBudget;
-import PoliciesAndAlgorithms.RegularScorePolicy;
-import PoliciesAndAlgorithms.SimpleGamesAssigningPolicy;
-import Users.*;
-import System.Logger;
-import System.FootballSystem;
+import BL.AssociationAssets.*;
+import BL.Budget.TeamBudget;
+import BL.PoliciesAndAlgorithms.RegularScorePolicy;
+import BL.PoliciesAndAlgorithms.SimpleGamesAssigningPolicy;
+import BL.Users.*;
+import BL.System.Logger;
+import BL.System.FootballSystem;
 
 import java.sql.Time;
 import java.util.Date;
@@ -87,10 +87,10 @@ public class Acceptance {
         Date date = new Date(1987,12,4);
         field = footballSystem.createField("Teddy","Jerusalem",29000);
         field2= footballSystem.createField("Terner","Beer Sheva",19000);
-        player = (Player) footballSystem.creatingPlayer("messi10","Leo","Messi",date,EPlayerRole.Forward);
+        player = (Player) footballSystem.creatingPlayer("messi10","Leo","Messi",date, EPlayerRole.Forward);
         season = new Season("2020");
         league1 = new League("Israeli League");
-        coach = (Coach) footballSystem.creatingCoach("bus123","Jose","Morinuo",ETraining.UEFAPro,ECoachRole.HeadCoach);
+        coach = (Coach) footballSystem.creatingCoach("bus123","Jose","Morinuo", ETraining.UEFAPro,ECoachRole.HeadCoach);
         teamOwner = (TeamOwner) footballSystem.creatingTeamOwner("ETgoHome","Eli","Tabib");
         teamOwner2 = (TeamOwner) footballSystem.creatingTeamOwner("hogeg$$","Moshe","Hogeg");
         teamOwner3 = (TeamOwner) footballSystem.creatingTeamOwner("ohana11","Eli","Ohana");
@@ -239,7 +239,7 @@ public class Acceptance {
 
         System.out.println("\n* * * * * * *Use case 10.3 Referee updates event in the middle of a game * * * * * * * ");
         //need to create game that is still happening in the time this test is running.
-        mainRef.addEventToAssignedGame(game.getGID(),EEventType.GOALHOST,"own goal by amit lol");
+        mainRef.addEventToAssignedGame(game.getGID(), EEventType.GOALHOST,"own goal by amit lol");
         System.out.println("\n* * * * * * *Use case 10.4 Referee updates til 5 hours after the game ended * * * * * * * ");
         //need to create game that ended less then 5 hours ago.
 

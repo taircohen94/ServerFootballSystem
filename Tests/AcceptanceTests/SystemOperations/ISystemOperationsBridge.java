@@ -1,7 +1,7 @@
 package AcceptanceTests.SystemOperations;
 
 import AcceptanceTests.DataObjects.*;
-import AssociationAssets.EEventType;
+import BL.AssociationAssets.EEventType;
 
 public interface ISystemOperationsBridge {
     /**

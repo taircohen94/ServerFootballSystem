@@ -1,6 +1,7 @@
 package AssociationAssets;
 
-import Users.Referee;
+import BL.AssociationAssets.*;
+import BL.Users.Referee;
 import org.junit.Before;
 import org.junit.Test;
 

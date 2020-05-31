@@ -1,15 +1,11 @@
 
-import AssociationAssets.*;
 import DAL.JDBCConnector;
-import Model.Model;
-import Server.Server;
-import Server.Strategies.ServerSender;
-import Users.*;
+import SL.Model.Model;
+import BL.Server.Server;
+import BL.Server.Strategies.ServerSender;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import System.FootballSystem;
-import java.sql.Time;
-import java.util.Date;
+
 import java.util.Scanner;
 
 public class Main extends Application {

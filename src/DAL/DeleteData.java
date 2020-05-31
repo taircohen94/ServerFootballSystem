@@ -1,9 +1,8 @@
 package DAL;
-import AssociationAssets.Event;
+import BL.AssociationAssets.Event;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.Date;
 
 public class DeleteData {

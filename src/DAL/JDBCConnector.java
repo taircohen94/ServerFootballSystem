@@ -1,10 +1,9 @@
 package DAL;
 
-import AssociationAssets.*;
-import System.*;
-import Users.*;
-
-import java.util.*;
+import BL.AssociationAssets.*;
+import BL.AssociationAssets.Event;
+import BL.System.*;
+import BL.Users.*;
 
 /**
  * JDBC Connector in in charge of connecting with the DB.

@@ -1,11 +1,12 @@
 package Users;
 
-import AssociationAssets.*;
-import System.FootballSystem;
+import BL.AssociationAssets.*;
+import BL.System.FootballSystem;
+import BL.Users.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import Budget.TeamBudget;
+import BL.Budget.TeamBudget;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,7 +57,7 @@ class TeamOwnerTest {
         // adding exits user
         assertEquals(team1.getAdditionalInfoWithSeasons().get(season.getYear()).getPlayers().size(),0);
         this.teamOwner1.addPlayer(team1,season,"yuval","123","yuval",
-                "lala",null,EPlayerRole.Defender);
+                "lala",null, EPlayerRole.Defender);
         AdditionalInfo additionalInfo = team1.getAdditionalInfoWithSeasons().get(season.getYear());
         assertEquals(team1.getAdditionalInfoWithSeasons().get(season.getYear()).getPlayers().size(),1);
 
@@ -93,7 +94,7 @@ class TeamOwnerTest {
         // adding exits user
         assertEquals(team1.getAdditionalInfoWithSeasons().get(season.getYear()).getCoaches().size(),0);
         this.teamOwner1.addCoach(team1,season,"yuval","123","yuval",
-                "lala",ETraining.CDiploma,ECoachRole.AssistantCoach);
+                "lala", ETraining.CDiploma,ECoachRole.AssistantCoach);
         AdditionalInfo additionalInfo = team1.getAdditionalInfoWithSeasons().get(season.getYear());
         assertEquals(team1.getAdditionalInfoWithSeasons().get(season.getYear()).getCoaches().size(),1);
 

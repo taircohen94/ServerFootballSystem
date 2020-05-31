@@ -1,11 +1,13 @@
 package Users;
-import AssociationAssets.*;
+import BL.AssociationAssets.*;
+import BL.System.Complains;
+import BL.System.FootballSystem;
+import BL.System.Logger;
+import BL.Users.*;
 import javafx.util.Pair;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import System.*;
 
-import java.io.File;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
@@ -59,7 +61,7 @@ class SystemManagerTest {
 
     @Test
     void getComplainsAndresponseOnComplain() {
-        Player player = new Player("newPlayer", "yossi","cohen", new Date(),EPlayerRole.GoalKeeper);
+        Player player = new Player("newPlayer", "yossi","cohen", new Date(), EPlayerRole.GoalKeeper);
         SystemManager systemManager = new SystemManager("1","1","1");
         player.submitComplain("new complain");
         player.submitComplain("complain");
@@ -76,7 +78,7 @@ class SystemManagerTest {
     @Test
     void getLogInformation() {
         Logger.getInstance();
-        Coach coach = new Coach("newCoach", "yossi","cohen",ETraining.CDiploma, ECoachRole.AssistantCoach);
+        Coach coach = new Coach("newCoach", "yossi","cohen", ETraining.CDiploma, ECoachRole.AssistantCoach);
         SystemManager systemManager = new SystemManager("1","1","1");
         assertEquals(systemManager.getActionLogInformation().size() , 2);
     }

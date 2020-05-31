@@ -1,6 +1,6 @@
 package IntegrationTests;
 
-import Users.Fan;
+import BL.Users.Fan;
 
 public class FanStub extends Fan {
     int selector;

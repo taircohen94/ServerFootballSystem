@@ -1,7 +1,7 @@
 package AcceptanceTests.DataObjects;
 
-import AssociationAssets.Game;
-import Users.EReferee;
+import BL.AssociationAssets.Game;
+import BL.Users.EReferee;
 
 import java.util.ArrayList;
 import java.util.List;

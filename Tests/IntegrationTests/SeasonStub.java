@@ -1,6 +1,6 @@
 package IntegrationTests;
 
-import AssociationAssets.Season;
+import BL.AssociationAssets.Season;
 
 public class SeasonStub extends Season {
     public SeasonStub(String year) {

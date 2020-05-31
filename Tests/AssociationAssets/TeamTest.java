@@ -1,12 +1,12 @@
 package AssociationAssets;
 
-import Users.*;
+import BL.AssociationAssets.*;
+import BL.Users.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Time;
 import java.util.Date;
-import java.util.HashMap;
 
 import static org.junit.Assert.*;
 
@@ -30,7 +30,7 @@ public class TeamTest {
         field= new Field("Teddy", "Jerusalem", 31000);
         season=new Season("season");
 
-        r1= new Referee("1","a","a",EReferee.MAIN);
+        r1= new Referee("1","a","a", EReferee.MAIN);
         r2= new Referee("2","a","a",EReferee.VAR);
         r3= new Referee("3","a","a",EReferee.VAR);
         team1= new Team(1,"Barcelona", season, null,null,null);

@@ -1,20 +1,17 @@
 package DAL;
 
-import AssociationAssets.*;
-import PoliciesAndAlgorithms.RegularScorePolicy;
-import PoliciesAndAlgorithms.SimpleGamesAssigningPolicy;
-import Security.AESEncryption;
-import Security.SecuritySystem;
-import Users.*;
-import System.*;
+import BL.AssociationAssets.*;
+import BL.AssociationAssets.*;
+import BL.PoliciesAndAlgorithms.RegularScorePolicy;
+import BL.PoliciesAndAlgorithms.SimpleGamesAssigningPolicy;
+import BL.Security.SecuritySystem;
+import BL.System.FootballSystem;
+import BL.Users.*;
+import BL.Users.*;
+import BL.System.*;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;

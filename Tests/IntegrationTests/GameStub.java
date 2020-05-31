@@ -1,7 +1,7 @@
 package IntegrationTests;
 
-import AssociationAssets.*;
-import Users.Referee;
+import BL.AssociationAssets.*;
+import BL.Users.Referee;
 
 import java.sql.Time;
 import java.time.LocalTime;
@@ -29,7 +29,7 @@ public class GameStub extends Game {
      * @param season
      * @param league
      */
-    public GameStub(Date date, Time time, Field field, Team host, Team guest, Referee main, Referee side1, Referee side2, Season season, League league,int selector) throws Exception {
+    public GameStub(Date date, Time time, Field field, Team host, Team guest, Referee main, Referee side1, Referee side2, Season season, League league, int selector) throws Exception {
         super(date, time, field, host, guest, main, side1, side2, season, league);
         this.selector = selector;
         events = new ArrayList<>();

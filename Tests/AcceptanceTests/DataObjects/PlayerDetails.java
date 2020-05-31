@@ -1,7 +1,5 @@
 package AcceptanceTests.DataObjects;
-import Users.EPlayerRole;
-
-import java.util.Date;
+import BL.Users.EPlayerRole;
 
 public class PlayerDetails extends UserDetails{
     public EPlayerRole training;

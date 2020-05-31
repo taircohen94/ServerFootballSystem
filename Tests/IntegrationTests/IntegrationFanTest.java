@@ -1,9 +1,7 @@
 package IntegrationTests;
 
-import AssociationAssets.ETeamStatus;
-import AssociationAssets.Team;
-import Users.EStatus;
-import Users.Fan;
+import BL.Users.EStatus;
+import BL.Users.Fan;
 import org.junit.Before;
 import org.junit.Test;
 

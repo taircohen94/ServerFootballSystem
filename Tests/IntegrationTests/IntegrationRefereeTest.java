@@ -1,13 +1,13 @@
 package IntegrationTests;
 
-import AssociationAssets.EEventType;
-import AssociationAssets.Field;
-import AssociationAssets.Season;
-import Users.*;
+import BL.AssociationAssets.EEventType;
+import BL.AssociationAssets.Field;
+import BL.AssociationAssets.Season;
+import BL.Users.EReferee;
+import BL.Users.Referee;
+import BL.Users.TeamOwner;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 
 import java.sql.Time;
 import java.util.Date;
@@ -25,7 +25,7 @@ public class IntegrationRefereeTest {
 
     @Before
     public void set_Up() throws Exception {
-        referee = new Referee("ref","fname","lname",EReferee.MAIN);
+        referee = new Referee("ref","fname","lname", EReferee.MAIN);
         referee2= new Referee("ref1","fname","lname",EReferee.ASSISTANT);
         referee3= new Referee("ref2","fname","lname",EReferee.ASSISTANT);
         field = new Field("d","e",1);

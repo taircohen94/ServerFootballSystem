@@ -1,10 +1,8 @@
 package AssociationAssets;
 
+import BL.AssociationAssets.Field;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.sql.Time;
-import java.util.Date;
 
 import static org.junit.Assert.*;
 

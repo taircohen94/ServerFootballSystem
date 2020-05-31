@@ -1,4 +1,5 @@
 package Users;
+import BL.Users.*;
 import org.junit.jupiter.api.Test;
 import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,7 +8,7 @@ class PlayerTest {
     @Test
     void addFeedToMyPage() {
         //Creating player
-        Player player = new Player("newPlayer", "yossi","cohen", new Date(),EPlayerRole.GoalKeeper);
+        Player player = new Player("newPlayer", "yossi","cohen", new Date(), EPlayerRole.GoalKeeper);
         String feed = "this is my first post";
         player.addFeedToMyPage(feed);
         assertTrue(player.getMyPage().getMyFeed().size() == 1 && player.getMyPage().getMyFeed().get(0).equals(feed));

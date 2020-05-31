@@ -1,6 +1,6 @@
 package IntegrationTests;
 
-import Users.TeamManager;
+import BL.Users.TeamManager;
 
 public class TeamManagerStub extends TeamManager {
     int selector;

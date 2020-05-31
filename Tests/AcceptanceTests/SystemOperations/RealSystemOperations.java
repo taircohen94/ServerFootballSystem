@@ -1,17 +1,16 @@
 package AcceptanceTests.SystemOperations;
 
 import AcceptanceTests.DataObjects.*;
-import AssociationAssets.*;
-import PoliciesAndAlgorithms.GamesAssigningPolicy;
-import PoliciesAndAlgorithms.OneRoundGamesAssigningPolicy;
-import PoliciesAndAlgorithms.RegularScorePolicy;
-import PoliciesAndAlgorithms.ScoreTablePolicy2;
-import System.FootballSystem;
-import Model.*;
-import Users.*;
+import BL.AssociationAssets.*;
+import BL.PoliciesAndAlgorithms.OneRoundGamesAssigningPolicy;
+import BL.PoliciesAndAlgorithms.ScoreTablePolicy2;
+import BL.System.FootballSystem;
+import BL.Users.*;
+import SL.Model.*;
+import SL.Model.Model;
+import SL.Model.RecordException;
 
 import javax.security.auth.login.FailedLoginException;
-import java.nio.file.Path;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -72,14 +71,14 @@ public class RealSystemOperations implements ISystemOperationsBridge{
         team1.addSeasonToTeam(season1);
         team2.addSeasonToTeam(season);
         try {
-            tairTO.addCoach(team1,season,"coach-2020","123","c","c", ETraining.CDiploma,ECoachRole.AssistantCoach);
+            tairTO.addCoach(team1,season,"coach-2020","123","c","c", ETraining.CDiploma, ECoachRole.AssistantCoach);
         }
         catch (Exception e){
             e.printStackTrace();
         }
         tairTO.addField(team1,season,"Camp-No1","tel-aviv",12222);
         tairTO.addTeamManager(team1,season,"TM-2020","123","la","la");
-        tairTO.addPlayer(team1,season,"player-2020","123","la","la",new Date(17/10/1995),EPlayerRole.GoalKeeper);
+        tairTO.addPlayer(team1,season,"player-2020","123","la","la",new Date(17/10/1995), EPlayerRole.GoalKeeper);
 
         try {
             FootballSystem.getInstance().addTeamToDB(team1);

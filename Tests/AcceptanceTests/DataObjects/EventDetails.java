@@ -1,7 +1,6 @@
 package AcceptanceTests.DataObjects;
 
-import AssociationAssets.EEventType;
-import AssociationAssets.Event;
+import BL.AssociationAssets.EEventType;
 
 public class EventDetails {
     public int gameID;

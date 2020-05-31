@@ -1,16 +1,16 @@
 package Users;
 
-import AssociationAssets.*;
-import Budget.AssociationBudget;
-import Model.RecordException;
-import PoliciesAndAlgorithms.RegularScorePolicy;
-import PoliciesAndAlgorithms.SimpleGamesAssigningPolicy;
-import Budget.TeamBudget;
-import System.*;
+import BL.AssociationAssets.*;
+import BL.Budget.AssociationBudget;
+import BL.System.FootballSystem;
+import BL.Users.*;
+import SL.Model.RecordException;
+import BL.PoliciesAndAlgorithms.RegularScorePolicy;
+import BL.PoliciesAndAlgorithms.SimpleGamesAssigningPolicy;
+import BL.Budget.TeamBudget;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.naming.OperationNotSupportedException;
 import javax.security.auth.login.FailedLoginException;
 import java.sql.Time;
 import java.util.Date;
@@ -34,7 +34,7 @@ public class RepresentativeFootballAssociationTest {
     HashMap <String,Team> teams;
     TeamBudget teamBudget;
     HashMap<String,TeamOwner> owners;
-    HashMap<String,Coach> coaches;
+    HashMap<String, Coach> coaches;
     HashMap<String, Player>players;
     @Before
     public void set_up() throws Exception {
@@ -47,7 +47,7 @@ public class RepresentativeFootballAssociationTest {
         scorePolicy =  new RegularScorePolicy();
         associationBudget = new AssociationBudget();
         field= new Field("Teddi", "Beer Sheva", 800);
-        r1= new Referee("1","a","a",EReferee.MAIN);
+        r1= new Referee("1","a","a", EReferee.MAIN);
         r2= new Referee("2","a","a",EReferee.ASSISTANT);
         r3= new Referee("3","a","a",EReferee.ASSISTANT);
         team1 = new Team(1,"Barcelona",season,field,null,null);

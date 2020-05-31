@@ -1,7 +1,7 @@
 package AcceptanceTests.DataObjects;
 
-import Users.ECoachRole;
-import Users.ETraining;
+import BL.Users.ECoachRole;
+import BL.Users.ETraining;
 
 public class CoachDetails extends UserDetails {
     public ETraining training;

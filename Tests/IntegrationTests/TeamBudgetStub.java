@@ -1,8 +1,8 @@
 package IntegrationTests;
 
-import AssociationAssets.Season;
-import AssociationAssets.Team;
-import Budget.TeamBudget;
+import BL.AssociationAssets.Season;
+import BL.AssociationAssets.Team;
+import BL.Budget.TeamBudget;
 
 public class TeamBudgetStub extends TeamBudget {
     int selector;

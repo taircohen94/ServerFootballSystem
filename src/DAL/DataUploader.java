@@ -1,11 +1,11 @@
 package DAL;
 
-import AssociationAssets.Field;
-import AssociationAssets.League;
-import AssociationAssets.Season;
-import AssociationAssets.Team;
-import Security.SecuritySystem;
-import Users.*;
+import BL.AssociationAssets.*;
+import BL.PoliciesAndAlgorithms.*;
+import BL.Security.SecuritySystem;
+import BL.System.FootballSystem;
+import BL.Users.*;
+import BL.Users.*;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -14,9 +14,9 @@ import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import AssociationAssets.*;
-import PoliciesAndAlgorithms.*;
-import System.*;
+import BL.AssociationAssets.*;
+import BL.PoliciesAndAlgorithms.*;
+import BL.System.*;
 
 /**
  * Data Uploader is in charge of fetching data from the DB and setting it in the system's Hashmaps and data sets.

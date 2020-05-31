@@ -1,5 +1,6 @@
 package AssociationAssets;
 
+import BL.AssociationAssets.Score;
 import org.junit.Before;
 import org.junit.Test;
 

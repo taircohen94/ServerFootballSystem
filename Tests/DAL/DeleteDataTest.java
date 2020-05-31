@@ -1,10 +1,9 @@
 package DAL;
 
-import AssociationAssets.Event;
-import AssociationAssets.Game;
+import BL.AssociationAssets.Event;
+import BL.AssociationAssets.Game;
+import BL.System.FootballSystem;
 import org.junit.Test;
-import System.*;
-import static org.junit.Assert.*;
 
 public class DeleteDataTest {
     JDBCConnector connector;

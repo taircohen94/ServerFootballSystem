@@ -1,16 +1,17 @@
 package Users;
 
-import AssociationAssets.Field;
-import AssociationAssets.League;
-import AssociationAssets.Season;
-import AssociationAssets.Team;
-import DB.LeagueDB;
-import DB.SeasonDB;
-import DB.TeamDB;
+import BL.AssociationAssets.Field;
+import BL.AssociationAssets.League;
+import BL.AssociationAssets.Season;
+import BL.AssociationAssets.Team;
+import BL.System.FootballSystem;
+import BL.Users.*;
+import DAL.DB.LeagueDB;
+import DAL.DB.SeasonDB;
+import DAL.DB.TeamDB;
 import org.junit.Before;
 import org.junit.Test;
-import System.Search;
-import System.*;
+import BL.System.Search;
 
 import javax.security.auth.login.FailedLoginException;
 import java.util.LinkedList;
@@ -40,7 +41,7 @@ public class GuestTest {
         seasonDB = new SeasonDB();
         search= guest.getSearch();
         coach = new Coach("coachTest", "Dan", "Levi", ETraining.UEFAA,ECoachRole.AssistantCoach);
-        player = new Player("playerTest","Eli","Dan",null,EPlayerRole.GoalKeeper);
+        player = new Player("playerTest","Eli","Dan",null, EPlayerRole.GoalKeeper);
         league = new League("champions");
         league1 = new League("leagueTest");
         referee = new Referee("refereeTest","refereeFname","refereeLname",EReferee.ASSISTANT);

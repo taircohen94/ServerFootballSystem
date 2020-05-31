@@ -1,16 +1,12 @@
 package IntegrationTests;
 import static org.junit.Assert.*;
 
-import AssociationAssets.ETeamStatus;
-import AssociationAssets.Field;
-import AssociationAssets.Season;
-import AssociationAssets.Team;
-import Users.ECoachRole;
-import Users.EPlayerRole;
-import Users.ETraining;
+import BL.AssociationAssets.ETeamStatus;
+import BL.AssociationAssets.Field;
+import BL.AssociationAssets.Team;
+import BL.Users.EPlayerRole;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 
 public class IntegrationTeamTest {
     Team team;

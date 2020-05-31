@@ -1,10 +1,11 @@
 package System;
 
-import AssociationAssets.*;
-import DB.*;
-import PoliciesAndAlgorithms.GamesAssigningPolicy;
-import PoliciesAndAlgorithms.SimpleGamesAssigningPolicy;
-import Users.*;
+import BL.AssociationAssets.*;
+import BL.System.FootballSystem;
+import BL.System.Search;
+import BL.Users.*;
+import BL.PoliciesAndAlgorithms.GamesAssigningPolicy;
+import BL.PoliciesAndAlgorithms.SimpleGamesAssigningPolicy;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.Date;
@@ -60,10 +61,10 @@ public class SearchTest {
         representative=(RepresentativeFootballAssociation)footballSystem.creatingRepresentativeFootballAssociation("repreUname","repreFname","repreLname",gamePolicy);
        //player
         footballSystem.signIn("playerUName","67267", "playerFname","playerLname");
-        player = (Player)footballSystem.creatingPlayer("playerUName","playerFname","playerLname",null,EPlayerRole.GoalKeeper);
+        player = (Player)footballSystem.creatingPlayer("playerUName","playerFname","playerLname",null, EPlayerRole.GoalKeeper);
         //coach
         footballSystem.signIn("coachTest","94672", "coachFname","coachLname");
-        coach=(Coach) footballSystem.creatingCoach("coachName","coachFname","coachLname",ETraining.CDiploma,ECoachRole.AssistantCoach);
+        coach=(Coach) footballSystem.creatingCoach("coachName","coachFname","coachLname", ETraining.CDiploma,ECoachRole.AssistantCoach);
         //fan
         fan= footballSystem.signIn("testFan","123456","FanFname","FanLname");
         footballSystem.addTeamToDB(team);

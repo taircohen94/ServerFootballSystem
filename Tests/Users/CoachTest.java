@@ -1,5 +1,6 @@
 package Users;
 
+import BL.Users.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -11,7 +12,7 @@ class CoachTest {
     @Test
     void addFeedToMyPage() {
         //Creating coach
-        Coach coach = new Coach("newCoach", "yossi","cohen",ETraining.CDiploma, ECoachRole.AssistantCoach);
+        Coach coach = new Coach("newCoach", "yossi","cohen", ETraining.CDiploma, ECoachRole.AssistantCoach);
         String feed =  "this is my first post";
         coach.addFeedToMyPage(feed);
         assertTrue(coach.getMyPage().getMyFeed().size() == 1 && coach.getMyPage().getMyFeed().get(0).equals(feed));
@@ -36,7 +37,7 @@ class CoachTest {
         assertTrue(coachCanBeOwner.getMyPage().getMyFeed().size() == 1 && coachCanBeOwner.getMyPage().getMyFeed().get(0).equals(feedCanBeOwner));
 
         //Check Observers
-        coach.getMyPage().register(new Player("newPlayer", "yossi","cohen", new Date(),EPlayerRole.GoalKeeper));
+        coach.getMyPage().register(new Player("newPlayer", "yossi","cohen", new Date(), EPlayerRole.GoalKeeper));
         coach.addFeedToMyPage("new Feed");
 
     }

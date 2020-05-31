@@ -1,7 +1,7 @@
 package IntegrationTests;
 
-import Users.EPlayerRole;
-import Users.Player;
+import BL.Users.EPlayerRole;
+import BL.Users.Player;
 
 import java.util.Date;
 

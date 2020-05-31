@@ -1,8 +1,8 @@
 package IntegrationTests;
 
-import Users.Coach;
-import Users.ECoachRole;
-import Users.ETraining;
+import BL.Users.Coach;
+import BL.Users.ECoachRole;
+import BL.Users.ETraining;
 
 public class CoachStub extends Coach {
     int selector;
